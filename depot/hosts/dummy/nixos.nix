@@ -4,7 +4,10 @@ with lib;
 
 {
   boot.isContainer = true;
-  networking.useDHCP = false;
+  networking = {
+    useDHCP = false;
+    hostName = "dummy";
+  };
   users.users.root.hashedPassword = "";
 
   network.yggdrasil = {

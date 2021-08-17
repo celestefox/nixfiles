@@ -40,6 +40,7 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
 
   networking = {
     hostId = "9f89b327";
+    hostName = "example";
     useDHCP = false;
     interfaces.enp1s0.ipv4.addresses = singleton {
       inherit (config.network.addresses.private.ipv4) address;
@@ -48,7 +49,7 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
     defaultGateway = config.network.privateGateway;
   };
 
-/*  network = {
+  network = {
     addresses = {
       private = {
         ipv4.address = "192.168.1.32";
@@ -60,7 +61,7 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
       pubkey = "0000000000000000000000000000000000000000000000000000000000000001";
       listen.enable = false;
     };
-  }; */
+  };
 
   # Firewall
 
