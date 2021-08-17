@@ -48,7 +48,7 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
     defaultGateway = config.network.privateGateway;
   };
 
-  network = {
+/*  network = {
     addresses = {
       private = {
         ipv4.address = "192.168.1.32";
@@ -60,7 +60,7 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
       pubkey = "0000000000000000000000000000000000000000000000000000000000000001";
       listen.enable = false;
     };
-  };
+  }; */
 
   # Firewall
 

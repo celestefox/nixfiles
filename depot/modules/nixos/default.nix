@@ -1,9 +1,9 @@
 { meta, sources, lib, ... }:
 
 {
-  imports = [
-    (import (sources.arcexprs + "/modules")).nixos
-    (import (sources.katexprs + "/modules")).nixos
+  imports = with (import (sources.arcexprs + "/modules")).nixos; [ base16 base16-shared modprobe ]
+  ++ (with (import (sources.katexprs + "/modules")).nixos; [ firewall nftables ])
+  ++ [
     ./deploy.nix
     ./secrets.nix
     (sources.tf-nix + "/modules/nixos/secrets.nix")
