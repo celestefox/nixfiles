@@ -1,0 +1,17 @@
+cd nixexprs
+vim lib/node-import.nix
+ll
+cd ..
+ll
+cd nixfiles-base
+ll
+rg depot
+mv depot/ config
+ll
+vim config/tf/state.nix
+ll
+vim config/modules/meta/imports.nix
+ll
+rg depot
+vim default.nix
+git add -A

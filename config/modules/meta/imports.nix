@@ -22,10 +22,10 @@ with lib;
   config = {
     network.importing = {
       nixosImports = mkDefault (map (path: toString path) [
-        (root + "/depot/hosts/HN/nixos.nix")
+        (root + "/config/hosts/HN/nixos.nix")
       ]);
       homeImports = mkDefault (map (path: toString path) [
-        (root + "/depot/hosts/HN/home.nix")
+        (root + "/config/hosts/HN/home.nix")
       ]);
       users = mkDefault (singleton "example");
     };
