@@ -1,6 +1,13 @@
 { sources, system ? builtins.currentSystem, ... }@args:
 
 let
+  liboverlay = self: super: {
+    lib = super.lib.extend (self: super: import ../lib {
+      inherit super;
+      lib = self;
+      isOverlayLib = true;
+    });
+  };
   overlay = self: super: {
     nur = import sources.nur {
       nurpkgs = self;
@@ -11,6 +18,7 @@ let
     overlays = [
       (import (sources.arcexprs + "/overlay.nix"))
       (import (sources.katexprs + "/overlay.nix"))
+      liboverlay
       overlay
     ];
     config = {
