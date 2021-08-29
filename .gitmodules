@@ -1,0 +1,3 @@
+[submodule "tf"]
+	path = config/tf
+	url = git@github.com:mystfox/nixfiles-tf.git
