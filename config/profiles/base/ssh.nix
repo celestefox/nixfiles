@@ -29,6 +29,7 @@ with lib;
       StreamLocalBindUnlink yes
       LogLevel VERBOSE
     '';
+    forwardX11 = true;
   };
   programs.mosh.enable = true;
 }

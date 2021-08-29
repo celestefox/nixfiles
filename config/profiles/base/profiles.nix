@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, nixos, ... }:
 
 with lib;
 
@@ -17,7 +17,7 @@ with lib;
     home-manager.users = mkOption {
       type = types.attrsOf (types.submoduleWith {
         modules = [
-          ({ superConfig, ... }: {
+          ({ nixos, ... }: {
             options.deploy.profile = {
               gui = mkEnableOption "Graphical System";
               hardware = {
@@ -29,7 +29,7 @@ with lib;
               };
             };
             config = {
-              deploy.profile = superConfig.deploy.profile;
+              deploy.profile = nixos.deploy.profile;
             };
           })
         ];

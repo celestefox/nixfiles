@@ -3,7 +3,7 @@
     runners = {
       lazy = {
         file = ./.;
-        args = [ "--show-trace" ];
+        args = [ "--show-trace" "--extra-sandbox-paths" "/var/run/nscd/socket=/var/run/nscd/socket" ];
       };
     };
     _module.args = {

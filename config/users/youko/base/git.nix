@@ -13,8 +13,8 @@
   programs.git = {
     enable = true;
     package = pkgs.gitAndTools.gitFull;
-    userName = "kat witch";
-    userEmail = "kat@kittywit.ch";
+    userName = "Youko";
+    userEmail = "youko@chakat.space";
     extraConfig = {
       init = { defaultBranch = "main"; };
       protocol.gcrypt.allow = "always";
@@ -26,7 +26,7 @@
     };
     signing = {
       key = "01F50A29D4AA91175A11BDB17248991EFA8EFBEE";
-      signByDefault = true;
+      signByDefault = false;
     };
   };
 }

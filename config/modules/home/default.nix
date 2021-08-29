@@ -6,6 +6,7 @@
     (import (sources.katexprs + "/modules")).home
     ./deploy.nix
     ./secrets.nix
+    ./theme.nix
     (sources.tf-nix + "/modules/home/secrets.nix")
   ];
 }

@@ -3,7 +3,7 @@
 {
   imports = with meta; [
     # SETUP Replace user example
-    users.example.base
+    users.youko.base
     ./system.nix
     ./home.nix
     ./profiles.nix

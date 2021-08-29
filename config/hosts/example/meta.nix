@@ -1,4 +1,4 @@
-{ config, lib, kw, ... }: with lib; {
+{ config, lib, kw, meta, ... }: with lib; {
   config = {
     deploy.targets.example = {
       tf = {
