@@ -29,7 +29,7 @@ in {
   imports = [
     (toString (sources.tf-nix + "/modules/run.nix"))
     ../../tf/state.nix
-  ];
+  ] ++ (optional (builtins.pathExists ../../tf/state.nix) (../../tf/state.nix));
   options = {
     deploy = {
       dataDir = mkOption {
