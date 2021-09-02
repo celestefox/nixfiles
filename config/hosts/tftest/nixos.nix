@@ -18,6 +18,19 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
 
+  # Terraform
+
+  deploy.tf = {
+    resources.tftest = {
+      provider = "null";
+      type = "resource";
+      connection = {
+        port = head config.services.openssh.ports;
+        host = config.network.addresses.private.ipv4.address;
+      };
+    };
+  };
+
   # File Systems and Swap
 
   fileSystems = {

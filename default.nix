@@ -31,7 +31,12 @@ let
   # This is where the meta config is evaluated.
   eval = lib.evalModules {
     modules = lib.singleton metaConfig
-    ++ lib.attrValues subconfig.hosts
+    #++ lib.attrValues subconfig.hosts
+    ++ (map (host: {
+      network.nodes.${host} = {
+        imports = config.lib.kw.nodeImport host;
+      };
+    }) (lib.attrNames subconfig.hosts))
     ++ lib.singleton ./config/modules/meta/default.nix;
 
     specialArgs = {

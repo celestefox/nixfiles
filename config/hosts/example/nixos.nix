@@ -15,6 +15,19 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
     users.youko.gui
   ];
 
+  # Terraform
+
+  deploy.tf = {
+    resources.example = {
+      provider = "null";
+      type = "resource";
+      connection = {
+        port = head config.services.openssh.ports;
+        host = config.network.addresses.private.ipv4.address;
+      };
+    };
+  };
+
   # File Systems and Swap
 
   fileSystems = {
