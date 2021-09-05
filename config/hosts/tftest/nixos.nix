@@ -64,7 +64,7 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
     hostName = "tftest";
     useDHCP = false;
     interfaces.enp1s0.ipv4.addresses = singleton {
-      inherit (config.network.addresses.private.ipv4) address;
+      inherit (config.network.addresses.nixos.private.ipv4) address;
       prefixLength = 24;
     };
     defaultGateway = "192.168.122.1";

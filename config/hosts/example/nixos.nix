@@ -56,7 +56,7 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
     hostName = "example";
     useDHCP = false;
     interfaces.enp1s0.ipv4.addresses = singleton {
-      inherit (config.network.addresses.private.ipv4) address;
+      inherit (config.network.addresses.nixos.private.ipv4) address;
       prefixLength = 24;
     };
     defaultGateway = config.network.privateGateway;
