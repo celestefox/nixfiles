@@ -74,7 +74,9 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
   network = {
     addresses = {
       private = {
-        ipv4.address = "192.168.122.55";
+        nixos = {
+          ipv4.address = "192.168.122.55";
+        };
       };
     };
     yggdrasil = {
