@@ -84,19 +84,19 @@ with lib; {
               if ${hostBuildString}; then
                 if [[ -n $CACHIX_SIGNING_KEY ]]; then
                   nix build --no-link -Lf . sourceCache.all
-                  cachix push kittywitch $(nix eval --raw -f . sourceCache.allStr)
+                  cachix push youko $(nix eval --raw -f . sourceCache.allStr)
 
-                  cachix push kittywitch result*/ &
+                  cachix push youko result*/ &
                   CACHIX_PUSH=$!
                 fi
                 if [[ -n $OPENSSH_PRIVATE_KEY ]]; then
                   git add nix/sources.json
-                  export GIT_{COMMITTER,AUTHOR}_EMAIL=github@kittywit.ch
+                  export GIT_{COMMITTER,AUTHOR}_EMAIL=github@chakat.space
                   export GIT_{COMMITTER,AUTHOR}_NAME="niv cron job"
                   git commit --message="ci: niv update"
                   if [[ $GITHUB_REF = refs/heads/main ]]; then
                     GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
-                      git push ssh://gitea@git.kittywit.ch:62954/kat/nixfiles.git HEAD:main
+                      git push ssh://git@github.com/mystfox/nixfiles.git HEAD:main
                   fi
                 fi
 
@@ -122,6 +122,11 @@ with lib; {
       enable = true;
       publicKey =
         "kittywitch.cachix.org-1:KIzX/G5cuPw5WgrXad6UnrRZ8UDr7jhXzRTK/lmqyK0=";
+      signingKey = null;
+    };
+    youko = {
+      enable = true;
+      publicKey = "youko.cachix.org-1:uR+vkaguVaH9+g37/oKIxg/gHL+6G+RnNO8wmlob+7w=";
       signingKey = "mewp";
     };
   };

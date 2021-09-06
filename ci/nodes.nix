@@ -31,6 +31,10 @@
   cache.cachix.kittywitch = {
     enable = true;
     publicKey = "kittywitch.cachix.org-1:KIzX/G5cuPw5WgrXad6UnrRZ8UDr7jhXzRTK/lmqyK0=";
+  };
+  cache.cachix.youko = {
+    enable = true;
+    publicKey = "youko.cachix.org-1:uR+vkaguVaH9+g37/oKIxg/gHL+6G+RnNO8wmlob+7w=";
     signingKey = "mewp";
   };
 }
