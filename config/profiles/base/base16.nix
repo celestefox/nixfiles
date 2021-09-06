@@ -5,7 +5,7 @@
     # SETUP Change scheme
     console = {
       enable = true;
-      scheme = "rebecca.rebecca";
+      schemeName = "rebecca";
     };
   };
 }
