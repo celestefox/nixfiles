@@ -2,6 +2,7 @@
 
 {
   base16 = {
+    schemes = [ "rebecca.rebecca" ];
     # SETUP Change scheme
     console = {
       enable = true;
