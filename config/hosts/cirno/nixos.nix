@@ -1,4 +1,4 @@
-{ meta, config, tf, pkgs, lib, ... }: with lib; let
+{ meta, config, tf, pkgs, lib, modulesPath, ... }: with lib; let
   res = tf.resources;
 in
 
@@ -12,7 +12,10 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
   # Imports
 
   imports = with meta; [
-    users.youko.gui
+    users.youko.base
+    # TODO: revisit this?
+    #(modulesPath + "/virtualisation/digital-ocean-config.nix")
+    (modulesPath + "/profiles/qemu-guest.nix")
   ];
 
   # Terraform
@@ -58,7 +61,7 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
     providers.digitalocean.inputs.token = tf.variables.do_token.ref;
     deploy.systems.cirno.lustrate = {
       enable = true;
-      connection = tf.resources."$config.networking.hostName}".connection.set // {
+      connection = tf.resources."${config.networking.hostName}".connection.set // {
         port = 22;
       };
     };
@@ -68,19 +71,34 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
 
   fileSystems = {
     "/" = {
-      device = "/dev/disk/by-uuid/469a684b-eb8f-48a8-8f98-be58528312c4";
+      device = "/dev/vda1"; # For Ubuntu 20.04 image base
       fsType = "ext4";
+      autoResize = true;
+    };
+    "/boot" = {
+      device = "/dev/vda15"; # For Ubuntu 20.04 image base
+      fsType = "vfat";
     };
   };
 
-  swapDevices = [{ device = "/dev/disk/by-uuid/2223e305-79c9-45b3-90d7-560dcc45775a"; }];
+  #swapDevices = [{ device = "/dev/disk/by-uuid/2223e305-79c9-45b3-90d7-560dcc45775a"; }];
 
   # Bootloader
 
-  boot.loader.grub = {
-    enable = true;
-    version = 2;
-    device = "/dev/sda";
+  #boot.loader.systemd-boot.enable = true;
+  #boot.loader.efi.canTouchEfiVariables = true;
+
+  # From digital-ocean-config.nix
+  boot = {
+    growPartition = true;
+    kernelParams = [ "console=ttyS0" "panic=1" "boot.panic_on_fail" ];
+    initrd.kernelModules = [ "virtio_scsi" ];
+    kernelModules = [ "virtio_pci" "virtio_net" ];
+    loader = {
+      grub.device = "/dev/vda";
+      timeout = 0;
+      grub.configurationLimit = mkForce 0;
+    };
   };
 
   # Hardware
@@ -91,30 +109,30 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
     hostId = "e0450306";
     hostName = "cirno";
     useDHCP = false;
-    interfaces.enp1s0.ipv4.addresses = singleton {
-      inherit (config.network.addresses.public.nixos.ipv4) address;
+    interfaces.enp1s0.ipv4.addresses = mkIf (tf.state.resources ? ${tf.resources.${config.networking.hostName}.out.reference}) (singleton {
+      address = (tf.resources.${config.networking.hostName}.importAttr "ipv4_address");
       prefixLength = 24;
-    };
+    });
     defaultGateway = config.network.privateGateway;
   };
 
-  network = {
+  /*network = {
     tf.enable = true;
     addresses.public.enable = true;
-    /*addresses = {
+    addresses = {
       public = {
         nixos = {
           ipv4.address = "192.168.1.32";
         };
       };
-    };*/
+    };
     yggdrasil = {
       enable = false;
       # SETUP replace
       pubkey = "0000000000000000000000000000000000000000000000000000000000000001";
       listen.enable = false;
     };
-  };
+  };*/
 
   # Firewall
 
