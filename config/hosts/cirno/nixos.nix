@@ -1,6 +1,6 @@
-{ meta, config, pkgs, lib, ... }:
-
-with lib;
+{ meta, config, tf, pkgs, lib, ... }: with lib; let
+  res = tf.resources;
+in
 
 /*
 SETUP Please edit this scaffold! This should not be used directly and is effectively a mix of the usual:
@@ -18,12 +18,48 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
   # Terraform
 
   deploy.tf = {
-    resources.example = {
+    /*
+    resources.cirno = {
       provider = "null";
       type = "resource";
       connection = {
         port = head config.services.openssh.ports;
         host = config.network.addresses.private.nixos.ipv4.address;
+      };
+      };*/
+    /*resources.do_access = {
+      provider = "digitalocean";
+      type = "ssh_key";
+      inputs = {
+        name = "terraform/cirno access key";
+        public_key = res.access_key.refAttr "public_key_openssh";
+      };
+    };*/
+    resources.cirno = {
+      provider = "digitalocean";
+      type = "droplet";
+      inputs = {
+        image = "ubuntu-20-04-x64";
+        name = "cirno";
+        region = "ams3";
+        size = "s-1vcpu-2gb";
+        ssh_keys = [ 30535593 30535589 ];
+      };
+      connection = {
+        port = head config.services.openssh.ports;
+        host = tf.lib.tf.terraformSelf "ipv4_address";
+      };
+    };
+    variables.do_token = {
+      type = "string";
+      sensitive = true;
+      #shellCo
+    };
+    providers.digitalocean.inputs.token = tf.variables.do_token.ref;
+    deploy.systems.cirno.lustrate = {
+      enable = true;
+      connection = tf.resources."$config.networking.hostName}".connection.set // {
+        port = 22;
       };
     };
   };
@@ -52,24 +88,26 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
   # Networking
 
   networking = {
-    hostId = "9f89b327";
-    hostName = "example";
+    hostId = "e0450306";
+    hostName = "cirno";
     useDHCP = false;
     interfaces.enp1s0.ipv4.addresses = singleton {
-      inherit (config.network.addresses.private.nixos.ipv4) address;
+      inherit (config.network.addresses.public.nixos.ipv4) address;
       prefixLength = 24;
     };
     defaultGateway = config.network.privateGateway;
   };
 
   network = {
-    addresses = {
-      private = {
+    tf.enable = true;
+    addresses.public.enable = true;
+    /*addresses = {
+      public = {
         nixos = {
           ipv4.address = "192.168.1.32";
         };
       };
-    };
+    };*/
     yggdrasil = {
       enable = false;
       # SETUP replace
@@ -83,7 +121,7 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
   network.firewall = {
     public = {
       interfaces = singleton "enp1s0";
-      tcp.ports = [ 9981 9982 ];
+      #tcp.ports = [ 9981 9982 ];
     };
   };
 
