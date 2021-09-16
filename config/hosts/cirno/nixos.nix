@@ -102,7 +102,7 @@ in {
     };
     defaultGateway6 = {
       address = "fe80::1";
-      interface = "enss3";
+      interface = "ens3";
     };
     nameservers = [ "1.1.1.1" "1.0.0.1" ];
   };
