@@ -5,12 +5,14 @@ with lib;
 {
   network.firewall = {
     public = {
+      tcp.ports = singleton 62954;
       udp.ranges = [{
         from = 60000;
         to = 61000;
       }];
     };
     private = {
+      tcp.ports = singleton 62954;
       udp.ranges = [{
         from = 60000;
         to = 61000;
