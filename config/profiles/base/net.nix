@@ -1,5 +1,5 @@
 { config, lib, ... }:
 
 {
-  network.nftables.enable = lib.mkDefault true;
+  networking.nftables.enable = lib.mkDefault true;
 }

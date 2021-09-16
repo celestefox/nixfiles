@@ -5,6 +5,9 @@
     (import (sources.arcexprs + "/modules")).nixos
     (import (sources.katexprs + "/modules")).nixos
     ./deploy.nix
+    ./firewall.nix
+    ./network.nix
+    ./nftables.nix
     ./secrets.nix
     (sources.tf-nix + "/modules/nixos/secrets.nix")
     (sources.tf-nix + "/modules/nixos/secrets-users.nix")
