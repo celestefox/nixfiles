@@ -1,14 +1,6 @@
 { meta, config, tf, pkgs, lib, modulesPath, ... }: with lib; let
   res = tf.resources;
-in
-
-  /*
-    SETUP Please edit this scaffold! This should not be used directly and is effectively a mix of the usual:
-    * hardware-configuration.nix
-    * configuration.nix
-  */
-
-{
+in {
   # Imports
 
   imports = with meta; [
@@ -21,29 +13,6 @@ in
   # Terraform
 
   deploy.tf = {
-    /*
-      resources.cirno = {
-      provider = "digitalocean";
-      type = "droplet";
-      inputs = {
-      image = "ubuntu-20-04-x64";
-      name = "cirno";
-      region = "ams3";
-      size = "s-1vcpu-2gb";
-      ssh_keys = [ 30535593 30535589 ];
-      };
-      connection = {
-      port = head config.services.openssh.ports;
-      host = tf.lib.tf.terraformSelf "ipv4_address";
-      };
-      };
-      variables.do_token = {
-      type = "string";
-      sensitive = true;
-      #shellCo
-      };
-      providers.digitalocean.inputs.token = tf.variables.do_token.ref;
-    */
     # Token for Hetzner Cloud
     variables.hcloud_token = {
       type = "string";
@@ -95,12 +64,7 @@ in
       };*/
   };
 
-  #swapDevices = [{ device = "/dev/disk/by-uuid/2223e305-79c9-45b3-90d7-560dcc45775a"; }];
-
   # Bootloader
-
-  #boot.loader.systemd-boot.enable = true;
-  #boot.loader.efi.canTouchEfiVariables = true;
 
   boot = {
     growPartition = true;
@@ -128,10 +92,6 @@ in
     hostId = "e0450306";
     hostName = "cirno";
     useDHCP = false;
-    /*interfaces.enp1s0.ipv4.addresses = mkIf (tf.state.resources ? ${tf.resources.${config.networking.hostName}.out.reference}) (singleton {
-      address = (tf.resources.${config.networking.hostName}.importAttr "ipv4_address");
-      prefixLength = 24;
-      });*/
     interfaces.ens3 = {
       useDHCP = true; # For v4
       ipv6.addresses = mkIf (tf.state.resources ? ${tf.resources.${config.networking.hostName}.out.reference}) [{
@@ -147,32 +107,16 @@ in
     nameservers = [ "1.1.1.1" "1.0.0.1" ];
   };
 
-  /*network = {
-    tf.enable = true;
-    addresses.public.enable = true;
-    addresses = {
-    public = {
-    nixos = {
-    ipv4.address = "192.168.1.32";
-    };
-    };
-    };
-    yggdrasil = {
-    enable = false;
-    # SETUP replace
-    pubkey = "0000000000000000000000000000000000000000000000000000000000000001";
-    listen.enable = false;
-    };
-    };*/
-
   # Firewall
 
+  /*
   network.firewall = {
     public = {
       interfaces = singleton "ens3";
       #tcp.ports = [ 9981 9982 ];
     };
   };
+  */
 
   # State
 
