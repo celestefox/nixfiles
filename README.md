@@ -4,7 +4,6 @@ Our Nix setup, derived from [kittywitch/nixfiles](kittywitch/nixfiles), using [a
 
 ## TODOs
 
-* Inhouse `katexprs`
 * Move to `recursiveMod`?
 * Set up more services on and clean up `cirno`
 
