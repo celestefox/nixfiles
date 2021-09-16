@@ -33,6 +33,7 @@ in {
     deploy = {
       dataDir = mkOption {
         type = types.path;
+        default = ../../../tf.nix;
       };
       local = {
         isRoot = mkOption {
