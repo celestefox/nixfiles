@@ -1,6 +1,9 @@
 let
+  optionalAttrs = cond: as: if cond then as else {};
   # Sources are from niv.
-  sources = import ./nix/sources.nix;
+  sources = import ./nix/sources.nix // optionalAttrs (builtins.pathExists ./pkgs/exprs/default.nix) {
+    katexprs = ./pkgs/exprs;
+  };
   # We pass sources through to pkgs and get our nixpkgs + overlays.
   pkgs = import ./pkgs { inherit sources; };
   # We want our overlaid lib.

@@ -1,3 +1,6 @@
 [submodule "tf"]
 	path = config/tf
 	url = git@github.com:mystfox/nixfiles-tf.git
+[submodule "exprs"]
+	path = pkgs/exprs
+	url = https://github.com/kittywitch/nixexprs.git
