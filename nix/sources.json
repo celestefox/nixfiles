@@ -5,10 +5,10 @@
         "homepage": null,
         "owner": "arcnmx",
         "repo": "nixexprs",
-        "rev": "548465ad8718af6523196904c4f226c14b9f314a",
-        "sha256": "0d3r820pjgzdqc225h8p16awf80p0m6ci8f7np8fzwxsd8pql6m8",
+        "rev": "43776b5826eeda07bf38aabe93d0254a3d4909ab",
+        "sha256": "01ri786j4q1dj0r0wc5mh82lpvgbnqd9m2s6sjcby279457px90x",
         "type": "tarball",
-        "url": "https://github.com/arcnmx/nixexprs/archive/548465ad8718af6523196904c4f226c14b9f314a.tar.gz",
+        "url": "https://github.com/arcnmx/nixexprs/archive/43776b5826eeda07bf38aabe93d0254a3d4909ab.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "ci": {
@@ -29,10 +29,10 @@
         "homepage": "",
         "ref": "main",
         "repo": "https://gitlab.com/hexchen/nixfiles",
-        "rev": "5fad9ecbc4a1022a4243cf7d411a1a9e92681379",
-        "sha256": "1ajpskv4zh782ib10rcg2nkh4sgxzy8cgi0db19j6gm3wam0ap8r",
+        "rev": "c26f4cc18649b6eba69035f4e5edc189e938412a",
+        "sha256": "1qwj1aw86l1m1f4x14kqlwavj3d0vqllm4ppdjyj9dbap8y5d1z7",
         "type": "tarball",
-        "url": "https://gitlab.com/hexchen/nixfiles/-/archive/5fad9ecbc4a1022a4243cf7d411a1a9e92681379.tar.gz",
+        "url": "https://gitlab.com/hexchen/nixfiles/-/archive/c26f4cc18649b6eba69035f4e5edc189e938412a.tar.gz",
         "url_template": "<repo>/-/archive/<rev>.tar.gz"
     },
     "home-manager": {
@@ -99,10 +99,10 @@
         "homepage": "https://nur.nix-community.org/",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "b863f99401fa3b82ab0d38c5423e6f1e3135acca",
-        "sha256": "0wc1c7220c99jiynms9y31i90id7rfj9z5il7rwnpwvz6pknr40s",
+        "rev": "f6749b1efc65068cadf9c0f4793cfafed9d538f2",
+        "sha256": "0w7mbb29hfl1ybf8acng9q235n2d81vnrm08rl1s35qjybvaxbvy",
         "type": "tarball",
-        "url": "https://github.com/nix-community/NUR/archive/b863f99401fa3b82ab0d38c5423e6f1e3135acca.tar.gz",
+        "url": "https://github.com/nix-community/NUR/archive/f6749b1efc65068cadf9c0f4793cfafed9d538f2.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "tf-nix": {
