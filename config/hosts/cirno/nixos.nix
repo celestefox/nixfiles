@@ -109,14 +109,12 @@ in {
 
   # Firewall
 
-  /*
   network.firewall = {
     public = {
       interfaces = singleton "ens3";
       #tcp.ports = [ 9981 9982 ];
     };
   };
-  */
 
   # State
 
