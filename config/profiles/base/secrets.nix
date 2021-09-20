@@ -2,8 +2,8 @@
 
 {
   secrets = {
-    root = "/var/lib/kat/secrets";
-    persistentRoot = "/var/lib/kat/secrets";
+    root = "/var/lib/youko/secrets";
+    persistentRoot = "/var/lib/youko/secrets";
     external = true;
   };
 }
