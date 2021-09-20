@@ -5,6 +5,7 @@ in {
 
   imports = with meta; [
     users.youko.base
+    services.nginx
     # TODO: revisit this?
     #(modulesPath + "/virtualisation/digital-ocean-config.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
