@@ -61,6 +61,10 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
 
   networking = {
     hostId = "9f89b327";
+    interfaces.enp1s0.ipv4.addresses = singleton {
+      address = "192.168.122.55";
+      prefixLength = 24;
+    };
     hostName = "tftest";
     useDHCP = false;
     defaultGateway = "192.168.122.1";
@@ -68,13 +72,6 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
   };
 
   network = {
-    addresses = {
-      private = {
-        nixos = {
-          ipv4.address = "192.168.122.55";
-        };
-      };
-    };
     yggdrasil = {
       enable = false;
       # SETUP replace
