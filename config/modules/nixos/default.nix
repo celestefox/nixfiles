@@ -6,7 +6,6 @@
     (import (sources.katexprs + "/modules")).nixos
     ./deploy.nix
     ./firewall.nix
-    ./network.nix
     ./nftables.nix
     ./secrets.nix
     (sources.tf-nix + "/modules/nixos/secrets.nix")

@@ -3,7 +3,7 @@
 {
   imports = [
     (import (sources.arcexprs + "/modules")).home-manager
-    (import (sources.katexprs + "/modules")).home
+    ./firewall.nix
     ./deploy.nix
     ./secrets.nix
     ./theme.nix
