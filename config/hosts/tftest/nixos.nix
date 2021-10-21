@@ -78,7 +78,6 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
       pubkey = "0000000000000000000000000000000000000000000000000000000000000001";
       listen.enable = false;
     };
-    privateGateway = "192.168.122.1";
   };
 
   # Firewall
