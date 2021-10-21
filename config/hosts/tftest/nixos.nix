@@ -63,10 +63,6 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
     hostId = "9f89b327";
     hostName = "tftest";
     useDHCP = false;
-    interfaces.enp1s0.ipv4.addresses = singleton {
-      inherit (config.network.addresses.private.nixos.ipv4) address;
-      prefixLength = 24;
-    };
     defaultGateway = "192.168.122.1";
     nameservers = [ "1.1.1.1" "1.0.0.1" ];
   };
