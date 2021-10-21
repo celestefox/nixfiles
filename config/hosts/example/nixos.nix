@@ -63,13 +63,6 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
   };
 
   network = {
-    addresses = {
-      private = {
-        nixos = {
-          ipv4.address = "192.168.1.32";
-        };
-      };
-    };
     yggdrasil = {
       enable = false;
       # SETUP replace
