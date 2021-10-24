@@ -1,6 +1,20 @@
-{ config, lib, pkgs, ... }: with lib;
+{ config, lib, pkgs, tf, ... }: with lib;
 
 {
+  # Secrets for ACME
+  deploy.tf.variables.gandi_key = {
+    # TODO: replace w/ kw.secrets once practical
+    # (practical means a secrets storage w/ a command is setup)
+    type = "string";
+    sensitive = true;
+  };
+
+  secrets.files.acme_creds = {
+    text = ''
+      GANDIV5_API_KEY='${tf.variables.gandi_key}'
+    '';
+  };
+
   network.firewall = {
     public.tcp.ports = [ 443 80 ];
     private.tcp.ports = [ 443 80 ];
@@ -16,5 +30,8 @@
     clientMaxBodySize = "512m";
   };
 
-  # ACME?
+  security.acme = {
+    email = "youko@chakat.space";
+    acceptTerms = true;
+  };
 }
