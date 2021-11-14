@@ -11,7 +11,7 @@
 
   secrets.files.acme_creds = {
     text = ''
-      GANDIV5_API_KEY='${tf.variables.gandi_key}'
+      GANDIV5_API_KEY='${tf.variables.gandi_key.ref}'
     '';
   };
 
