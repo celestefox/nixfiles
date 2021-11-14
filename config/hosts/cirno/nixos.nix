@@ -96,9 +96,9 @@ in {
     useDHCP = false;
     interfaces.ens3 = {
       useDHCP = true; # For v4
-      ipv6.addresses = mkIf (tf.state.resources ? ${tf.resources.${config.networking.hostName}.out.reference}) [{
+      ipv6.addresses = mkIf (tf.state.enable) [{
         address =
-          (tf.resources.${config.networking.hostName}.importAttr "ipv6_address");
+          (tf.resources.${config.networking.hostName}.getAttr "ipv6_address");
         prefixLength = 64;
       }];
     };
