@@ -71,15 +71,6 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
     nameservers = [ "1.1.1.1" "1.0.0.1" ];
   };
 
-  network = {
-    yggdrasil = {
-      enable = false;
-      # SETUP replace
-      pubkey = "0000000000000000000000000000000000000000000000000000000000000001";
-      listen.enable = false;
-    };
-  };
-
   # Firewall
 
   network.firewall = {
