@@ -10,7 +10,7 @@
     ./secrets.nix
     (sources.tf-nix + "/modules/nixos/secrets.nix")
     (sources.tf-nix + "/modules/nixos/secrets-users.nix")
-    (sources.hexchen + "/modules/network/yggdrasil")
+    #(sources.hexchen + "/modules/network/yggdrasil")
   ];
 
   options.hexchen.dns = lib.mkOption { };
