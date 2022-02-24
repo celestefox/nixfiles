@@ -71,15 +71,6 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
     nameservers = [ "1.1.1.1" "1.0.0.1" ];
   };
 
-  # Firewall
-
-  network.firewall = {
-    public = {
-      interfaces = singleton "enp1s0";
-      tcp.ports = [ 9981 9982 ];
-    };
-  };
-
   # State
 
   system.stateVersion = "21.11";

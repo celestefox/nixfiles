@@ -15,10 +15,11 @@
     '';
   };
 
-  network.firewall = {
+  /*network.firewall = {
     public.tcp.ports = [ 443 80 ];
     private.tcp.ports = [ 443 80 ];
-  };
+  };*/
+  networking.firewall.allowedTCPPorts = [ 443 80 ];
 
   services.nginx = {
     enable = true;

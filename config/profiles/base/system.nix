@@ -11,4 +11,5 @@
   };
   services.journald.extraConfig = "SystemMaxUse=512M";
   users.mutableUsers = false;
+  documentation.nixos.options.warningsAreErrors = false;
 }

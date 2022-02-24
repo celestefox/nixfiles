@@ -3,7 +3,7 @@
 with lib;
 
 {
-  network.firewall = {
+  /*network.firewall = {
     public = {
       tcp.ports = singleton 62954;
       udp.ranges = [{
@@ -18,7 +18,7 @@ with lib;
         to = 61000;
       }];
     };
-  };
+  };*/
 
   services.openssh = {
     enable = true;
@@ -34,4 +34,9 @@ with lib;
     forwardX11 = true;
   };
   programs.mosh.enable = true;
+
+  networking.firewall = {
+    allowedTCPPorts = [ 62954 ];
+    allowedUDPPortRanges = [ { from = 60000; to = 61000; } ];
+  };
 }

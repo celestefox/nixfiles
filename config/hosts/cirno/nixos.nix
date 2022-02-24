@@ -2,11 +2,11 @@
   res = tf.resources;
 in {
   # Imports
-
   imports = with meta; [
     users.youko.base
     services.nginx
     services.site
+    services.wg
     # TODO: revisit this?
     #(modulesPath + "/virtualisation/digital-ocean-config.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
@@ -107,14 +107,10 @@ in {
       interface = "ens3";
     };
     nameservers = [ "1.1.1.1" "1.0.0.1" ];
-  };
 
-  # Firewall
-
-  network.firewall = {
-    public = {
-      interfaces = singleton "ens3";
-      #tcp.ports = [ 9981 9982 ];
+    # firewall
+    firewall = {
+      enable = true;
     };
   };
 
