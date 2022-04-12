@@ -67,7 +67,7 @@
     allowedUDPPorts = [ 51820 ];
     # NAT and other rules
     extraCommands = ''
-      #echo "Custom commands running..."
+      echo "Custom commands running..."
       # Cleanup and create chains
       #iptables -F fw-interfaces 2> /dev/null || true
       #iptables -X fw-interfaces 2> /dev/null || true
