@@ -1,5 +1,5 @@
 { writeTextFile, linkFarm }:
 
 linkFarm "index" [
-  { name = "index.html"; path = ./index.html; }
+  { name = "index.html"; path = "${./index.html}"; }
 ]
