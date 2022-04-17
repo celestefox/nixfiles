@@ -7,6 +7,7 @@ in {
     services.nginx
     services.site
     services.wg
+    services.knot-resolver
     # TODO: revisit this?
     #(modulesPath + "/virtualisation/digital-ocean-config.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
