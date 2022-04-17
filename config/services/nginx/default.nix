@@ -32,7 +32,7 @@
   };
 
   security.acme = {
-    email = "youko@chakat.space";
+    defaults.email = "youko@chakat.space";
     acceptTerms = true;
   };
 }
