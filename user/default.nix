@@ -2,6 +2,8 @@
   # Imports
   imports = [
     ./git.nix
+    ./neovim.nix
+    ./ssh.nix
   ];
 
   # General
@@ -51,22 +53,6 @@
 
   # fzf
   programs.fzf.enable = true;
-
-  # Neovim
-  programs.neovim = {
-    enable = true;
-    extraPackages = (with pkgs; [
-      rnix-lsp
-    ]);
-    plugins = (with pkgs.vimPlugins; [
-      vim-sensible
-      vim-eunuch
-      vim-nix
-      { plugin = nvim-lspconfig; type = "lua"; config = ''
-        require'lspconfig'.rnix.setup{}
-      ''; }
-    ]);
-  };
 
   # Gimme docs
   manual = { manpages.enable = true; html.enable = true; };

@@ -1,7 +1,7 @@
 { lib, pkgs, ... }: with lib; {
   # Other git-related packages
   home.packages = with pkgs; [
-    gh gist
+    gist
   ];
 
   # Git
@@ -24,6 +24,12 @@
     extraConfig = {
       init = { defaultBranch = "trunk"; };
     };
+  };
+
+  # gh
+  programs.gh = {
+    enable = true;
+    #settings.git_protocol = "ssh";
   };
 
   # Gitui cuz curious
