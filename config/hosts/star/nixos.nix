@@ -27,12 +27,12 @@ in {
     providers.hcloud.inputs.token = tf.variables.hcloud_token.ref;
 
     # Create the server
-    resources.cirno = {
+    resources.star = {
       provider = "hcloud";
       type = "server";
       # Initial server config
       inputs = {
-        name = "cirno";
+        name = "star";
         image = "ubuntu-20.04";
         server_type = "cx21";
         ssh_keys = [ 4445444 4445445 ];
@@ -44,9 +44,9 @@ in {
     };
 
     # Lustrate the server
-    deploy.systems.cirno.lustrate = {
+    deploy.systems.star.lustrate = {
       enable = true;
-      connection = tf.resources."${config.networking.hostName}".connection.set // {
+      connection = res."${config.networking.hostName}".connection.set // {
         # Initial image uses default SSH port, so replace it
         port = 22;
       };
@@ -71,12 +71,8 @@ in {
 
   boot = {
     growPartition = true;
-    # TODO: useful for Hetzner?
-    #kernelParams = [ "console=ttyS0" "panic=1" "boot.panic_on_fail" ];
-    #initrd.kernelModules = [ "virtio_scsi" ];
-    #kernelModules = [ "virtio_pci" "virtio_net" ];
     # From kat's hcloud-imperative
-    initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" "sd_mod" "sr_mod" ];
+    initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_net" "virtio_pci" "virtio_scsi" "sd_mod" "sr_mod" ];
     loader = {
       timeout = 0;
       grub = {
@@ -93,7 +89,7 @@ in {
 
   networking = {
     hostId = "e0450306";
-    hostName = "cirno";
+    hostName = "star";
     useDHCP = false;
     interfaces.ens3 = {
       useDHCP = true; # For v4
