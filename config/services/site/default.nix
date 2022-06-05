@@ -4,6 +4,11 @@
     enableACME = true;
     forceSSL = true;
   };
+  services.nginx.virtualHosts."foxgirl.tech" = {
+    root = pkgs.static-site;
+    enableACME = true;
+    forceSSL = true;
+  };
   /*security.acme.certs."focks.pw" = {
     group = "nginx";
     dnsProvider = "gandiv5";
