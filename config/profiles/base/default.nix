@@ -2,8 +2,7 @@
 
 {
   imports = with meta; [
-    # SETUP Replace user example
-    users.youko.base
+    users.celeste.base
     ./system.nix
     ./home.nix
     ./profiles.nix

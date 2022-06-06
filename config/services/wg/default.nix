@@ -78,19 +78,19 @@
 
       # Basic NAT rules
       iptables -t nat -A POSTROUTING -o ens3 -j MASQUERADE
-      iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-      iptables -A FORWARD -i wgnet -o ens3 -j ACCEPT
+      #iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+      ip46tables -A FORWARD -i wgnet -o ens3 -j ACCEPT
       #iptables -A FORWARD -j fw-interfaces
       #iptables -A FORWARD -j fw-open
-      iptables -P FORWARD DROP
+      #iptables -P FORWARD DROP
 
       # Who to forward
-      iptables -A fw-interfaces -i wgnet -j ACCEPT
+      ip46tables -A FORWARD -i wgnet -j ACCEPT
 
       # Simpler forward setup for v6, no NAT needed
-      ip6tables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-      ip6tables -A FORWARD -i wgnet -o ens3 -j ACCEPT
-      ip6tables -P FORWARD DROP
+      #ip6tables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+      #ip6tables -A FORWARD -i wgnet -o ens3 -j ACCEPT
+      #ip6tables -P FORWARD DROP
 
       # Done
       echo "Custom commands done"

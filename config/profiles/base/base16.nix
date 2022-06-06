@@ -2,11 +2,11 @@
 
 {
   base16 = {
-    schemes = [ "rebecca.rebecca" ];
+    schemes = [ "tomorrow.tomorrow-night-eighties" ];
     # SETUP Change scheme
     console = {
       enable = true;
-      schemeName = "rebecca.rebecca";
+      schemeName = "tomorrow.tomorrow-night-eighties";
     };
   };
 }

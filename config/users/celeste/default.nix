@@ -1,14 +1,14 @@
 let youkoUser = { lib }:
   let
     userImport = profile: { config, ... }: {
-      config.home-manager.users.youko = {
+      config.home-manager.users.celeste = {
         imports = [
           (./. + "/${profile}")
         ];
       };
     };
     serviceImport = profile: { config, ... }: {
-      config.home-manager.users.youko = {
+      config.home-manager.users.celeste = {
         imports = [
           (./services + "/${profile}")
         ];

@@ -27,7 +27,7 @@ with lib;
       homeImports = mkDefault (map (path: toString path) [
         (root + "/config/hosts/HN/home.nix")
       ]);
-      users = mkDefault (singleton "youko");
+      users = mkDefault (singleton "celeste");
     };
     lib.kw.nodeImport = hostName: lib.nodeImport {
       inherit (config.network.importing) nixosImports homeImports users;

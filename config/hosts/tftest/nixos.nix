@@ -13,8 +13,8 @@ SETUP Please edit this scaffold! This should not be used directly and is effecti
 
   imports = with meta; [
     profiles.gui
-    users.youko.gui
-    users.youko.sway
+    users.celeste.gui
+    users.celeste.sway
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
 

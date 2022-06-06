@@ -1,9 +1,10 @@
 { meta, config, tf, pkgs, lib, modulesPath, ... }: with lib; let
   res = tf.resources;
-in {
+in
+{
   # Imports
   imports = with meta; [
-    users.youko.base
+    users.celeste.base
     services.nginx
     services.site
     services.wg
@@ -50,6 +51,21 @@ in {
         # Initial image uses default SSH port, so replace it
         port = 22;
       };
+    };
+
+    # dns records
+    #providers.gandi.inputs.key = tf.variables.gandi_key.ref; # services/nginx
+    variables.cloudflare_token = { type = "string"; sensitive = true; };
+    providers.cloudflare.inputs.api_token = tf.variables.cloudflare_token.ref;
+    dns.zones."foxgirl.tech." = { provider = "cloudflare"; cloudflare.id = "1d0e0445e027d14092d3f7ef772a4740"; };
+    dns.records = let
+      hn = config.networking.hostName;
+      def = { enable = true; zone = "foxgirl.tech."; domain = hn; };
+    in
+    {
+      "${hn}.foxgirl.tech_4" = def // { a.address = tf.resources.${hn}.refAttr "ipv4_address"; };
+      "${hn}.foxgirl.tech_6" = def // { aaaa.address = tf.resources.${hn}.refAttr "ipv6_address"; };
+      "foxgirl.tech" = def // { domain = "@"; cname.target = "${hn}.foxgirl.tech."; };
     };
   };
 
