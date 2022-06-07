@@ -8,7 +8,7 @@ let
     };
   };
   localpkgs = self: super: {
-    static-site = self.callPackage ./static-site { };
+    foxgirl-site = self.callPackage ./foxgirl-site { };
   };
   pkgs = import sources.nixpkgs {
     overlays = [

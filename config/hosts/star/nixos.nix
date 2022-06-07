@@ -63,8 +63,8 @@ in
       def = { enable = true; zone = "foxgirl.tech."; domain = hn; };
     in
     {
-      "${hn}.foxgirl.tech_4" = def // { a.address = tf.resources.${hn}.refAttr "ipv4_address"; };
-      "${hn}.foxgirl.tech_6" = def // { aaaa.address = tf.resources.${hn}.refAttr "ipv6_address"; };
+      "${hn}.foxgirl.tech_4" = def // { a.address = res.${hn}.refAttr "ipv4_address"; };
+      "${hn}.foxgirl.tech_6" = def // { aaaa.address = res.${hn}.refAttr "ipv6_address"; };
       "foxgirl.tech" = def // { domain = "@"; cname.target = "${hn}.foxgirl.tech."; };
     };
   };
