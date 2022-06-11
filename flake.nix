@@ -13,33 +13,80 @@
     # nixos-vscode-server
     nixos-vscode-server.url = "github:msteen/nixos-vscode-server";
     nixos-vscode-server.flake = false;
+    # kw-nixfiles
+    kw-nixfiles.url = "github:kittywitch/nixfiles";
+    kw-nixfiles.flake = false; # cheating cuz I just want /tree.nix for now
+    # impermanence
+    impermanence.url = "github:nix-community/impermanence";
+    # fenix
+    #fenix.url = "github:nix-community/fenix";
+    #fenix.inputs.nixpkgs.follows = "nixpkgs";
+    # arcnmx/nixfiles
+    arcfiles.url = "github:arcnmx/nixfiles";
+    arcfiles.flake = false;
   };
-  
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }: {
-    nixosConfigurations.okami = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        # Pass inputs
-	{ _module.args.inputs = inputs; }
 
-	# Give nixos-version the Git rev
-	{ system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev; }
-
-	# Top level general config!
-        ./configuration.nix
-
-        # NixOS-WSL
-        inputs.nixos-wsl.nixosModules.wsl
-
-	# Home manager
-	home-manager.nixosModules.home-manager
-
-	# ragenix
-	inputs.ragenix.nixosModules.age
-
-	# VSCode remote fixer
-	(inputs.nixos-vscode-server + "/modules/vscode-server/default.nix")
-      ];
-    }; 
-  };
+  outputs = inputs@{ self, nixpkgs, ... }:
+    let
+      mkTree = (import (inputs.kw-nixfiles + "/tree.nix")) { inherit (nixpkgs) lib; };
+      tree = mkTree {
+        inherit inputs;
+        folder = ./tree;
+        config = {
+          "profiles/base".functor.enable = true;
+          "profiles/wsl".functor = {
+            enable = true;
+            external = [
+              #(import inputs.nixos-wsl).nixosModules.wsl
+            ];
+          };
+          "users/youko".functor.enable = true;
+          "users/celeste/*".functor.enable = true;
+        };
+      };
+      treated = tree.impure;
+    in
+    {
+      inherit tree;
+      nixosConfigurations = with nixpkgs.lib; listToAttrs (map
+        (host: nameValuePair host (nixosSystem {
+          system = "x86_64-linux"; # TODO: i mean they all are still for now but (android?)
+          specialArgs = { inherit inputs; flake = self; } // treated;
+          modules = [
+            # The host
+            treated.hosts.${host}.configuration
+            # General defaults
+            {
+              system.configurationRevision = mkIf (self ? rev) self.rev;
+            }
+            # base profile
+            treated.profiles.base
+            # Home manager
+            inputs.home-manager.nixosModules.home-manager
+            {
+              # global home manager
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                verbose = true;
+                # Pass flake inputs deeper
+                extraSpecialArgs = { inherit inputs; flake = self; } // treated;
+                sharedModules = [
+                  inputs.impermanence.nixosModules.home-manager.impermanence
+                  #(import (inputs.arcfiles + "/modules")).home-manager
+                ];
+              };
+            }
+            # ragenix
+            inputs.ragenix.nixosModules.age
+            # impermanence
+            inputs.impermanence.nixosModules.impermanence
+            # VSCode remote fixer
+            (inputs.nixos-vscode-server + "/modules/vscode-server/default.nix")
+          ];
+        }))
+        #(nixpkgs.lib.attrNames treated.hosts)
+        [ "amaterasu" ]
+      );
+    };
 }
