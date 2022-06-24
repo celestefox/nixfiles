@@ -22,8 +22,8 @@
     #fenix.url = "github:nix-community/fenix";
     #fenix.inputs.nixpkgs.follows = "nixpkgs";
     # arcnmx/nixfiles
-    arcfiles.url = "github:arcnmx/nixfiles";
-    arcfiles.flake = false;
+    arcexprs.url = "github:arcnmx/nixexprs";
+    arcexprs.flake = false;
   };
 
   outputs = inputs@{ self, nixpkgs, ... }:
@@ -73,10 +73,12 @@
                 extraSpecialArgs = { inherit inputs; flake = self; } // treated;
                 sharedModules = [
                   inputs.impermanence.nixosModules.home-manager.impermanence
-                  #(import (inputs.arcfiles + "/modules")).home-manager
+                  (import (inputs.arcexprs + "/modules")).home-manager
                 ];
               };
             }
+            # arcexprs
+            (import (inputs.arcexprs + "/modules")).nixos
             # ragenix
             inputs.ragenix.nixosModules.age
             # impermanence

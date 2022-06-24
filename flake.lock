@@ -21,19 +21,19 @@
         "type": "github"
       }
     },
-    "arcfiles": {
+    "arcexprs": {
       "flake": false,
       "locked": {
-        "lastModified": 1621428841,
-        "narHash": "sha256-yTQX0y+UnT1eDCGH9LH4uBLoDC6JP05wsxcZVS/oZYc=",
+        "lastModified": 1654705662,
+        "narHash": "sha256-+vgMNuehEQqtXmtwq0w0sGDy8b6bShFiS2ZbBtUDw6k=",
         "owner": "arcnmx",
-        "repo": "nixfiles",
-        "rev": "3fbae6cd2aec9b6a24c2ca2a3abfe5a0dc2dd59f",
+        "repo": "nixexprs",
+        "rev": "727f8eb7aaf542b675aaa9141a5027ccb961539e",
         "type": "github"
       },
       "original": {
         "owner": "arcnmx",
-        "repo": "nixfiles",
+        "repo": "nixexprs",
         "type": "github"
       }
     },
@@ -141,11 +141,11 @@
     "kw-nixfiles": {
       "flake": false,
       "locked": {
-        "lastModified": 1654186340,
-        "narHash": "sha256-mswlTmrXXmbSN13nBb0/pi6LpkxMD3e/N4KR1gBG1WA=",
+        "lastModified": 1656086225,
+        "narHash": "sha256-v7qhz/G/3urg60m7/VPLdtOzSkqy4RQ7X8leaJ/ijOk=",
         "owner": "kittywitch",
         "repo": "nixfiles",
-        "rev": "e899fac8c2e1b1cf737e4ba25d0789c410b68405",
+        "rev": "d87b74b90f7799ea2dae532e646cca8c58df34f1",
         "type": "github"
       },
       "original": {
@@ -207,11 +207,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1655895887,
-        "narHash": "sha256-AbihSVmPKFcQmaVgzNSLQ8sLAaVTTELPSzZ+/gRVfyk=",
+        "lastModified": 1655983783,
+        "narHash": "sha256-0h1FzkYWei24IdKNpCX93onkF/FMiXQG8SdEbTc0r8A=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e1e08fe28bf0588a41cd556eac40b98d2793da99",
+        "rev": "6141b8932a5cf376fe18fcd368cecd9ad946cb68",
         "type": "github"
       },
       "original": {
@@ -277,7 +277,7 @@
     },
     "root": {
       "inputs": {
-        "arcfiles": "arcfiles",
+        "arcexprs": "arcexprs",
         "home-manager": "home-manager",
         "impermanence": "impermanence",
         "kw-nixfiles": "kw-nixfiles",
