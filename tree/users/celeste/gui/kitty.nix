@@ -35,4 +35,7 @@
     #  "ctrl+j" = ""
     #};
   };
+
+  # ibus for kitty? prolly good for others?
+  home.sessionVariables."GLFW_IM_MODULE" = "ibus";
 }

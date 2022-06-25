@@ -40,7 +40,7 @@
           type = "internal/i3";
           pin-workspaces = true;
           show-urgent = true;
-          strip-wsnumbers = true;
+          #strip-wsnumbers = true;
         };
         ## left
         "module/date" = {
