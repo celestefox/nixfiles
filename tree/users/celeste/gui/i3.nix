@@ -20,6 +20,7 @@
         lib.mkOptionDefault {
           # Running
           "${modifier}+r" = "exec ${rofi} -show run";
+          "${modifier}+d" = ''exec --no-startup-id ${dunstify} -u critical -t 2000 "use win+r!"'';
           # Modes
           "${modifier}+s" = "mode resize"; #For size instead
           # Layout
