@@ -16,6 +16,7 @@
         let
           modifier = config.xsession.windowManager.i3.config.modifier;
           rofi = config.programs.rofi.finalPackage + "/bin/rofi";
+          dunstify = config.services.dunst.package + "/bin/dunstify";
         in
         lib.mkOptionDefault {
           # Running
