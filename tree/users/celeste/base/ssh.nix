@@ -18,6 +18,9 @@ in
       "star.wg" = personalHost // { hostname = "10.255.255.10"; };
       # good for testing auth
       "github.com".user = "git";
+      # if sshing to localhost, it's a personal host
+      # ideally maybe a username, but this forces loopback netrworking at worst
+      "localhost" = personalHost;
     };
   };
 }
