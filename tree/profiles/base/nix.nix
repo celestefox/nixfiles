@@ -7,14 +7,14 @@
       "nixpkgs=${inputs.nixpkgs}"
       "home-manager=${inputs.home-manager}"
       #"nur=${inputs.nur}"
-      #"arc=${inputs.arcexprs}"
+      "arc=${inputs.arcexprs}"
       #"ci=${inputs.ci}"
     ];
     registry = {
       nixpkgs.flake = inputs.nixpkgs;
       home-manager.flake = inputs.home-manager;
       #nur.flake = inputs.nur;
-      #arc.flake = inputs.arcexprs;
+      arc.flake = inputs.arcexprs;
       #ci.flake = inputs.ci;
     };
     settings = {
