@@ -1,4 +1,4 @@
-{ config, pkgs, users, profiles, lib, ... }: with lib; {
+{ config, pkgs, users, profiles, services, lib, ... }: with lib; {
   imports =
     [
       # Include the results of the hardware scan.
@@ -7,6 +7,7 @@
       #./nixops-dns.nix
       users.celeste.nixos
       profiles.hardware.printing
+      services.iperf
       #../../users/celeste/nixos.nix
     ];
 
@@ -22,6 +23,7 @@
     defaultLocale = "en_US.UTF-8";
 
     # think this borkedish w/ home-manager?
+    # TODO: replace w/ different input method, in home manager? :/
     inputMethod = {
       enabled = "ibus";
       ibus.engines = with pkgs.ibus-engines; [ anthy mozc m17n table table-others uniemoji ];
@@ -72,15 +74,16 @@
       allowedIPsAsRoutes = true;
     };
     */
+    # TODO: factor out into service/wgnet_client? maybe module instead?
     wgnet = {
       ips = [
         "10.255.255.11/32"
-        #"2a01:4f9:c010:2cf9::11/128"
+        "2a01:4f9:c010:2cf9:f::11/128"
       ];
       peers = [{
         allowedIPs = [
           "10.255.255.0/24"
-          #"2a01:4f9:c010:2cf9::/64"
+          "2a01:4f9:c010:2cf9:f::/80"
         ];
         endpoint = "65.21.52.236:51820";
         publicKey = "7PYB2Sqh+P3XbsaJLGJgriZzUsg5vSspTNP3GLueJGs=";
@@ -218,9 +221,9 @@
         matches = [{ "device.name" = "~bluez_card.*"; }];
         actions = {
           "update-props" = {
-            "bluez5.reconnect-profiles" = [ "hfp_hf" "hsp_hs" "a2dp_sink" ];
+            "bluez5.auto-connect" = [ "hfp_hf" "hsp_hs" "a2dp_sink" ];
             # mSBC is not expected to work on all combos
-            "bluez5.msbc-support" = true;
+            #"bluez5.msbc-support" = true;
             # SBC-XQ is not expected to work on all headset + adapter combinations.
             "bluez5.sbc-xq-support" = true;
           };
@@ -234,6 +237,9 @@
           { "node.name" = "~bluez_output.*"; }
         ];
         actions = {
+          "update-props" = {
+            "node.pause-on-idle" = false;
+          };
           "node.pause-on-idle" = false;
         };
       }
@@ -241,7 +247,10 @@
   };
 
   # The rest of bluetooth
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    package = pkgs.bluez5-experimental;
+  };
   services.blueman.enable = true;
 
   # Enable the X11 windowing system.
@@ -252,7 +261,7 @@
   services.xserver.windowManager.i3 = {
     enable = true;
     package = pkgs.i3-gaps;
-    extraSessionCommands = "xrandr --output DVI-D-0 --primary --left-of HDMI-A-0";
+    #extraSessionCommands = "xrandr --output DVI-D-0 --primary --left-of HDMI-A-0";
   };
 
   # Enable 32bit OpenGL for, e.g. Wine programs

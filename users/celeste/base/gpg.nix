@@ -2,7 +2,10 @@
 
 {
   home.packages = with pkgs; [ pinentry.qt ];
-  programs.gpg.enable = true;
+  programs.gpg = {
+    enable = true;
+    scdaemonSettings.disable-ccid = true;
+  };
   services.gpg-agent = {
     enable = true;
     enableExtraSocket = true;

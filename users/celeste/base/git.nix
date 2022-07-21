@@ -10,6 +10,10 @@
     package = pkgs.gitFull;
     userName = "Celeste";
     userEmail = "celeste@foxineering.work";
+    signing = {
+      key = "0x361D4D533A25164A";
+      signByDefault = true;
+    };
     # Other config
     aliases = {
       st = "status";

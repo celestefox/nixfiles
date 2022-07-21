@@ -21,6 +21,7 @@
   #picom compositor
   services.picom = {
     enable = true;
-    blur = false;
+    settings = { blur.method = "none"; };
+    #blur = false;
   };
 }
