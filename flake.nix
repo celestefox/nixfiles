@@ -98,7 +98,7 @@
             (inputs.nixos-vscode-server + "/modules/vscode-server/default.nix")
           ];
         }))
-        [ "amaterasu" ] #(nixpkgs.lib.attrNames treated.hosts)
+        [ "amaterasu" "okami" ] #(nixpkgs.lib.attrNames treated.hosts)
       );
     } // flake-utils.lib.eachDefaultSystem (system:
       let pkgs = nixpkgs.legacyPackages.${system}; in {
