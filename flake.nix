@@ -44,10 +44,11 @@
           };
           "overlays".evaluateDefault = true;
           "profiles/base".functor.enable = true;
+          "profiles/gui".functor.enable = true;
           "profiles/wsl".functor = {
             enable = true;
             external = [
-              #(import inputs.nixos-wsl).nixosModules.wsl
+              (import inputs.nixos-wsl).nixosModules.wsl
             ];
           };
           "users/youko".functor.enable = true;

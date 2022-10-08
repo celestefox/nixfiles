@@ -6,6 +6,7 @@
       # And the redone nixops-dns module
       #./nixops-dns.nix
       users.celeste.nixos
+      profiles.gui
       profiles.hardware.printing
       services.iperf
       #../../users/celeste/nixos.nix
