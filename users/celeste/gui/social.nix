@@ -1,6 +1,4 @@
-{ lib, pkgs, ... }: with lib; let
-  pkgsUnstable = import <nixpkgs-unstable> { allowUnfree = true; };
-in
+{ lib, pkgs, ... }: with lib;
 {
   # General packages
   home.packages = with pkgs; [
