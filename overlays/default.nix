@@ -1,4 +1,14 @@
-{ inputs, ... }: [
-  (import "${inputs.arcexprs}/overlay.nix")
-  inputs.ragenix.overlay
-]
+{ inputs, system ? builtins.currentSystem or "x86_64-linux", ... }@args:
+let
+  pkgs = import inputs.nixpkgs {
+    inherit system;
+    overlays = [
+      (import "${inputs.arcexprs}/overlay.nix")
+      inputs.ragenix.overlays.default
+    ];
+    config = {
+      allowUnfree = true;
+    };
+  };
+in
+pkgs

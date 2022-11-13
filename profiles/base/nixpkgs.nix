@@ -1,7 +1,9 @@
-{ overlays, ... }: {
+{ inputs, ... }: {
   nixpkgs = {
-    # nixfiles/overlays.nix
-    inherit overlays;
+    overlays = [
+      (import "${inputs.arcexprs}/overlay.nix")
+      inputs.ragenix.overlays.default
+    ];
     config = {
       allowUnfree = true;
     };
