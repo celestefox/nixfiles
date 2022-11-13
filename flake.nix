@@ -30,7 +30,7 @@
 
   outputs = inputs@{ self, nixpkgs, flake-utils, ... }:
     let
-      mkTree = (import (inputs.kw-nixfiles + "/tree.nix")) { inherit (nixpkgs) lib; };
+      mkTree = (import (inputs.kw-nixfiles + "/mkTree.nix")) { inherit (nixpkgs) lib; };
       tree = mkTree {
         inherit inputs;
         folder = ./.;
