@@ -17,7 +17,7 @@
   '';
 
   users.users.root = {
-    shell = lib.mkDefault pkgs.fish; # WSL
+    shell = lib.mkOverride 800 pkgs.fish; # WSL
     hashedPassword =
       "$6$GMQrixgscVvF$uRYgBqeoTXCml/koXj8SVM8V/UQuXrjZOQO3LslVtqkL1oFTzMLOQIW38t3eEOgZ8Wn98fxn1ybgpj2ifLKoa.";
     openssh.authorizedKeys.keys = with pkgs.lib;

@@ -17,6 +17,7 @@
     if not ${ss} -a | ${grep} -q "$SSH_AUTH_SOCK";
       rm -f "$SSH_AUTH_SOCK"
       rm -f "$GPG_AGENT_SOCK"
+      mkdir -p /run/user/1000/gnupg
       if not test -x "${windows_dest}";
         install -Dm 755 -T "${exe}" "${windows_dest}"
       end
