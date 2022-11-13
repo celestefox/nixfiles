@@ -11,4 +11,5 @@ in
 {
   "star_wgnet_privkey.age".publicKeys = all;
   "iperf_auth.age".publicKeys = all;
+  "gandi_key.age".publicKeys = all;
 }

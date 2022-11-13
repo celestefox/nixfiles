@@ -1,13 +1,13 @@
-{ meta, config, tf, pkgs, lib, modulesPath, ... }: with lib; let
-  res = tf.resources;
+{ config, pkgs, lib, modulesPath, users, profiles, services, ... }@args: with lib; let
+  #res = tf.resources;
 in
 {
   # Imports
   imports = with meta; [
-    users.celeste.base
+    users.celeste.nixos
     services.nginx
     services.site
-    services.wg
+    services.wgnet_hub # previously services.wg
     services.knot-resolver
     # TODO: revisit this?
     #(modulesPath + "/virtualisation/digital-ocean-config.nix")
@@ -16,6 +16,7 @@ in
 
   # Terraform
 
+/*
   deploy.tf = {
     # Token for Hetzner Cloud
     variables.hcloud_token = {
@@ -68,6 +69,7 @@ in
       "foxgirl.tech" = def // { domain = "@"; cname.target = "${hn}.foxgirl.tech."; };
     };
   };
+  */
 
   # File Systems and Swap
 
@@ -109,11 +111,17 @@ in
     useDHCP = false;
     interfaces.ens3 = {
       useDHCP = true; # For v4
+      ipv6.addresses = [{
+        address = "2a01:4f9:c010:2cf9::1";
+        prefixLength = 64;
+      }];
+      /* TODO: configure this automatically again?
       ipv6.addresses = mkIf (tf.state.enable) [{
         address =
           (tf.resources.${config.networking.hostName}.getAttr "ipv6_address");
         prefixLength = 64;
       }];
+      */
     };
     defaultGateway6 = {
       address = "fe80::1";

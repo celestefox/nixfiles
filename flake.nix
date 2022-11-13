@@ -51,6 +51,7 @@
               (import inputs.nixos-wsl).nixosModules.wsl
             ];
           };
+          "services/site".aliasDefault = true;
           "users/youko".functor.enable = true;
           "users/celeste/*".functor.enable = true;
         };
@@ -99,7 +100,7 @@
             (inputs.nixos-vscode-server + "/modules/vscode-server/default.nix")
           ];
         }))
-        [ "amaterasu" "okami" ] #(nixpkgs.lib.attrNames treated.hosts)
+        [ "amaterasu" "okami" "star" ] #(nixpkgs.lib.attrNames treated.hosts)
       );
     } // flake-utils.lib.eachDefaultSystem (system:
       let pkgs = nixpkgs.legacyPackages.${system}; in {
