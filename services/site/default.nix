@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }: {
-  services.nginx.virtualHosts."focks.pw" = {
+  services.nginx.virtualHosts."foxgirl.tech" = {
     root = ./www;
     enableACME = true;
     forceSSL = true;
   };
-  services.nginx.virtualHosts."foxgirl.tech" = {
+    services.nginx.virtualHosts."focks.pw" = {
     root = ./www;
     enableACME = true;
     forceSSL = true;

@@ -7,9 +7,9 @@
     # (practical means a secrets storage w/ a command is setup)
     type = "string";
     sensitive = true;
-  };
+    };
 
-  secrets.files.acme_creds = {
+    secrets.files.acme_creds = {
     text = ''
       GANDIV5_API_KEY='${tf.variables.gandi_key.ref}'
     '';
@@ -20,10 +20,7 @@
     file = flake.outPath + "/secrets/gandi_key.age";
   };
 
-  /*network.firewall = {
-    public.tcp.ports = [ 443 80 ];
-    private.tcp.ports = [ 443 80 ];
-  };*/
+  # firewall
   networking.firewall.allowedTCPPorts = [ 443 80 ];
 
   services.nginx = {
@@ -36,8 +33,9 @@
     clientMaxBodySize = "512m";
   };
 
+  # acme (letsencrypt) settings
   security.acme = {
-    defaults.email = "celeste@foxgirl.tech";
+    defaults = { email = "celeste@foxgirl.tech"; };
     acceptTerms = true;
   };
 }

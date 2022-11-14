@@ -22,7 +22,7 @@
       -- Modules
       modules.load('bogus_log')
       modules.load('hints > iterate')
-      modules.load('rebinding < iterate')
+      -- modules.load('rebinding < iterate')
       modules.load('stats')
       modules.load('policy > hints')
       modules.load('view < cache')
@@ -58,8 +58,8 @@
       --- Graft it
       policy.add(policy.suffix(policy.FLAGS({'NO_CACHE', 'NO_EDNS'}), extraTrees))
       policy.add(policy.suffix(policy.ANSWER({
-          [kres.type.A] = { rdata=kres.str2ip('10.255.255.254'), ttl = 300 },
-          [kres.type.AAAA] = { rdata=kres.str2ip('2a01:4f9:c010:2cf9::ffff'), ttl=300 }
+          [kres.type.A] = { rdata=kres.str2ip('10.255.255.10'), ttl = 300 },
+          [kres.type.AAAA] = { rdata=kres.str2ip('2a01:4f9:c010:2cf9:f::10'), ttl=300 }
       }), extraTrees))
     '';
   };

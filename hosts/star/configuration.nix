@@ -71,6 +71,11 @@ in
   };
   */
 
+  # Home manager
+  home-manager = {
+    users.celeste = { imports = [ users.celeste.hm /*users.celeste.gui*/ ]; };
+  };
+
   # File Systems and Swap
 
   fileSystems = {
@@ -108,6 +113,7 @@ in
   networking = {
     hostId = "e0450306";
     hostName = "star";
+    domain = "foxgirl.tech";
     useDHCP = false;
     interfaces.ens3 = {
       useDHCP = true; # For v4
@@ -137,5 +143,5 @@ in
 
   # State
 
-  system.stateVersion = "21.11";
+  system.stateVersion = "22.05";
 }
