@@ -26,18 +26,23 @@
   # Fish
   programs.fish = {
     enable = true;
-    functions = let
-      exacmd = "exa --icons --git --color=always --time-style=long-iso ";
-      lesscmd = " | less -FSR";
-    in
-    {
-      ls = { wraps = "exa"; body = exacmd + "$argv" + lesscmd; };
-      ll = { wraps = "exa"; body = exacmd + "--long $argv" + lesscmd; };
-      la = { wraps = "exa"; body = exacmd + "--all $argv" + lesscmd; };
-      lt = { wraps = "exa"; body = exacmd + "--tree $argv" + lesscmd; };
-      lla = { wraps = "exa"; body = exacmd + "--long --all $argv" + lesscmd; };
-      l = { wraps = "exa"; body = exacmd + "--long --all $argv" + lesscmd; };
-    };
+    functions =
+      let
+        exacmd = "exa --icons --git --color=always --time-style=long-iso ";
+        lesscmd = " | less -FSR";
+      in
+      {
+        ls = { wraps = "exa"; body = exacmd + "$argv" + lesscmd; };
+        ll = { wraps = "exa"; body = exacmd + "--long $argv" + lesscmd; };
+        la = { wraps = "exa"; body = exacmd + "--all $argv" + lesscmd; };
+        lt = { wraps = "exa"; body = exacmd + "--tree $argv" + lesscmd; };
+        lla = { wraps = "exa"; body = exacmd + "--long --all $argv" + lesscmd; };
+        l = { wraps = "exa"; body = exacmd + "--long --all $argv" + lesscmd; };
+      };
+    shellInit = ''
+      string match -q "$TERM_PROGRAM" "vscode"
+      and set -x EDITOR "code -rw"
+    '';
   };
   programs.starship.enable = true;
   programs.nix-index.enable = true;
