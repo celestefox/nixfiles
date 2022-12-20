@@ -2,12 +2,13 @@
   # WSL config
   wsl = {
     enable = true;
-    automountPath = "/mnt";
+    wslConf = { automount.root = "/mnt"; };
     defaultUser = "celeste";
     startMenuLaunchers = true;
 
     # Enable integration with Docker Desktop (needs to be installed)
     # docker.enable = true;
+    docker-desktop.enable = true;
   };
 
   # Not on WSL
