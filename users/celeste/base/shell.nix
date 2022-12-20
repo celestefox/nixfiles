@@ -59,6 +59,9 @@
   # fzf
   programs.fzf.enable = true;
 
+  # zoxide
+  programs.zoxide.enable = true;
+
   # Gimme docs
   manual = { manpages.enable = true; html.enable = true; };
   programs.man.generateCaches = true;
