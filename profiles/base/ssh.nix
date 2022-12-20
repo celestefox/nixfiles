@@ -6,6 +6,7 @@
     passwordAuthentication = false;
     kbdInteractiveAuthentication = false;
     permitRootLogin = lib.mkDefault "prohibit-password";
+    forwardX11 = true;
     kexAlgorithms = [ "curve25519-sha256@libssh.org" ];
     extraConfig = ''
       PubkeyAcceptedAlgorithms +ssh-rsa
