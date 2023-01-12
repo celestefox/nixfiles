@@ -1,4 +1,4 @@
-{ lib, config, pkgs, ... }: with lib; let
+{ lib, config, pkgs, ... }: with lib; let # TODO: refactor this into a module
   exe = pkgs.fetchurl {
     url = "https://github.com/BlackReloaded/wsl2-ssh-pageant/releases/download/v1.4.0/wsl2-ssh-pageant.exe";
     sha256 = "b3FFf4PTwY9ekGE7tMui5QGIW4EkCcTC+GwC1dxDez0=";
@@ -20,10 +20,9 @@ in
     in
     ''
       set -x SSH_AUTH_SOCK "$HOME/.ssh/agent.sock"
-      # TODO: the correct path I'm pretty sure has *actually* changed and back?
       set -x GPG_AGENT_SOCK "/run/user/1000/gnupg/S.gpg-agent"
       set _gpg_extra_sock "/run/user/1000/gnupg/S.gpg-agent.extra"
-      if not test -x "${windows_dest}"; or test (nix hash file "${windows_dest}") != "sha256-b3FFf4PTwY9ekGE7tMui5QGIW4EkCcTC+GwC1dxDez0="; # TODO: hash? windows perms, somehow?
+      if not test -x "${windows_dest}"; or test (nix hash file --sri --type sha256 "${windows_dest}") != "sha256-b3FFf4PTwY9ekGE7tMui5QGIW4EkCcTC+GwC1dxDez0=";
         install -Dm 755 -T "${exe}" "${windows_dest}"
       end
       # SSH
