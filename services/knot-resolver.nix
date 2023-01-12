@@ -12,7 +12,7 @@
     # Listening
     listenPlain = [
       "10.255.255.10:53"
-      "[2a01:4f9:c010:2cf9::10]:53"
+      "[2a01:4f9:c010:2cf9:f::10]:53"
     ];
     # Other config (Lua!)
     extraConfig = ''
