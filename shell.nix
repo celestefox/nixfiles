@@ -10,7 +10,7 @@
   // (foldl' (prev: curr: prev // curr) { } (map
     (hostname: {
       "${hostname}-rebuild" = ''
-        exec nixos-rebuild --flake "${toString ./.}#${hostname}" --target-host ${username}@${hostname} --use-remote-sudo --verbose "$@"
+        exec nixos-rebuild --flake "${toString ./.}#${hostname}" --target-host ${username}@${hostname} --use-remote-sudo --use-substitutes --verbose "$@"
       '';
     })
     hosts)));
