@@ -27,6 +27,10 @@
     # Config w/o existing option
     extraConfig = {
       init = { defaultBranch = "trunk"; };
+      url = {
+        # go, TODO: alt git auth methods for gitlab?
+        "ssh://git@gitlab.com/".insteadOf = "https://gitlab.com/";
+      };
     };
   };
 
