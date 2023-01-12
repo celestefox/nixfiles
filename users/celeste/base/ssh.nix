@@ -4,6 +4,7 @@
     forwardAgent = true;
     forwardX11 = true;
     forwardX11Trusted = true;
+    # TODO: get this actually working? the presence of UIDs makes this difficult, though
     extraOptions.RemoteForward = "/run/user/1111/gnupg/S.gpg-agent /run/user/1111/gnupg/S.gpg-agent.extra";
   };
 in
@@ -13,6 +14,7 @@ in
     controlMaster = "auto";
     controlPersist = "10m";
     compression = true;
+    includes = [ "config_local" ];
     matchBlocks = {
       "star" = personalHost // { hostname = "star.foxgirl.tech"; };
       "star.wg" = personalHost // { hostname = "10.255.255.10"; };
