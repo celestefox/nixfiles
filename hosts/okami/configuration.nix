@@ -23,11 +23,13 @@
     users.celeste = { imports = [ users.celeste.hm users.celeste.wsl /*users.celeste.gui*/ ]; };
     #users.youko = { imports = singleton users.youko; };
     /* beautiful... but I want only youko only here
-    users = mapAttrs (_: user: {
+      users = mapAttrs (_: user: {
       imports = singleton user;
-    }) users;
+      }) users;
     */
   };
+
+  fonts.fonts = [ (pkgs.nerdfonts.override { fonts = [ "FiraCode" "VictorMono" ]; }) ];
 
   # Fix up VSCode remote server
   services.vscode-server.enable = true;
