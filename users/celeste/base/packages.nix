@@ -2,7 +2,6 @@
 
 {
   home.packages = with pkgs; [
-    tmate
     htop
     pstree
     fd
@@ -13,6 +12,7 @@
     netcat
     socat
     rsync
+    rclone
     curl
     wget
     ripgrep
@@ -30,4 +30,6 @@
     neofetch
     units
   ];
+
+  programs.aria2.enable = true;
 }
