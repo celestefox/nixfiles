@@ -320,6 +320,8 @@
       extraGroups = [ "users" "wheel" "audio" "video" "vboxusers" "adbusers" "libvirtd" "docker" "wireshark" ];
       shell = pkgs.fish;
     };
+    #aaa
+    celeste.uid = lib.mkForce 1111;
   };
   users.groups = {
     glow.gid = 1000;
