@@ -1,4 +1,4 @@
-{ config, lib, pkgs, tf, flake, ... }: with lib; {
+{ config, lib, pkgs, flake, ... }: with lib; {
   # Secret for key
   age.secrets.star_wgnet_privkey = {
     file = flake.outPath + "/secrets/star_wgnet_privkey.age";
@@ -71,33 +71,15 @@
     # NAT and other rules
     # TODO: hardcoded for the interface names on star
     extraCommands = ''
-      echo "Custom commands running..."
-      # Cleanup and create chains
-      #iptables -F fw-interfaces 2> /dev/null || true
-      #iptables -X fw-interfaces 2> /dev/null || true
-      #iptables -F fw-open 2> /dev/null || true
-      #iptables -X fw-open 2> /dev/null || true
-      #iptables -N fw-interfaces
-      #iptables -N fw-open
-
-      # Basic NAT rules
+      # flush
+      iptables -t nat -F POSTROUTING || true
+      ip46tables -F FORWARD || true
+      # don't forward either v4 or v6 by default please
+      ip46tables -P FORWARD DROP || true
+      # then set
       iptables -t nat -A POSTROUTING -o ens3 -j MASQUERADE
-      #iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-      ip46tables -A FORWARD -i wgnet -o ens3 -j ACCEPT
-      #iptables -A FORWARD -j fw-interfaces
-      #iptables -A FORWARD -j fw-open
-      #iptables -P FORWARD DROP
-
-      # Who to forward
+      ip46tables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
       ip46tables -A FORWARD -i wgnet -j ACCEPT
-
-      # Simpler forward setup for v6, no NAT needed
-      #ip6tables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-      #ip6tables -A FORWARD -i wgnet -o ens3 -j ACCEPT
-      #ip6tables -P FORWARD DROP
-
-      # Done
-      echo "Custom commands done"
     '';
   };
 }
