@@ -1,4 +1,4 @@
-{ lib, ... }: with lib; {
+{ lib, pkgs, ... }: with lib; {
   # WSL config
   wsl = {
     enable = true;
@@ -10,6 +10,12 @@
     # docker.enable = true;
     docker-desktop.enable = true;
   };
+
+  # weh
+  environment.systemPackages = singleton (pkgs.runCommand "wslpath" { } ''
+    mkdir -p $out/bin
+    ln -s /init $out/bin/wslpath
+  '');
 
   # Not on WSL
   services.pcscd.enable = mkForce false;
