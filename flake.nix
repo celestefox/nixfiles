@@ -16,6 +16,9 @@
     # nixos-vscode-server
     nixos-vscode-server.url = "github:msteen/nixos-vscode-server";
     nixos-vscode-server.flake = false;
+    # nixneovimplugins
+    nixneovimplugins.url = "github:NixNeovim/NixNeovimPlugins";
+    nixneovimplugins.inputs.nixpkgs.follows = "nixpkgs";
     # kw-nixfiles
     kw-nixfiles.url = "github:kittywitch/nixfiles";
     kw-nixfiles.flake = false; # cheating cuz I just want /tree.nix for now
