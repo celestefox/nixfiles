@@ -65,7 +65,7 @@
 
   # firewall rules
   networking.firewall = {
-    #trustedInterfaces = [ "wgnet" ];
+    trustedInterfaces = [ "wgnet" ];
     # allow wg traffic through
     allowedUDPPorts = [ 51820 ];
     # NAT and other rules
