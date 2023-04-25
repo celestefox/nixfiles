@@ -13,4 +13,5 @@ in
   "iperf_auth.age".publicKeys = all;
   "star_wgnet_privkey.age".publicKeys = all;
   "vaultwarden-env.age".publicKeys = all;
+  "gitea-smtp.age".publicKeys = all;
 }

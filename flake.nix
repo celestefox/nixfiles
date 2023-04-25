@@ -55,7 +55,7 @@
               (import inputs.nixos-wsl).nixosModules.wsl
             ];
           };
-          "services/site".aliasDefault = true;
+          "services/*".aliasDefault = true;
           "users/youko".functor.enable = true;
           "users/celeste/*".functor.enable = true;
         };
