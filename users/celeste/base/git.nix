@@ -1,7 +1,7 @@
 { lib, pkgs, ... }: with lib; {
   # Other git-related packages
   home.packages = with pkgs; [
-    gist
+    gist tea
   ];
 
   # Git
@@ -9,7 +9,7 @@
     enable = true;
     package = pkgs.gitFull;
     userName = "Celeste";
-    userEmail = "celeste@foxineering.work";
+    userEmail = "celeste@foxgirl.tech";
     signing = {
       key = "0x361D4D533A25164A";
       signByDefault = true;
