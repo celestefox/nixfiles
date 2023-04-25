@@ -3,15 +3,17 @@
   services.openssh = {
     enable = true;
     ports = lib.mkDefault [ 62954 ];
-    passwordAuthentication = false;
-    kbdInteractiveAuthentication = false;
-    permitRootLogin = lib.mkDefault "prohibit-password";
-    forwardX11 = true;
-    kexAlgorithms = [ "curve25519-sha256@libssh.org" ];
+    settings = {
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+      PermitRootLogin = lib.mkDefault "prohibit-password";
+      X11Forwarding = true;
+      KexAlgorithms = [ "curve25519-sha256@libssh.org" ];
+      LogLevel = "VERBOSE";
+    };
     extraConfig = ''
       PubkeyAcceptedAlgorithms +ssh-rsa
       StreamLocalBindUnlink yes
-      LogLevel VERBOSE
     '';
   };
   programs.mosh.enable = true;
