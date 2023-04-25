@@ -216,6 +216,7 @@
     # Example session manager (default for now...)
     #media-session.enable = true;
     # Bluetooth improvements
+    /*
     media-session.config.bluez-monitor.rules = [
       {
         # Matches all cards
@@ -245,7 +246,21 @@
         };
       }
     ];
+    */
   };
+
+  # Extra bluetooth config, for wireplumber now
+  # I don't actually know if this will have the desired effect, it's from the wiki
+  # But the mediasession version is bluez_card? I'll actually test eventually, but bluetooth is hard already
+  environment.etc."wireplumber/bluetooth.lua.d/51-bluez-config.lua".text = ''
+    bluez_monitor.properties = {
+		  	["bluez5.enable-sbc-xq"] = true,
+			  ["bluez5.enable-msbc"] = true,
+			  ["bluez5.enable-hw-volume"] = true,
+			  ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag a2dp_sink ]"
+	  }
+  '';
+
 
   # The rest of bluetooth
   hardware.bluetooth = {
