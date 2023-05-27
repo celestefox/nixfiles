@@ -61,6 +61,9 @@
           [kres.type.A] = { rdata=kres.str2ip('10.255.255.10'), ttl = 300 },
           [kres.type.AAAA] = { rdata=kres.str2ip('2a01:4f9:c010:2cf9:f::10'), ttl=300 }
       }), extraTrees))
+
+      -- Blacklist TLDs
+      policy.add(policy.suffix(policy.DENY_MSG('This network blocks certain gTLDs to prevent name confusion'), policy.todnames({'exe.', 'zip.', 'mov.'})))
     '';
   };
   # TODO: adblocking, i was gonna do it separate but nah

@@ -1,28 +1,60 @@
-{ pkgs, ... }: {
+{ config, pkgs, ... }: {
   # Global programs
   home.packages = with pkgs; [
-    yt-dlp
+    playerctl
     spotify
     spotify-tui
+    streamlink
+    ytmdesktop
+    ytfzf
   ];
 
   # mpv
   programs.mpv = {
     enable = true;
-    # TODO: yt-dlp fix?
     scripts = with pkgs.mpvScripts; [
       mpris
       sponsorblock
       thumbnail
-      youtube-quality
+      youtube-quality # unclear script error when I try to use the keybind
     ];
     config = {
-      script-opts = "ytdl_hook-ytdl_path=yt-dlp";
+      osc = false; # thumbnail script provides a patched osc
+      volume = 60;
+    };
+    scriptOpts = {
+      ytdl_hook = {
+        try_ytdl_first = true; # try parsing urls with yt-dlp first
+        ytdl_path = config.programs.yt-dlp.package + "/bin/yt-dlp";
+      };
     };
   };
 
+  # yt-dlp
+  programs.yt-dlp.enable = true;
+
+  # streamlink (package is above)
+  # TODO: generate this? module?
+  # TODO: wrapper to get twitch auth secret? extract from ff profile myself? encrypt a secret? is it long-lived?
+  # ...I'd say i could just use ragenix secrets, but I'd have to write a module
+  xdg.configFile."streamlink/config".text = ''
+    player=${config.programs.mpv.finalPackage}/bin/mpv
+  '';
+  xdg.configFile."streamlink/config.twitch".text = ''
+    twitch-disable-ads
+    twitch-low-latency
+    hls-segment-stream-data
+    player-args=--profile=low-latency --cache=yes --demuxer-max-back-bytes=500MiB
+  '';
+
   # feh
   programs.feh.enable = true;
+
+  # playerctld
+  services.playerctld.enable = true;
+
+  # mpris-proxy
+  services.mpris-proxy.enable = true;
 
   # spotifyd
   ## disabled cuz i never truly used it cuz it never worked well enough

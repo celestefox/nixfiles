@@ -3,6 +3,7 @@ let
   pkgs = import inputs.nixpkgs {
     inherit system;
     overlays = [
+      (import ./local)
       (import "${inputs.arcexprs}/overlay.nix")
       inputs.ragenix.overlays.default
       inputs.nixneovimplugins.overlays.default

@@ -30,6 +30,8 @@
     # arcnmx/nixfiles
     arcexprs.url = "github:arcnmx/nixexprs";
     arcexprs.flake = false;
+    # devenv
+    devenv.url = "github:cachix/devenv/latest";
   };
 
   outputs = inputs@{ self, nixpkgs, flake-utils, ... }:
@@ -55,6 +57,12 @@
               (import inputs.nixos-wsl).nixosModules.wsl
             ];
           };
+          "modules/home".functor = {
+            enable = true;
+            external = [
+            ];
+          };
+          "modules/system".functor.enable = true;
           "services/*".aliasDefault = true;
           "users/youko".functor.enable = true;
           "users/celeste/*".functor.enable = true;
@@ -62,7 +70,7 @@
       };
       nixfiles = tree.impure;
       root = ./.;
-      #overlays = import ./overlays.nix inputs;
+      #overlays = import nixfiles.overlays {inherit inputs system; };
     in
     {
       inherit tree;
@@ -90,6 +98,9 @@
                 sharedModules = [
                   inputs.impermanence.nixosModules.home-manager.impermanence
                   (import (inputs.arcexprs + "/modules")).home-manager
+                  {
+                    systemd.user.startServices = "sd-switch"; # suggest ends up hidden in the log of home-manager-$USER.service
+                  }
                   #{ home.packages = [ inputs.ragenix.packages."x86_64-linux".ragenix ]; }
                 ];
               };
@@ -107,7 +118,8 @@
         [ "amaterasu" "okami" "star" ] #(nixpkgs.lib.attrNames treated.hosts)
       );
     } // flake-utils.lib.eachDefaultSystem (system:
-      let pkgs = nixpkgs.legacyPackages.${system}; in {
+      let pkgs = import ./overlays { inherit inputs system; }; in {
         devShells.default = import ./shell.nix { inherit pkgs; hosts = builtins.attrNames nixfiles.hosts; };
+        legacyPackages = pkgs;
       });
 }

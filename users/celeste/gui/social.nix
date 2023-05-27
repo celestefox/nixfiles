@@ -6,5 +6,7 @@
     discord-ptb
     tdesktop
     mumble
+    #teams # Microsoft Teams...
+    teams-for-linux
   ];
 }

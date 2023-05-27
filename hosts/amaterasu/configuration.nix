@@ -34,6 +34,11 @@
   # Set your time zone.
   time.timeZone = "America/Denver";
 
+  # More hardware stuff:
+
+  # redist firmwares, yes
+  hardware.enableRedistributableFirmware = true;
+  boot.kernelParams = [ "nohibernate" ]; # no work w/ zfs
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -47,13 +52,18 @@
   boot.extraModprobeConfig = ''
     options v4l2loopback exclusive_caps=1 video_nr=9 card_label="obs"
   '';
+  services.udev.extraRules = ''
+    ACTION=="add|change", KERNEL=="sd[a-z]*[0-9]*|mmcblk[0-9]*p[0-9]*|nvme[0-9]*n[0-9]*p[0-9]*", ENV{ID_FS_TYPE}=="zfs_member", ATTR{../queue/scheduler}="none"
+  ''; # zfs already has its own scheduler. without this my(@Artturin) computer froze for a second when i nix build something.
+  nix.settings.max-jobs = lib.mkDefault 12;
 
   # TODO: consider using this? Need to revisit wireless situation, maybe even WG too, tho...
   #networking.useNetworkd = true; # Experimental
   networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
   networking.wireless.interfaces = [
-    "wlp3s0f0u1"
     #"wlp3s0f0u10"
+    #"wlp3s0f0u1"
+    "wlp43s0f3u3"
   ]; # Fixes the random failure on boot??? According to trace
   #networking.wireless.userControlled.enable = true; #... disables using /etc/wpa_supplicant.conf???
 
@@ -62,7 +72,7 @@
   networking.wireguard.enable = true;
   networking.wireguard.interfaces = {
     /*
-    wg1 = {
+      wg1 = {
       ips = [ "fdd9:80f2:e3::bc19:57ea/32" ];
       peers = [
         {
@@ -73,7 +83,7 @@
       ];
       privateKeyFile = "/private/wg_privkey_comint";
       allowedIPsAsRoutes = true;
-    };
+      };
     */
     # TODO: factor out into service/wgnet_client? maybe module instead?
     wgnet = {
@@ -101,10 +111,10 @@
     #useLocalResolver = true;
   };
 
-  services.yggdrasil = {
+  /* services.yggdrasil = {
     enable = true;
     configFile = "/private/yggdrasil.conf";
-  };
+  }; */
 
   # Final hacky bit of trying to get this to work?
   #networking.localCommands = ''
@@ -171,11 +181,11 @@
   # programs.mtr.enable = true;
 
   /*
-  programs.gnupg.agent = {
+    programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
     pinentryFlavor = "qt";
-  };
+    };
   */
 
   services.pcscd.enable = true;
@@ -217,7 +227,7 @@
     #media-session.enable = true;
     # Bluetooth improvements
     /*
-    media-session.config.bluez-monitor.rules = [
+      media-session.config.bluez-monitor.rules = [
       {
         # Matches all cards
         matches = [{ "device.name" = "~bluez_card.*"; }];
@@ -245,7 +255,7 @@
           "node.pause-on-idle" = false;
         };
       }
-    ];
+      ];
     */
   };
 
@@ -253,12 +263,12 @@
   # I don't actually know if this will have the desired effect, it's from the wiki
   # But the mediasession version is bluez_card? I'll actually test eventually, but bluetooth is hard already
   environment.etc."wireplumber/bluetooth.lua.d/51-bluez-config.lua".text = ''
-    bluez_monitor.properties = {
-		  	["bluez5.enable-sbc-xq"] = true,
-			  ["bluez5.enable-msbc"] = true,
-			  ["bluez5.enable-hw-volume"] = true,
-			  ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag a2dp_sink ]"
-	  }
+        bluez_monitor.properties = {
+    		  	["bluez5.enable-sbc-xq"] = true,
+    			  ["bluez5.enable-msbc"] = true,
+    			  ["bluez5.enable-hw-volume"] = true,
+    			  ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag a2dp_sink ]"
+    	  }
   '';
 
 
@@ -306,6 +316,10 @@
 
   # Steam controller support
   hardware.steam-hardware.enable = true;
+
+  # solaar itself I don't have working, but the udev rules fix horizontal scrolling
+  hardware.logitech.wireless.enable = true;
+  hardware.logitech.wireless.enableGraphical = true;
 
   # Misc programs...
   programs = {

@@ -7,7 +7,7 @@ in
     steam # steam the platform
     steam.run # (steam-run, good for foreign game binaries of all kinds)
     #lutris # some game manager i guess prolly
-    wyvern # GOG games downloader/installer handler
+    #wyvern # GOG games downloader/installer handler (broken build?)
     myWine #wine
     bottles # alternative wineprefix manager/incl own deps instead of winetricks
     winetricks # fancy wine stuff

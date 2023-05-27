@@ -10,4 +10,5 @@
       };
     };
   };
+  home.sessionVariables.BROWSER = "firefox";
 }

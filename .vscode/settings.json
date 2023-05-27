@@ -1,0 +1,8 @@
+{
+    "terminal.integrated.profiles.linux": {
+        "nix repl": {
+            "path": "nix",
+            "args": ["repl", "--file", "repl.nix"]
+        }
+    }
+}

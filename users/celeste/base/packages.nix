@@ -29,6 +29,7 @@
     dnsutils
     neofetch
     units
+    cachix
   ];
 
   programs.aria2.enable = true;

@@ -1,5 +1,5 @@
 { ... }: {
-  nixpkgs.overlays = [
+  /*   nixpkgs.overlays = [
     (final: prev: {
       # doin this should be fine for now. security updates not likely at all, i only needed the newer theme,
       # and i wanna switch to base16 sometime, which will probably mean adding an include line of it instead
@@ -14,15 +14,15 @@
             };
         });
     })
-  ];
+  ]; */
 
   programs.kitty = {
     enable = true;
     font = {
-      name = "Fira Code Regular Nerd Font Complete";
+      name = "FiraCode Nerd Font Mono Ret";
       size = 10;
     };
-    theme = "Rosé Pine";
+    theme = "Rosé Pine Moon";
     settings = {
       scrollback_lines = 10000;
       enable_audio_bell = false;
@@ -30,11 +30,30 @@
       dynamic_background_opacity = true;
       allow_remote_control = true;
       update_check_interval = 0;
+      shell_integration = "enabled no-rc";
+      editor = "nvim";
     };
     #keybindings = let nav = mew; in {
     #  "ctrl+j" = ""
     #};
+    keybindings = {
+      "ctrl+shift+p>n" = "kitten hints --type linenum --linenum-action=tab nvim +{line} {path}";
+    };
   };
+
+  programs.fish = {
+    shellInit = ''
+      if set -q KITTY_INSTALLATION_DIR
+        # https://sw.kovidgoyal.net/kitty/shell-integration/#manual-shell-integration sets K_S_I here
+        source "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_conf.d/kitty-shell-integration.fish"
+        set --prepend fish_complete_path "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_completions.d"
+      end
+    '';
+    shellAliases = {
+      s = "kitty +kitten ssh";
+    };
+  };
+
 
   # ibus for kitty? prolly good for others?
   home.sessionVariables."GLFW_IM_MODULE" = "ibus";
