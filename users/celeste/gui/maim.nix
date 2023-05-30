@@ -30,8 +30,8 @@
       void main()
       {
           // Adjustable parameters -------
-          vec2 boxOffset = vec2(-32,-32);
-          vec2 boxSize = vec2(64,64);
+          vec2 boxOffset = vec2(-64,-64);
+          vec2 boxSize = vec2(128,128);
           float magstrength = 4;
           vec2 borderSize = vec2(1,1);
           vec4 borderColor = vec4(0,0,0,1);
