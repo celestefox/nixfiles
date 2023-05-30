@@ -58,7 +58,7 @@ in
       # keybindings
       keybindings = lib.mkOptionDefault {
         # Running
-        "${modifier}+r" = "exec ${rofi} -show run";
+        "${modifier}+r" = "exec ${rofi} -show drun";
         "${modifier}+d" = ''exec --no-startup-id ${dunstify} -u critical -t 2000 "use win+r!"'';
         "${modifier}+c" = ''exec ${rofi} -show calc -modi calc -no-show-match -no-sort -calc-command "${xdotool} type --clearmodifiers '{result}'"'';
         # Modes

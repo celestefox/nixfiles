@@ -18,7 +18,7 @@
       ssh-command = "{terminal} {ssh-client} {host} [-p {port}]";
       ssh-client = "kitty +kitten ssh";
       run-shell-command = "{terminal} {cmd}";
-      modes = "run,drun,ssh,window,combi";
+      modes = "drun,run,ssh,window,combi";
       show-icons = true;
     };
   };
