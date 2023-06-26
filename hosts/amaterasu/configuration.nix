@@ -1,16 +1,12 @@
 { config, pkgs, users, profiles, services, lib, ... }: with lib; {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      # And the redone nixops-dns module
-      #./nixops-dns.nix
-      users.celeste.nixos
-      profiles.gui
-      profiles.hardware.printing
-      services.iperf
-      #../../users/celeste/nixos.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    users.celeste.nixos
+    profiles.gui
+    profiles.hardware.printing
+    services.iperf
+  ];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -147,13 +143,7 @@
     allowedUDPPortRanges = [{ from = 1714; to = 1764; }];
   };
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  # System packages
   environment.systemPackages = with pkgs; [
     wget
     vim
