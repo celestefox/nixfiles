@@ -9,6 +9,7 @@ in
     services.site
     services.wgnet_hub # previously services.wg
     services.knot-resolver
+    services.gitea
     # TODO: revisit this?
     #(modulesPath + "/virtualisation/digital-ocean-config.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
