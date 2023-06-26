@@ -60,6 +60,8 @@
           "modules/home".functor = {
             enable = true;
             external = [
+              inputs.impermanence.nixosModules.home-manager.impermanence
+              (import (inputs.arcexprs + "/modules")).home-manager
             ];
           };
           "modules/system".functor.enable = true;
@@ -96,11 +98,7 @@
                 # Pass flake inputs deeper
                 extraSpecialArgs = { inherit inputs root tree; flake = self; } // nixfiles;
                 sharedModules = [
-                  inputs.impermanence.nixosModules.home-manager.impermanence
-                  (import (inputs.arcexprs + "/modules")).home-manager
-                  {
-                    systemd.user.startServices = "sd-switch"; # suggest ends up hidden in the log of home-manager-$USER.service
-                  }
+                  nixfiles.modules.home
                   #{ home.packages = [ inputs.ragenix.packages."x86_64-linux".ragenix ]; }
                 ];
               };
