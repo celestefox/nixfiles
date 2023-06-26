@@ -1,5 +1,11 @@
-{ config, lib, pkgs, flake, ... }: with lib;
 {
+  config,
+  lib,
+  pkgs,
+  flake,
+  ...
+}:
+with lib; {
   age.secrets.gitea-smtp = {
     file = flake.outPath + "/secrets/gitea-smtp.age";
     owner = "gitea";
@@ -24,7 +30,8 @@
         DISABLE_REGISTRATION = true;
         COOKIE_SECURE = true;
       };
-      server = mkForce { #??? Why do I need to do this? I can only see the default values...
+      server = mkForce {
+        #??? Why do I need to do this? I can only see the default values...
         PROTOCOL = "http";
         HTTP_ADDR = "127.0.0.1";
         DOMAIN = "git.foxgirl.tech";
@@ -33,8 +40,22 @@
         SSH_DOMAIN = "foxgirl.tech"; # ...
         SSH_PORT = 62954;
       };
+      ui = {
+        THEMES = "gitea,arc-green,plex,aquamarine,dark,dracula,hotline,organizr,space-gray,hotpink,onedark,overseerr,nord";
+        DEFAULT_THEME = "overseerr";
+      };
     };
   };
+
+  # Customising... weh
+  # Since all of custom isn't okay to clobber, this instead
+  systemd.services.gitea.serviceConfig.ExecStartPre = let
+    customDir = config.services.gitea.customDir;
+  in
+    lib.mapAttrsToList (name: path: "${pkgs.coreutils}/bin/ln -sfT ${path} ${customDir}/${name}") {
+      templates = ./templates;
+      #public = ./public;
+    };
 
   services.nginx.virtualHosts."git.foxgirl.tech" = {
     enableACME = true;
