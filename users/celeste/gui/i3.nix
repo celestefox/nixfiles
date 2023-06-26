@@ -43,6 +43,10 @@ in
       # startup
       startup = [
         #{ command = "${kit}"; always = true; notification = false; }
+        # Vaguely based on the line from sway, because something with my config means that dbus isn't getting DISPLAY?
+        # which manifested as... keychain prompter being unable to start, because it's launched through dbus, ig
+        # i swear it had to have worked once... right? ...or maybe, only first run worked right, when no normal prompt was needed
+        { command = "${pkgs.dbus}/bin/dbus-update-activation-enviromnent --systemd DISPLAY"; notification = false; }
       ];
       # default!
       defaultWorkspace = "workspace number 0:~";
