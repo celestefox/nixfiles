@@ -1,4 +1,8 @@
-{ config, pkgs, ... }: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   # Global programs
   home.packages = with pkgs; [
     playerctl
@@ -16,7 +20,7 @@
       mpris
       sponsorblock
       thumbnail
-      youtube-quality # unclear script error when I try to use the keybind
+      quality-menu
     ];
     config = {
       osc = false; # thumbnail script provides a patched osc

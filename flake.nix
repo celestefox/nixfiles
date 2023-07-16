@@ -149,6 +149,8 @@
                       // nixfiles;
                     sharedModules = [
                       nixfiles.modules.home
+                      # error: undefined variable 'isNixpkgsStable'
+                      {disabledModules = [(inputs.arcexprs + "/modules/home/imv.nix")];}
                       #{ home.packages = [ inputs.ragenix.packages."x86_64-linux".ragenix ]; }
                     ];
                   };
