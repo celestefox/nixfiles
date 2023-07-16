@@ -19,17 +19,31 @@
     scripts = with pkgs.mpvScripts; [
       mpris
       sponsorblock
-      thumbnail
+      uosc
+      thumbfast
       quality-menu
     ];
+    # goes to input.conf
+    bindings = {
+      "F" = "script-binding quality_menu/video_formats_toggle";
+      "Alt+f" = "script-binding quality_menu/audio_formats_toggle";
+      "space" = "cycle pause; script-binding uosc/flash-pause-indicator";
+      "9" = "no-osd add volume -2; script-binding uosc/flash-volume";
+      "0" = "no-osd add volume 2; script-binding uosc/flash-volume";
+    };
     config = {
-      osc = false; # thumbnail script provides a patched osc
+      osc = false; # uosc
+      osd-bar = false;
+      border = false;
       volume = 60;
     };
     scriptOpts = {
       ytdl_hook = {
         try_ytdl_first = true; # try parsing urls with yt-dlp first
         ytdl_path = config.programs.yt-dlp.package + "/bin/yt-dlp";
+      };
+      uosc = {
+        pause_indicator = "manual";
       };
     };
   };
