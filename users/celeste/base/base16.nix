@@ -1,7 +1,12 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   base16 = {
     vim.enable = false; # TODO: neovim?
-    shell.enable = true;
+    shell.enable = false;
     schemes = {
       dark = "rose-pine.rose-pine-moon";
       light = "rose-pine.rose-pine-dawn";
