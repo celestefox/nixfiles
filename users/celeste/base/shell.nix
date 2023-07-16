@@ -1,4 +1,10 @@
-{ lib, pkgs, config, ... }: with lib; {
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
+with lib; {
   # General
   home = {
     # Variables
@@ -26,19 +32,23 @@
   # Fish
   programs.fish = {
     enable = true;
-    functions =
-      let
-        exacmd = "exa --icons --git --color=always --time-style=long-iso ";
-        lesscmd = " | less -FSR";
-      in
-      {
-        ls = { wraps = "exa"; body = exacmd + "$argv" + lesscmd; };
-        ll = { wraps = "exa"; body = exacmd + "--long $argv" + lesscmd; };
-        la = { wraps = "exa"; body = exacmd + "--all $argv" + lesscmd; };
-        lt = { wraps = "exa"; body = exacmd + "--tree $argv" + lesscmd; };
-        lla = { wraps = "exa"; body = exacmd + "--long --all $argv" + lesscmd; };
-        l = { wraps = "exa"; body = exacmd + "--long --all $argv" + lesscmd; };
+    functions = let
+      exaOf = args: {
+        wraps = "exa";
+        body = "exa --icons --git --color=always --time-style=long-iso ${args} | less -FSR";
       };
+    in {
+      killjobs = {
+        description = "Kill all jobs";
+        body = "kill (jobs -p)";
+      };
+      ls = exaOf "$argv";
+      ll = exaOf "--long $argv";
+      la = exaOf "--all $argv";
+      lt = exaOf "--tree $argv";
+      lla = exaOf "--long --all $argv";
+      l = exaOf "--long --all $argv";
+    };
     shellInit = ''
       string match -q "$TERM_PROGRAM" "vscode"
       and set -x EDITOR "code -rw"
@@ -117,7 +127,12 @@
   # zoxide
   programs.zoxide.enable = true;
 
+  programs.info.enable = true;
+
   # Gimme docs
-  manual = { manpages.enable = true; html.enable = true; };
+  manual = {
+    manpages.enable = true;
+    html.enable = true;
+  };
   programs.man.generateCaches = true;
 }
