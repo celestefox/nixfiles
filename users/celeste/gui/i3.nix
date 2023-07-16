@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.xsession.windowManager.i3;
   modifier = cfg.config.modifier;
   rofi = config.programs.rofi.finalPackage + "/bin/rofi";
@@ -12,7 +16,8 @@ let
   slop = pkgs.slop + "/bin/slop";
   ss = config.celeste.ss.package + "/bin/ss";
   dunstctl = config.services.dunst.package + "/bin/dunstctl";
-  /*   kitti3 = pkgs.poetry2nix.mkPoetryApplication rec { # TODO: unfinished potential improvement
+  /*
+       kitti3 = pkgs.poetry2nix.mkPoetryApplication rec { # TODO: unfinished potential improvement
     pname = "kitti3";
     version = "0.4.1";
 
@@ -29,9 +34,9 @@ let
       license = licenses.bsd3;
     };
     };
-  kit = kitti3 + "/bin/kitti3"; */
-in
-{
+  kit = kitti3 + "/bin/kitti3";
+  */
+in {
   xsession.windowManager.i3 = {
     enable = true;
     #package = pkgs.i3-gaps;
@@ -46,17 +51,20 @@ in
         # Vaguely based on the line from sway, because something with my config means that dbus isn't getting DISPLAY?
         # which manifested as... keychain prompter being unable to start, because it's launched through dbus, ig
         # i swear it had to have worked once... right? ...or maybe, only first run worked right, when no normal prompt was needed
-        { command = "${pkgs.dbus}/bin/dbus-update-activation-enviromnent --systemd DISPLAY"; notification = false; }
+        {
+          command = "${pkgs.dbus}/bin/dbus-update-activation-enviromnent --systemd DISPLAY";
+          notification = false;
+        }
       ];
       # default!
       defaultWorkspace = "workspace number 0:~";
       # Auto back and forth
       workspaceAutoBackAndForth = true;
       # no bars mew
-      bars = lib.mkForce [ ];
+      bars = lib.mkForce [];
       # But some i3 stuff still uses these font settings...
       fonts = {
-        names = [ "FiraCode Nerd Font" ];
+        names = ["FiraCode Nerd Font"];
         size = 12.0;
       };
       # keybindings
@@ -77,6 +85,8 @@ in
         # TODO: workplace setup (workspaces are dynamic, so configured as keybinds!)
         "${modifier}+grave" = "workspace number 0:~"; # TODO: replace grave binds w/ quake terminal stuff?
         "${modifier}+Shift+grave" = "move container to workspace number 0:~";
+        "${modifier}+1" = "workspace number 1:www";
+        "${modifier}+Shift+1" = "move container to workspace number 1:www";
         "${modifier}+minus" = "workspace number 11:-";
         "${modifier}+Shift+minus" = "move container to workspace number 11:-";
         "${modifier}+equal" = "workspace number 12:=";
@@ -98,7 +108,7 @@ in
       # adtl simple mode(s)
       modes = lib.mkOptionDefault {
         ss = {
-          # Mod4 link;  sel  win  mon  all
+          # + link;  sel  win  mon  all
           "Up" = "exec --no-startup-id ${ss} select copy; mode default";
           "Mod4+Up" = "exec --no-startup-id ${ss} select link; mode default";
           "Left" = "exec --no-startup-id ${ss} window copy; mode default";
@@ -124,9 +134,15 @@ in
       };
       # Floating!
       floating.criteria = [
-        { instance = "qjackctl"; }
-        { title = "Steam - Update News"; }
+        {instance = "qjackctl";}
+        {title = "Steam - Update News";}
       ];
+      # assigns
+      assigns = {
+        #"number 1:www" = [{class = "firefox";}]; # i only really want my main window, but there's not really a way to do that?
+        "number 12:=" = [{class = "discord";} {class = "TelegramDesktop";}];
+        "number 13:←" = [{class = "Pavucontrol";}];
+      };
     };
     extraConfig = ''
       # Fullscreen automatically some stuff (mostly games), floating above
