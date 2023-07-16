@@ -1,5 +1,6 @@
-{ ... }: {
-  /*   nixpkgs.overlays = [
+{...}: {
+  /*
+       nixpkgs.overlays = [
     (final: prev: {
       # doin this should be fine for now. security updates not likely at all, i only needed the newer theme,
       # and i wanna switch to base16 sometime, which will probably mean adding an include line of it instead
@@ -14,7 +15,8 @@
             };
         });
     })
-  ]; */
+  ];
+  */
 
   programs.kitty = {
     enable = true;
@@ -38,6 +40,7 @@
     #};
     keybindings = {
       "ctrl+shift+p>n" = "kitten hints --type linenum --linenum-action=tab nvim +{line} {path}";
+      "ctrl+shift+p>e" = ''kitten hints --type path --program "launch --type=tab nvim"'';
     };
   };
 
@@ -53,7 +56,6 @@
       s = "kitty +kitten ssh";
     };
   };
-
 
   # ibus for kitty? prolly good for others?
   home.sessionVariables."GLFW_IM_MODULE" = "ibus";
