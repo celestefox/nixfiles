@@ -1,7 +1,18 @@
-{ config, pkgs, users, profiles, services, lib, ... }: with lib; {
+{
+  config,
+  pkgs,
+  hosts,
+  users,
+  profiles,
+  services,
+  lib,
+  ...
+}:
+with lib; {
   imports = [
     # Include the results of the hardware scan.
-    ./hardware-configuration.nix
+    hosts.amaterasu.hardware-configuration
+    hosts.amaterasu.ether
     users.celeste.nixos
     profiles.gui
     profiles.hardware.printing
@@ -23,7 +34,7 @@
     # TODO: replace w/ different input method, in home manager? :/
     inputMethod = {
       enabled = "ibus";
-      ibus.engines = with pkgs.ibus-engines; [ anthy mozc m17n table table-others uniemoji ];
+      ibus.engines = with pkgs.ibus-engines; [anthy mozc m17n table table-others uniemoji];
     };
   };
 
@@ -34,17 +45,17 @@
 
   # redist firmwares, yes
   hardware.enableRedistributableFirmware = true;
-  boot.kernelParams = [ "nohibernate" ]; # no work w/ zfs
+  boot.kernelParams = ["nohibernate"]; # no work w/ zfs
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   #boot.plymouth.enable = true;
-  boot.supportedFilesystems = [ "zfs" "ntfs" ];
+  boot.supportedFilesystems = ["zfs" "ntfs"];
   boot.zfs.forceImportAll = false;
   boot.zfs.forceImportRoot = false;
   # Wifi driver and v4l2loopback for OBS
-  boot.extraModulePackages = with config.boot.kernelPackages; [ rtl88xxau-aircrack v4l2loopback ];
-  boot.kernelModules = [ "v4l2loopback" ]; # Load automatically
+  boot.extraModulePackages = with config.boot.kernelPackages; [rtl88xxau-aircrack v4l2loopback];
+  boot.kernelModules = ["v4l2loopback"]; # Load automatically
   boot.extraModprobeConfig = ''
     options v4l2loopback exclusive_caps=1 video_nr=9 card_label="obs"
   '';
@@ -68,18 +79,18 @@
   networking.wireguard.enable = true;
   networking.wireguard.interfaces = {
     /*
-      wg1 = {
-      ips = [ "fdd9:80f2:e3::bc19:57ea/32" ];
-      peers = [
-        {
-          allowedIPs = [ "fdd9:80f2:e3::/48" ];
-          endpoint = "78.47.203.115:51820";
-          publicKey = "O/YKniD72Fo/VFc0Mlu6cMxheWHTTQL4wYARmWFBrEM=";
-        }
-      ];
-      privateKeyFile = "/private/wg_privkey_comint";
-      allowedIPsAsRoutes = true;
-      };
+    wg1 = {
+    ips = [ "fdd9:80f2:e3::bc19:57ea/32" ];
+    peers = [
+      {
+        allowedIPs = [ "fdd9:80f2:e3::/48" ];
+        endpoint = "78.47.203.115:51820";
+        publicKey = "O/YKniD72Fo/VFc0Mlu6cMxheWHTTQL4wYARmWFBrEM=";
+      }
+    ];
+    privateKeyFile = "/private/wg_privkey_comint";
+    allowedIPsAsRoutes = true;
+    };
     */
     # TODO: factor out into service/wgnet_client? maybe module instead?
     wgnet = {
@@ -87,30 +98,34 @@
         "10.255.255.11/32"
         "2a01:4f9:c010:2cf9:f::11/128"
       ];
-      peers = [{
-        allowedIPs = [
-          "10.255.255.0/24"
-          "2a01:4f9:c010:2cf9:f::/80"
-        ];
-        endpoint = "65.21.52.236:51820";
-        publicKey = "7PYB2Sqh+P3XbsaJLGJgriZzUsg5vSspTNP3GLueJGs=";
-      }];
+      peers = [
+        {
+          allowedIPs = [
+            "10.255.255.0/24"
+            "2a01:4f9:c010:2cf9:f::/80"
+          ];
+          endpoint = "65.21.52.236:51820";
+          publicKey = "7PYB2Sqh+P3XbsaJLGJgriZzUsg5vSspTNP3GLueJGs=";
+        }
+      ];
       privateKeyFile = "/private/wgnet_amaterasu.key";
       allowedIPsAsRoutes = true;
     };
   };
 
-  networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
+  networking.nameservers = ["1.1.1.1" "1.0.0.1"];
 
   networking.resolvconf = {
     enable = true;
     #useLocalResolver = true;
   };
 
-  /* services.yggdrasil = {
+  /*
+     services.yggdrasil = {
     enable = true;
     configFile = "/private/yggdrasil.conf";
-  }; */
+  };
+  */
 
   # Final hacky bit of trying to get this to work?
   #networking.localCommands = ''
@@ -133,14 +148,23 @@
       addresses = true;
       userServices = true;
     };
-
   };
 
   # For kde-connect
   networking.firewall = {
     checkReversePath = false; # Don't filter DHCP packets, according to nixops-libvirtd
-    allowedTCPPortRanges = [{ from = 1714; to = 1764; }];
-    allowedUDPPortRanges = [{ from = 1714; to = 1764; }];
+    allowedTCPPortRanges = [
+      {
+        from = 1714;
+        to = 1764;
+      }
+    ];
+    allowedUDPPortRanges = [
+      {
+        from = 1714;
+        to = 1764;
+      }
+    ];
   };
 
   # System packages
@@ -169,17 +193,6 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
-
-  /*
-    programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-    pinentryFlavor = "qt";
-    };
-  */
-
-  services.pcscd.enable = true;
-  services.udev.packages = [ pkgs.yubikey-personalization ];
 
   # Android setup
   programs.adb.enable = true;
@@ -217,35 +230,35 @@
     #media-session.enable = true;
     # Bluetooth improvements
     /*
-      media-session.config.bluez-monitor.rules = [
-      {
-        # Matches all cards
-        matches = [{ "device.name" = "~bluez_card.*"; }];
-        actions = {
-          "update-props" = {
-            "bluez5.auto-connect" = [ "hfp_hf" "hsp_hs" "a2dp_sink" ];
-            # mSBC is not expected to work on all combos
-            #"bluez5.msbc-support" = true;
-            # SBC-XQ is not expected to work on all headset + adapter combinations.
-            "bluez5.sbc-xq-support" = true;
-          };
+    media-session.config.bluez-monitor.rules = [
+    {
+      # Matches all cards
+      matches = [{ "device.name" = "~bluez_card.*"; }];
+      actions = {
+        "update-props" = {
+          "bluez5.auto-connect" = [ "hfp_hf" "hsp_hs" "a2dp_sink" ];
+          # mSBC is not expected to work on all combos
+          #"bluez5.msbc-support" = true;
+          # SBC-XQ is not expected to work on all headset + adapter combinations.
+          "bluez5.sbc-xq-support" = true;
         };
-      }
-      {
-        matches = [
-          # Matches all sources
-          { "node.name" = "~bluez_input.*"; }
-          # Matches all outputs
-          { "node.name" = "~bluez_output.*"; }
-        ];
-        actions = {
-          "update-props" = {
-            "node.pause-on-idle" = false;
-          };
+      };
+    }
+    {
+      matches = [
+        # Matches all sources
+        { "node.name" = "~bluez_input.*"; }
+        # Matches all outputs
+        { "node.name" = "~bluez_output.*"; }
+      ];
+      actions = {
+        "update-props" = {
           "node.pause-on-idle" = false;
         };
-      }
-      ];
+        "node.pause-on-idle" = false;
+      };
+    }
+    ];
     */
   };
 
@@ -253,14 +266,13 @@
   # I don't actually know if this will have the desired effect, it's from the wiki
   # But the mediasession version is bluez_card? I'll actually test eventually, but bluetooth is hard already
   environment.etc."wireplumber/bluetooth.lua.d/51-bluez-config.lua".text = ''
-        bluez_monitor.properties = {
-    		  	["bluez5.enable-sbc-xq"] = true,
-    			  ["bluez5.enable-msbc"] = true,
-    			  ["bluez5.enable-hw-volume"] = true,
-    			  ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag a2dp_sink ]"
-    	  }
+     bluez_monitor.properties = {
+     	["bluez5.enable-sbc-xq"] = true,
+      ["bluez5.enable-msbc"] = true,
+      ["bluez5.enable-hw-volume"] = true,
+      ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag a2dp_sink ]"
+    }
   '';
-
 
   # The rest of bluetooth
   hardware.bluetooth = {
@@ -273,7 +285,7 @@
   services.xserver.enable = true;
   services.colord.enable = true;
 
-  # Enable i3-gaps.
+  # TODO: i think this ends up as essentially a backup session? so, maybe worth to keep? maybe not?
   services.xserver.windowManager.i3 = {
     enable = true;
     package = pkgs.i3-gaps;
@@ -282,7 +294,7 @@
 
   # Enable 32bit OpenGL for, e.g. Wine programs
   hardware.opengl.driSupport32Bit = true;
-  services.xserver.videoDrivers = [ "amdgpu" ];
+  services.xserver.videoDrivers = ["amdgpu"];
   hardware.opengl.extraPackages = with pkgs; [
     rocm-opencl-icd
     #rocm-runtime-ext
@@ -323,7 +335,7 @@
     # control = "sufficient"; # default
   };
 
-  home-manager.users.celeste = { imports = [ users.celeste.hm users.celeste.gui ]; };
+  home-manager.users.celeste = {imports = [users.celeste.hm users.celeste.gui];};
 
   users.mutableUsers = false;
   users.users = {
@@ -336,7 +348,7 @@
       #hashedPassword = "$6$GMQrixgscVvF$uRYgBqeoTXCml/koXj8SVM8V/UQuXrjZOQO3LslVtqkL1oFTzMLOQIW38t3eEOgZ8Wn98fxn1ybgpj2ifLKoa.";
       hashedPassword = "$6$WEqhv9jK3adTC2V2$5ZQHBDquIK8RZe94qTpjCiJNv.HuDbgteovJfFEl408ldKt.zDv0GzHwjh0q7NyxYYLPLp.e3EG1BxmP16cRi/";
       group = "glow";
-      extraGroups = [ "users" "wheel" "audio" "video" "vboxusers" "adbusers" "libvirtd" "docker" "wireshark" ];
+      extraGroups = ["users" "wheel" "audio" "video" "vboxusers" "adbusers" "libvirtd" "docker" "wireshark"];
       shell = pkgs.fish;
     };
     #aaa
@@ -351,6 +363,4 @@
   # servers. You should change this only after NixOS release notes say you
   # should.
   system.stateVersion = "22.05"; # Did you read the comment?
-
 }
-
