@@ -1,4 +1,4 @@
-{
+{pkgs, ...}: {
   #xsession
   xsession = {
     enable = true;
@@ -9,7 +9,7 @@
   home.keyboard = {
     layout = "us,us";
     variant = ",dvp";
-    options = [ "grp:alt_space_toggle" "grp_led:caps" "caps:none" "ctrl:nocaps" "lv3:switch" "compose:sclk" ];
+    options = ["grp:alt_space_toggle" "grp_led:caps" "caps:none" "ctrl:nocaps" "lv3:switch" "compose:sclk"];
   };
   # xcape
   services.xcape = {
@@ -21,7 +21,11 @@
   #picom compositor
   services.picom = {
     enable = true;
-    settings = { blur.method = "none"; };
+    settings = {blur.method = "none";};
     #blur = false;
   };
+  # adtl x11 related packages
+  home.packages = with pkgs; [
+    xorg.xev
+  ];
 }
