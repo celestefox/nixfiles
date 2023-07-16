@@ -1,15 +1,43 @@
 {
   inputs = {
+    # to allow non-nix 2.4 evaluation
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
+    # better than nixpkgs.lib
+    std = {
+      url = "github:chessai/nix-std";
+    };
     # Nixpkgs/NixOS
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    # flake-utils
-    flake-utils.url = "github:numtide/flake-utils";
+    # utils
+    utils.url = "github:numtide/flake-utils";
+    # deployments
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs = {
+        flake-compat.follows = "flake-compat";
+        nixpkgs.follows = "nixpkgs";
+        utils.follows = "utils";
+      };
+    };
+    # self-explanatory
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
     # NixOS-WSL
-    nixos-wsl.url = "github:nix-community/NixOS-WSL";
-    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
-    # home-manager
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "utils";
+        flake-compat.follows = "flake-compat";
+      };
+    };
     # ragenix
     ragenix.url = "github:yaxitech/ragenix";
     ragenix.inputs.nixpkgs.follows = "nixpkgs";
@@ -31,93 +59,126 @@
     arcexprs.url = "github:arcnmx/nixexprs";
     arcexprs.flake = false;
     # devenv
-    devenv.url = "github:cachix/devenv/latest";
+    #devenv.url = "github:cachix/devenv/latest";
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, flake-utils, ... }:
-    let
-      mkTree = (import (inputs.kw-nixfiles + "/mkTree.nix")) { inherit (nixpkgs) lib; };
-      tree = mkTree {
-        inherit inputs;
-        folder = ./.;
-        config = {
-          "/" = {
-            excludes = [
-              "flake"
-              "repl"
-              "shell"
-            ];
-          };
-          "overlays".evaluateDefault = true;
-          "profiles/base".functor.enable = true;
-          "profiles/gui".functor.enable = true;
-          "profiles/wsl".functor = {
-            enable = true;
-            external = [
-              (import inputs.nixos-wsl).nixosModules.wsl
-            ];
-          };
-          "modules/home".functor = {
-            enable = true;
-            external = [
-              inputs.impermanence.nixosModules.home-manager.impermanence
-              (import (inputs.arcexprs + "/modules")).home-manager
-            ];
-          };
-          "modules/system".functor.enable = true;
-          "services/*".aliasDefault = true;
-          "users/youko".functor.enable = true;
-          "users/celeste/*".functor.enable = true;
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    utils,
+    ...
+  }: let
+    mkTree = (import (inputs.kw-nixfiles + "/mkTree.nix")) {inherit (nixpkgs) lib;};
+    tree = mkTree {
+      inherit inputs;
+      folder = ./.;
+      config = {
+        "/" = {
+          excludes = [
+            "flake"
+            "repl"
+            "shell"
+          ];
         };
+        "profiles/base".functor.enable = true;
+        "profiles/gui".functor.enable = true;
+        "profiles/wsl".functor = {
+          enable = true;
+          external = [
+            (import inputs.nixos-wsl).nixosModules.wsl
+          ];
+        };
+        "modules/home".functor = {
+          enable = true;
+          external = [
+            inputs.impermanence.nixosModules.home-manager.impermanence
+            (import (inputs.arcexprs + "/modules")).home-manager
+            inputs.nix-index-database.hmModules.nix-index
+          ];
+        };
+        "modules/system".functor.enable = true;
+        "services/*".aliasDefault = true;
+        "users/youko".functor.enable = true;
+        "users/celeste/*".functor.enable = true;
       };
-      nixfiles = tree.impure;
-      root = ./.;
-      #overlays = import nixfiles.overlays {inherit inputs system; };
-    in
+    };
+    nixfiles = tree.impure;
+    root = ./.;
+    #overlays = import nixfiles.overlays {inherit inputs system; };
+  in
     {
       inherit tree;
-      nixosConfigurations = with nixpkgs.lib; listToAttrs (map
-        (host: nameValuePair host (nixosSystem {
-          system = "x86_64-linux"; # TODO: i mean they all are still for now but (android?)
-          specialArgs = { inherit inputs root tree; flake = self; } // nixfiles;
-          modules = [
-            # The host
-            nixfiles.hosts.${host}.configuration
-            # General defaults
-            { system.configurationRevision = mkIf (self ? rev) self.rev; }
-            # base profile
-            nixfiles.profiles.base
-            # Home manager
-            inputs.home-manager.nixosModules.home-manager
-            {
-              # global home manager
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                verbose = true;
-                # Pass flake inputs deeper
-                extraSpecialArgs = { inherit inputs root tree; flake = self; } // nixfiles;
-                sharedModules = [
-                  nixfiles.modules.home
-                  #{ home.packages = [ inputs.ragenix.packages."x86_64-linux".ragenix ]; }
-                ];
-              };
-            }
-            # arcexprs
-            (import (inputs.arcexprs + "/modules")).nixos
-            # ragenix
-            inputs.ragenix.nixosModules.age
-            # impermanence
-            inputs.impermanence.nixosModules.impermanence
-            # VSCode remote fixer
-            (inputs.nixos-vscode-server + "/modules/vscode-server/default.nix")
-          ];
-        }))
-        [ "amaterasu" "okami" "star" ] #(nixpkgs.lib.attrNames treated.hosts)
-      );
-    } // flake-utils.lib.eachDefaultSystem (system:
-      let pkgs = import ./overlays { inherit inputs system; }; in {
-        devShells.default = import ./shell.nix { inherit pkgs; hosts = builtins.attrNames nixfiles.hosts; };
-        legacyPackages = pkgs;
-      });
+      nixosConfigurations = with nixpkgs.lib;
+        listToAttrs (
+          map
+          (host:
+            nameValuePair host (nixosSystem {
+              system = "x86_64-linux"; # TODO: i mean they all are still for now but (android?)
+              specialArgs =
+                {
+                  # it is rather unfortunate, that i ended up passing tree
+                  inherit inputs root tree;
+                  flake = self;
+                }
+                // nixfiles;
+              modules = [
+                # The host
+                nixfiles.hosts.${host}.configuration
+                # General defaults
+                {system.configurationRevision = mkIf (self ? rev) self.rev;}
+                # base profile
+                nixfiles.profiles.base
+                # Home manager
+                inputs.home-manager.nixosModules.home-manager
+                {
+                  # global home manager
+                  home-manager = {
+                    useGlobalPkgs = true;
+                    useUserPackages = true;
+                    verbose = true;
+                    # Pass flake inputs deeper
+                    extraSpecialArgs =
+                      {
+                        inherit inputs root tree;
+                        flake = self;
+                      }
+                      // nixfiles;
+                    sharedModules = [
+                      nixfiles.modules.home
+                      #{ home.packages = [ inputs.ragenix.packages."x86_64-linux".ragenix ]; }
+                    ];
+                  };
+                }
+                # arcexprs
+                (import (inputs.arcexprs + "/modules")).nixos
+                # ragenix
+                inputs.ragenix.nixosModules.age
+                # impermanence
+                inputs.impermanence.nixosModules.impermanence
+                # VSCode remote fixer
+                (inputs.nixos-vscode-server + "/modules/vscode-server/default.nix")
+              ];
+            }))
+          ["amaterasu" "okami" "star"] #(nixpkgs.lib.attrNames treated.hosts)
+        );
+    }
+    // utils.lib.eachDefaultSystem (system: let
+      overlays = import nixfiles.overlays {
+        inherit inputs;
+        tree = nixfiles;
+      };
+      pkgs = import inputs.nixpkgs {
+        inherit system overlays;
+      };
+    in {
+      devShells.default = import ./shell.nix {
+        inherit pkgs;
+        hosts = builtins.attrNames nixfiles.hosts;
+      };
+      legacyPackages = pkgs;
+    });
 }

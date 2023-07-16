@@ -1,7 +1,19 @@
 let
   flake = builtins.getFlake (toString ./.);
-  pkgs = import ./overlays { inherit (flake) inputs; system = builtins.currentSystem or "x86_64-linux"; };
+  tree = flake.tree.impure;
+  overlays = import tree.overlays {
+    inherit (flake) inputs;
+    inherit tree;
+  };
+  pkgs = import flake.inputs.nixpkgs {
+    inherit overlays;
+    system = builtins.currentSystem or "x86_64-linux";
+  };
+  #pkgs = import ./overlays { inherit (flake) inputs; system = builtins.currentSystem or "x86_64-linux"; };
 in
-{ inherit flake pkgs; inherit (pkgs) lib; }
-// flake
-// flake.nixosConfigurations
+  {
+    inherit flake pkgs;
+    inherit (pkgs) lib;
+  }
+  // flake
+  // flake.nixosConfigurations

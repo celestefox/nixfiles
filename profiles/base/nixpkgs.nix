@@ -1,10 +1,15 @@
-{ inputs, ... }: {
+{
+  inputs,
+  tree,
+  overlays,
+  ...
+}: {
   nixpkgs = {
-    overlays = [
-      (import "${inputs.arcexprs}/overlay.nix")
-      inputs.ragenix.overlays.default
-      inputs.nixneovimplugins.overlays.default
-    ];
+    overlays = import overlays {
+      # glue
+      tree = tree.impure;
+      inherit inputs;
+    };
     config = {
       allowUnfree = true;
       allowBroken = true; # vimExtraPlugins.go-nvim
