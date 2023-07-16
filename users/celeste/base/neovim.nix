@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   # Install language servers and other generally wanted tools globally
   home.packages = with pkgs; [
     neovim-remote
@@ -10,9 +10,9 @@
   # Neovim
   programs.neovim = {
     enable = true;
-    extraPackages = builtins.attrValues { inherit (pkgs) rnix-lsp nixpkgs-fmt xclip lua-language-server iferr; };
-    extraLuaPackages = lp: builtins.attrValues { inherit (lp) jsregexp; }; # for luasnip
-    plugins = (with pkgs.vimPlugins; [
+    extraPackages = builtins.attrValues {inherit (pkgs) rnix-lsp nixpkgs-fmt xclip lua-language-server iferr;};
+    extraLuaPackages = lp: builtins.attrValues {inherit (lp) jsregexp;}; # for luasnip
+    plugins = with pkgs.vimPlugins; [
       vim-sensible
       vim-unimpaired
       plenary-nvim
@@ -158,9 +158,11 @@
         type = "lua";
         config = ''
           require'go'.setup{
+            verbose = true,
             lsp_cfg = {
               capabilities = require'cmp_nvim_lsp'.default_capabilities(),
             },
+            lsp_on_attach = true,
             lsp_keymaps = function(bufnr)
               -- Mappings.
               -- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -184,11 +186,12 @@
             end,
             lsp_gofumpt = true,
             textobjects = false,
-            luasnips = true,
+            luasnip = true,
           }
         '';
       }
-      /* {
+      /*
+      {
         plugin = pkgs.vimExtraPlugins.nvim-go;
         type = "lua";
         config = ''
@@ -205,7 +208,8 @@
           }
 
         '';
-      } */
+      }
+      */
       {
         plugin = pkgs.vimExtraPlugins.typescript-nvim;
         type = "lua";
@@ -302,7 +306,7 @@
               ["<Tab>"] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                   cmp.select_next_item()
-                -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable() 
+                -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
                 -- they way you will only jump inside the snippet region
                 elseif luasnip.expand_or_jumpable() then
                   luasnip.expand_or_jump()
@@ -376,7 +380,7 @@
           -- For vim-snippets
           ls.filetype_extend("all", { "_" })
           -- as a note: https://github.com/nvim-treesitter/nvim-treesitter/blob/master/lua/nvim-treesitter/parsers.lua
-          -- from_pos_or_filetype above preferentially returns the name of the treesitter parser 
+          -- from_pos_or_filetype above preferentially returns the name of the treesitter parser
           ls.filetype_extend("latex", { "tex" })
 
           require'luasnip.loaders.from_vscode'.lazy_load{}
@@ -418,6 +422,10 @@
               enable = true,
               enable_autocmd = false,
             },
+            highlight = {
+              enable = true,
+              additional_vim_regex_highlighting = false,
+            },
           }
         '';
       }
@@ -454,16 +462,25 @@
       }
       # Themes
       {
+        plugin = pkgs.vimExtraPlugins.starry-nvim;
+        type = "lua";
+        config = ''
+          vim.g.starry_italic_comments = true
+          vim.g.starry_disable_background = true -- transparency support
+          vim.cmd.colorscheme 'moonlight'
+        '';
+      }
+      {
         plugin = aurora;
         type = "lua";
         config = ''
           vim.opt.termguicolors = true
           vim.g.aurora_italic = 1
           vim.g.aurora_transparent = 1
-          vim.cmd.colorscheme 'aurora'
+          -- vim.cmd.colorscheme 'aurora'
         '';
       }
-    ]);
+    ];
     extraConfig = ''
       if exists("g:neovide")
         " Running in neovide
