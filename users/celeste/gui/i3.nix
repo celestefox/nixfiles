@@ -52,7 +52,7 @@ in {
         # which manifested as... keychain prompter being unable to start, because it's launched through dbus, ig
         # i swear it had to have worked once... right? ...or maybe, only first run worked right, when no normal prompt was needed
         {
-          command = "${pkgs.dbus}/bin/dbus-update-activation-enviromnent --systemd DISPLAY";
+          command = "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd DISPLAY";
           notification = false;
         }
       ];
