@@ -141,7 +141,16 @@ in {
       assigns = {
         #"number 1:www" = [{class = "firefox";}]; # i only really want my main window, but there's not really a way to do that?
         "number 12:=" = [{class = "discord";} {class = "TelegramDesktop";}];
-        "number 13:←" = [{class = "Pavucontrol";}];
+        "number 13:←" = [
+          {
+            instance = "status";
+            class = "kitty";
+          }
+          {class = "Pavucontrol";}
+          # apparently that's what it is for me
+          # if this was dunst,
+          {class = ".blueman-manager-wrapped";}
+        ];
       };
     };
     extraConfig = ''
