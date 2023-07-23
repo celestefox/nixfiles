@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   programs.firefox = {
     enable = true;
     package = pkgs.firefox.override {
@@ -8,6 +8,7 @@
         enableTridactylNative = true;
         pipewireSupport = true;
       };
+      extraNativeMessagingHosts = [pkgs.ff2mpv];
     };
   };
   home.sessionVariables.BROWSER = "firefox";
