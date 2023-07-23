@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   home.packages = with pkgs; [
     htop
     pstree
@@ -30,6 +33,7 @@
     neofetch
     units
     cachix
+    qmk # board of keys
   ];
 
   programs.aria2.enable = true;

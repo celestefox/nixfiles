@@ -16,6 +16,7 @@ with lib; {
     users.celeste.nixos
     profiles.gui
     profiles.hardware.printing
+    profiles.gaming
     services.iperf
   ];
 
@@ -45,7 +46,7 @@ with lib; {
 
   # redist firmwares, yes
   hardware.enableRedistributableFirmware = true;
-  boot.kernelParams = ["nohibernate"]; # no work w/ zfs
+  boot.kernelParams = ["nohibernate" "amd_pstate=passive" "amd_pstate.shared_mem=1"]; # no work w/ zfs
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -63,6 +64,8 @@ with lib; {
     ACTION=="add|change", KERNEL=="sd[a-z]*[0-9]*|mmcblk[0-9]*p[0-9]*|nvme[0-9]*n[0-9]*p[0-9]*", ENV{ID_FS_TYPE}=="zfs_member", ATTR{../queue/scheduler}="none"
   ''; # zfs already has its own scheduler. without this my(@Artturin) computer froze for a second when i nix build something.
   nix.settings.max-jobs = lib.mkDefault 12;
+  powerManagement.cpuFreqGovernor = "ondemand";
+  boot.initrd.kernelModules = ["amd_pstate"];
 
   # TODO: consider using this? Need to revisit wireless situation, maybe even WG too, tho...
   #networking.useNetworkd = true; # Experimental
@@ -322,6 +325,8 @@ with lib; {
   # solaar itself I don't have working, but the udev rules fix horizontal scrolling
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
+
+  hardware.keyboard.qmk.enable = true;
 
   # Misc programs...
   programs = {
