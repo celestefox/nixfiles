@@ -80,6 +80,11 @@
         "/" = {
           excludes = [
             "flake"
+            "default"
+            "tree"
+            "inputs"
+            "outputs"
+            "pkgs"
             "repl"
             "shell"
           ];
