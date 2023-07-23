@@ -35,7 +35,7 @@ with lib; {
     functions = let
       exaOf = args: {
         wraps = "exa";
-        body = "exa --icons --git --color=always --time-style=long-iso ${args} | less -FSR";
+        body = "exa --icons --git --color=always --time-style=long-iso ${args}";
       };
     in {
       killjobs = {
