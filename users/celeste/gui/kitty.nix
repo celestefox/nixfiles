@@ -15,6 +15,7 @@ with lib; let
       desktopEntry = {
         enable = mkEnableOption "creating desktop entry for this session" // {default = true;};
         extraArgs = mkOption {
+          # TODO: replace with listOf str and use escapeShellArgs?
           type = types.str;
           description = mdDoc ''
             Extra arguments to pass to kitty when launching this session.
@@ -27,9 +28,6 @@ with lib; let
           default = {};
           description = mdDoc "Additional options to pass to the desktop entry. Also see {option}`xdg.desktopEntries` and especially {option}`xdg.desktopEntries.<name>.settings`.";
         };
-      };
-      config = {
-        #desktopEntry.extraArgs = mkDefault " --name ${name}";
       };
     };
   };
@@ -53,26 +51,9 @@ in {
       description = ''Kitty sessions to create'';
     };
   };
-  config = {
-    /*
-         nixpkgs.overlays = [
-      (final: prev: {
-        # doin this should be fine for now. security updates not likely at all, i only needed the newer theme,
-        # and i wanna switch to base16 sometime, which will probably mean adding an include line of it instead
-        kitty-themes = prev.kitty-themes.overrideAttrs
-          (old: {
-            src = prev.fetchFromGitHub
-              {
-                owner = "kovidgoyal";
-                repo = old.pname;
-                rev = "f6c2f4e5617ef946b17db8bc18dadc9fad38d32e";
-                sha256 = "SM7ExyD6cCYXZwxb4Rs1U2P2N9vzhmaUHJJRz/gO3IQ=";
-              };
-          });
-      })
-    ];
-    */
 
+  # back to my config!
+  config = {
     programs.kitty = {
       enable = true;
       font = {
@@ -113,35 +94,30 @@ in {
       };
     };
 
+    # "part" of the kitty config in my mind - it uses kitty in a cli manner
+    # and it's a separate alias because I don't always want the kitten, even in kitty, so no overriding
     programs.fish = {
       shellAliases = {
         s = "kitty +kitten ssh";
       };
     };
 
+    # ibus for kitty? prolly good for others? TODO: revisit this, I don't actually run ibus in practice
+    home.sessionVariables."GLFW_IM_MODULE" = "ibus";
+
+    # the pseudo-session-module's config bit:
+
     # dunno if this is the best place to store them but it works
     xdg.configFile =
       mkIf (cfg.sessions != {})
       (mapAttrs' (name: value: nameValuePair "kitty/sessions/${name}" {inherit (value) text;}) cfg.sessions);
 
-    # hardcoded fr now
-    # xdg.desktopEntries.kitty-session-status = {
-    #   name = "Kitty (Status)";
-    #   comment = "Launch kitty session status";
-    #   terminal = false;
-    #   #tryExec = "kitty";
-    #   # --name isn't part of the session, it's for i3 instead, the workspace assign
-    #   exec = "kitty --session ${config.xdg.configHome}/kitty/sessions/status --name status";
-    #   icon = "kitty";
-    # };
+    # Make the desktop entries
     xdg.desktopEntries =
       mkIf (cfg.sessions != {})
       # make the desktop entry
       (mapAttrs' (name: value: nameValuePair "kitty-session-${name}" (desktopEntryFor name value))
-        # only for enabled sessions, though
+        # only for sessions it is enabled for, however
         (filterAttrs (_: v: v.desktopEntry.enable) cfg.sessions));
-
-    # ibus for kitty? prolly good for others?
-    home.sessionVariables."GLFW_IM_MODULE" = "ibus";
   };
 }
