@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bash -p shotgun slop rclone xclip xdotool dunst
+#! nix-shell -i bash -p shotgun rclone xclip xdotool dunst hacksaw
 set -euo pipefail # TODO: not duplicate deps/these opts w/ i3.nix? But these make ss directly runnable to test with
 IFS=$' '
 # variable setup
@@ -32,7 +32,8 @@ main() {
     # Process the options
     case $mode in
     select)
-        selection="$(slop -r boxzoom -f "-i %i -g %g")"
+        #selection="$(slop -r boxzoom -f "-i %i -g %g")"
+        selection="$(hacksaw -c "#5511bb" -f "-g %g")"
         ;;
     window)
         selection="-i $(xdotool getactivewindow)"

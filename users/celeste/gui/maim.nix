@@ -1,5 +1,5 @@
-{ pkgs, ... }: {
-  home.packages = with pkgs; [ maim slop ];
+{pkgs, ...}: {
+  home.packages = with pkgs; [maim slop];
   xdg.configFile = {
     # These are from https://github.com/naelstrof/slop/tree/master/shaderexamples
     # `maim --help` claims these are loaded from maim, but on runtime the error shows it's looking in slop, so, uh
@@ -32,7 +32,7 @@
           // Adjustable parameters -------
           vec2 boxOffset = vec2(-64,-64);
           vec2 boxSize = vec2(128,128);
-          float magstrength = 4;
+          float magstrength = 5;
           vec2 borderSize = vec2(1,1);
           vec4 borderColor = vec4(0,0,0,1);
           bool crosshair = true;
