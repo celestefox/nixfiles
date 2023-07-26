@@ -125,6 +125,8 @@ in {
       gaps = {
         inner = 4;
         outer = 8;
+        smartGaps = true;
+        #smartBorders = "no_gaps";
         #top = 24; # for bars, with override-redirect = true
       };
       # window stuff
@@ -133,9 +135,13 @@ in {
         titlebar = false;
       };
       # Floating!
+      #floating.titlebar = true;
       floating.criteria = [
         {instance = "qjackctl";}
         {title = "Steam - Update News";}
+        {
+          class = "kittyhere";
+        }
       ];
       # assigns
       assigns = {

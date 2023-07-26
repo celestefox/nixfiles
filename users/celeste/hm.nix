@@ -1,4 +1,4 @@
-{ users, ... }: {
+{users, ...}: {
   # import defaults
   imports = [
     users.celeste.base
@@ -32,6 +32,6 @@
   */
 
   # mew
-  home.stateVersion = "22.05";
+  home.stateVersion = "23.05";
   programs.home-manager.enable = true;
 }
