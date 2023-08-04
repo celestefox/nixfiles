@@ -1,7 +1,14 @@
-{ config, lib, pkgs, flake, ... }: with lib; {
+{
+  config,
+  lib,
+  pkgs,
+  root,
+  ...
+}:
+with lib; {
   # Secret for key
   age.secrets.star_wgnet_privkey = {
-    file = flake.outPath + "/secrets/star_wgnet_privkey.age";
+    file = root + "/secrets/star_wgnet_privkey.age";
   };
 
   # Wireguard setup
@@ -65,9 +72,9 @@
 
   # firewall rules
   networking.firewall = {
-    trustedInterfaces = [ "wgnet" ];
+    trustedInterfaces = ["wgnet"];
     # allow wg traffic through
-    allowedUDPPorts = [ 51820 ];
+    allowedUDPPorts = [51820];
     # NAT and other rules
     # TODO: hardcoded for the interface names on star
     extraCommands = ''

@@ -2,12 +2,12 @@
   config,
   lib,
   pkgs,
-  flake,
+  root,
   ...
 }:
 with lib; {
   age.secrets.gitea-smtp = {
-    file = flake.outPath + "/secrets/gitea-smtp.age";
+    file = root + "/secrets/gitea-smtp.age";
     owner = "gitea";
     group = "gitea";
   };
