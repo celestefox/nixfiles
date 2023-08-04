@@ -6,9 +6,7 @@
 }: {
   nixpkgs = {
     overlays = import overlays {
-      # glue
-      tree = tree.impure;
-      inherit inputs;
+      inherit inputs tree;
     };
     config = {
       allowUnfree = true;

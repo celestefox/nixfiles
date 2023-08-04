@@ -125,8 +125,8 @@
               system = "x86_64-linux"; # TODO: i mean they all are still for now but (android?)
               specialArgs =
                 {
-                  # it is rather unfortunate, that i ended up passing tree
-                  inherit inputs root tree;
+                  inherit inputs root;
+                  tree = nixfiles;
                   flake = self;
                 }
                 // nixfiles;
@@ -148,7 +148,8 @@
                     # Pass flake inputs deeper
                     extraSpecialArgs =
                       {
-                        inherit inputs root tree;
+                        inherit inputs root;
+                        tree = nixfiles;
                         flake = self;
                       }
                       // nixfiles;
