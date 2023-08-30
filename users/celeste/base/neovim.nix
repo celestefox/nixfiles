@@ -15,11 +15,22 @@
     plugins = with pkgs.vimPlugins; [
       vim-sensible
       vim-unimpaired
+      {
+        plugin = nvim-surround;
+        type = "lua";
+        config = ''
+          require'nvim-surround'.setup{}
+        '';
+      }
       plenary-nvim
       {
         plugin = vim-numbertoggle;
         type = "lua";
-        config = "vim.opt.number = true";
+        config = ''
+          -- Default to both number and relative number
+          vim.opt.number = true
+          vim.opt.relativenumber = true
+        '';
       }
       vim-eunuch
       vim-nix # TODO: does this provide anything anymore w/ tree-sitter in use?
