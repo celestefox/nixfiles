@@ -68,7 +68,6 @@ in {
         dynamic_background_opacity = true;
         allow_remote_control = true;
         update_check_interval = 0;
-        shell_integration = "enabled no-rc";
         editor = "nvim";
       };
       #keybindings = let nav = mew; in {
