@@ -18,20 +18,23 @@
     rclone
     curl
     wget
+    httpie
+    ldns
+    dnsutils
+    whois
     ripgrep
     nixpkgs-fmt
     pv
     progress
-    zstd
     file
-    atool
-    unzip
-    whois
+    atool # tar, gzip, some others already end up in my path for it
+    zstd
+    zip
+    unzip # it, lock it, fill it, call it, find it, view it, code it, jam, unlock it
+    unrar-wrapper # instead of original unfree unrar, uses unar
     niv
-    ldns
-    dnsutils
     neofetch
-    units
+    units # `units -v`'s amazing
     cachix
     qmk # board of keys
   ];

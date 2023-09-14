@@ -79,7 +79,18 @@ in {
         "${modifier}+o" = "mode ss";
         "${modifier}+Print" = "mode ss";
         # Layout
-        "${modifier}+l" = "layout toggle all"; #and thus l to cycle layouts
+        "${modifier}+p" = "layout toggle all"; #oops, right, l is used
+        "${modifier}+v" = "split v"; # vertical
+        "${modifier}+b" = "split h"; # horizontal
+        # and now movements
+        "${modifier}+h" = "focus left";
+        "${modifier}+j" = "focus down";
+        "${modifier}+k" = "focus up";
+        "${modifier}+l" = "focus right";
+        "${modifier}+Shift+h" = "move left";
+        "${modifier}+Shift+j" = "move down";
+        "${modifier}+Shift+k" = "move up";
+        "${modifier}+Shift+l" = "move right";
         # Switch workplace between screens
         "${modifier}+x" = "move workspace to output right";
         # TODO: workplace setup (workspaces are dynamic, so configured as keybinds!)
@@ -104,6 +115,9 @@ in {
         # Notif stuff?
         "${modifier}+period" = "exec --no-startup-id ${dunstctl} context";
         "${modifier}+Shift+period" = "exec --no-startup-id ${dunstctl} history-pop";
+        # scratchpad on \
+        "${modifier}+Shift+backslash" = "move scratchpad";
+        "${modifier}+backslash" = "scratchpad show";
       };
       # adtl simple mode(s)
       modes = lib.mkOptionDefault {

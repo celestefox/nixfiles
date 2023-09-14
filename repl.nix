@@ -8,6 +8,7 @@ let
   pkgs = import flake.inputs.nixpkgs {
     inherit overlays;
     system = builtins.currentSystem or "x86_64-linux";
+    config = {allowUnfree = true;};
   };
   #pkgs = import ./overlays { inherit (flake) inputs; system = builtins.currentSystem or "x86_64-linux"; };
 in

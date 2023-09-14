@@ -77,7 +77,7 @@ with lib; {
   ]; # Fixes the random failure on boot??? According to trace
   #networking.wireless.userControlled.enable = true; #... disables using /etc/wpa_supplicant.conf???
 
-  networking.interfaces.wlp3s0f0u1.useDHCP = true;
+  #networking.interfaces.wlp3s0f0u1.useDHCP = true;
 
   networking.wireguard.enable = true;
   networking.wireguard.interfaces = {
@@ -192,6 +192,11 @@ with lib; {
   ];
 
   programs.git.enable = true;
+
+  # synergy
+  services.synergy.server = {
+    enable = true;
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -314,6 +319,10 @@ with lib; {
   };
   virtualisation.libvirtd = {
     enable = true;
+    qemu = {
+      swtpm.enable = true;
+      ovmf.packages = [pkgs.OVMFFull.fd];
+    };
   };
   virtualisation.docker = {
     enable = true;

@@ -9,7 +9,7 @@
     spotify
     spotify-tui
     streamlink
-    ytmdesktop
+    #ytmdesktop # never even worked for me...
     ytfzf
   ];
 
@@ -28,8 +28,13 @@
       "F" = "script-binding quality_menu/video_formats_toggle";
       "Alt+f" = "script-binding quality_menu/audio_formats_toggle";
       "space" = "cycle pause; script-binding uosc/flash-pause-indicator";
+      "m" = "no-osd cycle mute; script-binding uosc/flash-volume";
       "9" = "no-osd add volume -2; script-binding uosc/flash-volume";
       "0" = "no-osd add volume 2; script-binding uosc/flash-volume";
+      "right" = "seek 5";
+      "left" = "seek -5";
+      "shift+right" = "seek 30; script-binding uosc/flash-timeline";
+      "shift+left" = "seek -30; script-binding uosc/flash-timeline";
     };
     config = {
       osc = false; # uosc

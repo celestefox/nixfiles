@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }:
-
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   users.users.celeste = {
     description = "Celeste Fox";
     uid = lib.mkDefault 1000;
@@ -12,7 +15,7 @@
     ];
     shell = pkgs.fish;
     group = "users";
-    extraGroups = [ "wheel" "audio" "video" "systemd-journal" "plugdev" "vboxusers" "adbusers" "libvirtd" "docker" "wireshark" ];
+    extraGroups = ["wheel" "audio" "video" "systemd-journal" "plugdev" "vboxusers" "adbusers" "libvirtd" "docker" "wireshark"];
     #hashedPassword = "$6$GMQrixgscVvF$uRYgBqeoTXCml/koXj8SVM8V/UQuXrjZOQO3LslVtqkL1oFTzMLOQIW38t3eEOgZ8Wn98fxn1ybgpj2ifLKoa.";
     hashedPassword = "$6$WEqhv9jK3adTC2V2$5ZQHBDquIK8RZe94qTpjCiJNv.HuDbgteovJfFEl408ldKt.zDv0GzHwjh0q7NyxYYLPLp.e3EG1BxmP16cRi/";
     isNormalUser = true;
