@@ -34,13 +34,56 @@ with lib; {
     enable = true;
     functions = let
       exaOf = args: {
-        wraps = "exa";
-        body = "exa --icons --git --color=always --time-style=long-iso ${args}";
+        wraps = "eza";
+        body = "eza --hyperlink --icons --git --git-repos --color=always --time-style=long-iso ${args}";
       };
     in {
       killjobs = {
         description = "Kill all jobs";
         body = "kill (jobs -p)";
+      };
+      batman = {
+        # wrapper for completion's sake
+        wraps = "man";
+        body = ''
+          # This is adapted from the man function provided by fish itself.
+          # Work around the "builtin" manpage that everything symlinks to,
+          # by prepending our fish datadir to man. This also ensures that man gives fish's
+          # man pages priority, without having to put fish's bin directories first in $PATH.
+
+          # Preserve the existing MANPATH, and default to the system path (the empty string).
+          set -l manpath
+          if set -q MANPATH
+              set manpath $MANPATH
+          else # Branch above here depending on the implementation of the man command removed as it d
+              set manpath '''
+          end
+          # Notice the shadowing local exported copy of the variable.
+          set -lx MANPATH $manpath
+
+          # Prepend fish's man directory if available.
+          set -l fish_manpath $__fish_data_dir/man
+          if test -d $fish_manpath
+              set MANPATH $fish_manpath $MANPATH
+          end
+
+          if test (count $argv) -eq 1
+              # Some of these don't have their own page,
+              # and adding one would be awkward given that the filename
+              # isn't guaranteed to be allowed.
+              # So we override them with the good name.
+              switch $argv
+                  case :
+                      set argv true
+                  case '['
+                      set argv test
+                  case .
+                      set argv source
+              end
+          end
+
+          command batman $argv
+        '';
       };
       ls = exaOf "$argv";
       ll = exaOf "--long $argv";
@@ -103,6 +146,9 @@ with lib; {
         # default one ends w/ a space, which renders before the ❯ from character
         format = "[$indicator]($style)";
       };
+      nix_shell = {
+        #heuristic = true;
+      };
     };
   };
   programs.nix-index.enable = true;
@@ -111,12 +157,8 @@ with lib; {
   # Dircolors
   programs.dircolors.enable = true;
 
-  # exa
-  programs.exa = {
-    enable = true;
-    # replaced w/ custom aliases for adtl arg support
-    #enableAliases = true;
-  };
+  # eza, from exa
+  programs.eza.enable = true;
 
   # bat
   programs.bat.enable = true;

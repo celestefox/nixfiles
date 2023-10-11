@@ -20,6 +20,7 @@
         # gives you debug logs. not quite enough for my problem, but helpful
         #"G_MESSAGES_DEBUG=all"
         # TODO: i just stole this from shell env, there's gotta be a better way, but this works for now!!!
+        # TODO: see if there's somewhere i can extract something like this from user config? do this per user, instead of using my user for all users in this override?
         "PATH=/run/wrappers/bin:/home/celeste/.nix-profile/bin:/etc/profiles/per-user/celeste/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin:/home/celeste/.local/bin:/home/celeste/bin"
       ];
     };

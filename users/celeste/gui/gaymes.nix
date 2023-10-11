@@ -31,7 +31,7 @@ in {
       #polymc # multimc fork
       prismlauncher # PolyMC fork after takeover
       minetest # neat game
-      ccemux # computercraft emulator
+      #ccemux # computercraft emulator
       #runelite # OSRS client, ehh
       dolphin-emu # gamecube/wii emulator
       yuzu

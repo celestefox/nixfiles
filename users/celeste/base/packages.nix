@@ -11,7 +11,6 @@
     sd
     duc
     bat
-    exa
     netcat
     socat
     rsync

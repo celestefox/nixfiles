@@ -22,6 +22,20 @@ with lib; {
 
   nixpkgs.config.allowUnfree = true;
 
+  # heck!
+  # boot.crashDump.enable = true;
+  # # heck 3.0!!
+  # boot.kernelPatches = [
+  #   {
+  #     name = "netconsole";
+  #     patch = null;
+  #     extraStructuredConfig = with lib.kernel; {
+  #       NETCONSOLE = yes;
+  #       #NETCONSOLE_DYNAMIC = yes;
+  #     };
+  #   }
+  # ];
+
   # General host configuration
   networking.hostName = "amaterasu"; # Define your hostname.
   networking.hostId = "a7899ef0"; # Needed for zfs
@@ -46,7 +60,14 @@ with lib; {
 
   # redist firmwares, yes
   hardware.enableRedistributableFirmware = true;
-  boot.kernelParams = ["nohibernate" "amd_pstate=passive" "amd_pstate.shared_mem=1"]; # no work w/ zfs
+  boot.kernelParams = [
+    "nohibernate" # no work w/ zfs
+    "amd_pstate=passive" # give me frequency lowering please
+    "amd_pstate.shared_mem=1"
+    #"debug" # heck 2!
+    #"ignore_loglevel" # electric mewwymew?
+    #"netconsole=+@/,@10.255.254.13/d8:bb:c1:a7:dd:c5" # because kdump didn't work...
+  ];
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -314,8 +335,8 @@ with lib; {
 
   # Virtualization
   virtualisation.virtualbox.host = {
-    enable = true;
-    enableExtensionPack = true;
+    #enable = true;
+    #enableExtensionPack = true;
   };
   virtualisation.libvirtd = {
     enable = true;

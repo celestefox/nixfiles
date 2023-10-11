@@ -16,6 +16,8 @@
   slop = pkgs.slop + "/bin/slop";
   ss = config.celeste.ss.package + "/bin/ss";
   dunstctl = config.services.dunst.package + "/bin/dunstctl";
+  firefox = config.programs.firefox.package + "/bin/firefox";
+  ssModeName = ''ss: + link  sel  win  mon  all'';
   /*
        kitti3 = pkgs.poetry2nix.mkPoetryApplication rec { # TODO: unfinished potential improvement
     pname = "kitti3";
@@ -72,12 +74,16 @@ in {
         # Running
         "${modifier}+r" = "exec ${rofi} -show drun";
         "${modifier}+space" = "exec ${rofi} -show combi";
+        "XF86Tools" = "exec ${rofi} -show drun";
+        "XF86Search" = "exec ${rofi} -show drun";
+        #"XF86HomePage" = ''exec --no-startup-id ${dunstify} -u critical -t 2000 "todo!"'';
+        #"XF86WWW" = "exec ${firefox}";
         "${modifier}+d" = ''exec --no-startup-id ${dunstify} -u critical -t 2000 "use win+r!"'';
         "${modifier}+c" = ''exec ${rofi} -show calc -modi calc -no-show-match -no-sort -calc-command "${xdotool} type --clearmodifiers '{result}'"'';
         # Modes
         "${modifier}+s" = "mode resize"; #For size instead
-        "${modifier}+o" = "mode ss";
-        "${modifier}+Print" = "mode ss";
+        "${modifier}+o" = "mode ${ssModeName}";
+        "${modifier}+Print" = "mode ${ssModeName}";
         # Layout
         "${modifier}+p" = "layout toggle all"; #oops, right, l is used
         "${modifier}+v" = "split v"; # vertical
@@ -121,8 +127,8 @@ in {
       };
       # adtl simple mode(s)
       modes = lib.mkOptionDefault {
-        ss = {
-          # + link;  sel  win  mon  all
+        ${ssModeName} = {
+          # ss: + link;  sel  win  mon  all
           "Up" = "exec --no-startup-id ${ss} select copy; mode default";
           "Mod4+Up" = "exec --no-startup-id ${ss} select link; mode default";
           "Left" = "exec --no-startup-id ${ss} window copy; mode default";
