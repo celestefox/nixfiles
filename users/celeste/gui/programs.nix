@@ -7,5 +7,6 @@
     blender
     meld
     parsec-bin
+    nyxt
   ];
 }
