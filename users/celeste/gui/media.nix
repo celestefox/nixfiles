@@ -44,7 +44,7 @@
     };
     scriptOpts = {
       ytdl_hook = {
-        try_ytdl_first = true; # try parsing urls with yt-dlp first
+        try_ytdl_first = true; # tries ytdl first on links, and I'm probably watching a YT video anyways
         ytdl_path = config.programs.yt-dlp.package + "/bin/yt-dlp";
       };
       uosc = {
