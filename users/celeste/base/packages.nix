@@ -18,9 +18,9 @@
     curl
     wget
     httpie
-    ldns
-    dnsutils
-    whois
+    dnsutils # mostly for dig
+    ldns # because sometimes you want a second DNS opinion
+    whois # is a separate utility, which is occasionally still useful
     ripgrep
     nixpkgs-fmt
     pv
@@ -30,7 +30,7 @@
     zstd
     zip
     unzip # it, lock it, fill it, call it, find it, view it, code it, jam, unlock it
-    unrar-wrapper # instead of original unfree unrar, uses unar
+    unrar-wrapper # instead of original unfree unrar, uses unar to implement a command that works similarly enough
     niv
     neofetch
     units # `units -v`'s amazing
