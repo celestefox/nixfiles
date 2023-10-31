@@ -2,8 +2,9 @@
   systemd.network = {
     enable = true;
     wait-online = {
-      anyInterface = true;
-      ignoredInterfaces = ["wgnet"];
+      enable = false;
+      #anyInterface = true;
+      #ignoredInterfaces = ["wgnet"];
     };
     networks = {
       "20-ether" = {
