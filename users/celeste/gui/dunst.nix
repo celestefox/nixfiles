@@ -19,6 +19,11 @@
         appname = "Spotify";
         history_ignore = "yes";
       };
+      ytmusic = {
+        appname = "KDE Connect";
+        summary = "YouTube Music";
+        history_ignore = "yes";
+      };
     };
   };
 }
