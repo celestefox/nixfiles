@@ -6,8 +6,6 @@
   # Global programs
   home.packages = with pkgs; [
     playerctl
-    spotify
-    spotify-tui
     streamlink
     #ytmdesktop # never even worked for me...
     ytfzf
@@ -78,29 +76,4 @@
 
   # mpris-proxy
   services.mpris-proxy.enable = true;
-
-  # spotifyd
-  ## disabled cuz i never truly used it cuz it never worked well enough
-  /*
-  programs.spotifyd = {
-    enable = true;
-    package = (pkgs.spotifyd.override {
-      withPulseAudio = true;
-      withMpris = true;
-      withKeyring = true;
-    });
-    settings = {
-      global = {
-        username = "myst@focks.pw";
-        use_keyring = true; # For password storage
-        use_mpris = true; # Should allow multimedia keys to affect it?
-        backend = "pulseaudio";
-        device_name = "amaterasu";
-        bitrate = 320;
-        volume_normalization = true;
-        device_type = "computer";
-      };
-    };
-  };
-  */
 }
