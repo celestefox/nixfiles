@@ -27,6 +27,7 @@ in
         pkgs.deadnix # dead-code scanner
         pkgs.alejandra # code formatter
         pkgs.statix # anti-pattern finder
+        pkgs.nil # language server
       ]
       ++ scripts;
     shellHook = ''
