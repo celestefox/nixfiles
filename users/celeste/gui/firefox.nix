@@ -4,11 +4,9 @@
     package = pkgs.firefox.override {
       cfg = {
         smartcardSupport = true;
-        enablePlasmaBrowserIntegration = true;
-        enableTridactylNative = true;
         pipewireSupport = true;
       };
-      extraNativeMessagingHosts = [pkgs.ff2mpv];
+      nativeMessagingHosts = builtins.attrValues {inherit (pkgs) ff2mpv tridactyl-native plasma-browser-integration;};
     };
   };
   home.sessionVariables.BROWSER = "firefox";
