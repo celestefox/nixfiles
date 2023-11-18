@@ -36,8 +36,7 @@ with lib; {
         HTTP_ADDR = "127.0.0.1";
         DOMAIN = "git.foxgirl.tech";
         ROOT_URL = "https://git.foxgirl.tech";
-        #SSH_USER = "git";
-        SSH_DOMAIN = "foxgirl.tech"; # ...
+        SSH_DOMAIN = "star.foxgirl.tech";
         SSH_PORT = 62954;
       };
       ui = {
