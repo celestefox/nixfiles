@@ -10,10 +10,37 @@
   # Neovim
   programs.neovim = {
     enable = true;
-    extraPackages = builtins.attrValues {inherit (pkgs) rnix-lsp nixpkgs-fmt xclip lua-language-server iferr;};
+    extraPackages = builtins.attrValues {inherit (pkgs) nil alejandra nixpkgs-fmt xclip lua-language-server iferr fennel-ls;};
     extraLuaPackages = lp: builtins.attrValues {inherit (lp) jsregexp;}; # for luasnip
+    /*
+    because for some reason, home manager doesn't join the three bits of lua config with newlines... i can use the middle one to insert one nicely
+    i mean, maybe because things seemed to still work okay, but it at least always looks wrong... probably yet another reason i should drop this setup
+    mostly because i'd really like to actually get to edit lua files, really, also, heck, the rebuild cycle is very slow for editor configs imo/ime
+    (reason to do deploy-rs finally too? (separate user vs machine deploys (to a degree?)))
+    */
+    extraLuaConfig = "\n";
     plugins = with pkgs.vimPlugins; [
       vim-sensible
+      {
+        plugin = hotpot-nvim;
+        type = "lua";
+        config = ''
+          require'hotpot'.setup{
+            -- enable automatic attachment of diagnostics to fennel buffers
+            enable_hotpot_diagnostics = true,
+            compiler = {
+              -- options passed to fennel.compile for modules, defaults to {}
+              modules = {
+                -- not default but recommended, align lua lines with fnl source
+                -- for more debuggable errors, but less readable lua.
+                correlate = true,
+              },
+            },
+          }
+          -- wip
+          require'direnv' --.setup{}
+        '';
+      }
       vim-unimpaired
       {
         plugin = nvim-surround;
@@ -32,8 +59,14 @@
           vim.opt.relativenumber = true
         '';
       }
+      {
+        plugin = guess-indent-nvim;
+        type = "lua";
+        config = ''
+          require'guess-indent'.setup{}
+        '';
+      }
       vim-eunuch
-      vim-nix # TODO: does this provide anything anymore w/ tree-sitter in use?
       zoxide-vim
       {
         plugin = nvim-lspconfig;
@@ -74,25 +107,33 @@
           end
 
           -- capabilities for nvim-cmp
-          local capabilities = require'cmp_nvim_lsp'.default_capabilities()
+          local lsp = require'lspconfig'
+          lsp.util.default_config = vim.tbl_deep_extend("force", lsp.util.default_config, {
+            capabilities = require'cmp_nvim_lsp'.default_capabilities(),
+          })
 
           -- mow
           --vim.lsp.set_log_level("debug")
 
-          require'lspconfig'.rnix.setup{
+          lsp.nil_ls.setup{
+            settings = {
+              ['nil'] = {
+                formatting = {
+                  command = { "alejandra", "-" },
+                },
+              },
+            },
             on_attach=on_attach,
-            capabilities=capabilities,
           }
 
-          require'lspconfig'.pylsp.setup{
+          lsp.pylsp.setup{
             on_attach=on_attach,
-            capabilities=capabilities,
           }
 
           -- Tuned for editing lua for nvim, if I do do that. Override w/ a .luarc.json for projects if needed
           -- https://github.com/sumneko/lua-language-server/wiki/Configuration-File
           -- lua-language-server now, but looks the same there: https://github.com/LuaLS/lua-language-server/wiki/Configuration-File
-          require'lspconfig'.lua_ls.setup{
+          lsp.lua_ls.setup{
             settings = {
               Lua = {
                 runtime = {
@@ -113,7 +154,10 @@
               },
             },
             on_attach=on_attach,
-            capabilities=capabilities,
+          }
+
+          lsp.fennel_ls.setup{
+            on_attach=on_attach,
           }
         '';
       }
@@ -158,7 +202,6 @@
                 -- Code action groups
                 vim.keymap.set("n", "<space>cg", rt.code_action_group.code_action_group, bufopts)
               end,
-              capabilities=require'cmp_nvim_lsp'.default_capabilities(), -- TODO: same, weh?
             },
           }
         '';
@@ -171,7 +214,7 @@
           require'go'.setup{
             verbose = true,
             lsp_cfg = {
-              capabilities = require'cmp_nvim_lsp'.default_capabilities(),
+              -- capabilities = require'cmp_nvim_lsp'.default_capabilities(),
             },
             lsp_on_attach = true,
             lsp_keymaps = function(bufnr)
@@ -257,7 +300,6 @@
                 -- Code action groups
                 vim.keymap.set("n", "<space>cg", rt.code_action_group.code_action_group, bufopts)
               end,
-              capabilities=require'cmp_nvim_lsp'.default_capabilities(), -- TODO: same, weh?
             },
           }
         '';
@@ -309,12 +351,13 @@
                 }),
               },
             },
+            -- https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/mapping.lua#L36
+            -- summary: C-n next C-p prev C-y select C-e escape
             mapping = cmp.mapping.preset.insert{
               ['<C-b>'] = cmp.mapping.scroll_docs(-4),
               ['<C-f>'] = cmp.mapping.scroll_docs(4),
               ['<C-Space>'] = cmp.mapping.complete(),
-              ['<C-Space>'] = cmp.mapping.complete(),
-              ["<Tab>"] = cmp.mapping(function(fallback)
+              ['<Tab>'] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                   cmp.select_next_item()
                 -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
@@ -327,8 +370,7 @@
                   fallback()
                 end
               end, { "i", "s" }),
-
-              ["<S-Tab>"] = cmp.mapping(function(fallback)
+              ['<S-Tab>'] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                   cmp.select_prev_item()
                 elseif luasnip.jumpable(-1) then
@@ -379,7 +421,7 @@
         plugin = luasnip;
         type = "lua";
         config = ''
-          ls = require'luasnip'
+          local ls = require'luasnip'
 
           ls.setup{
             ft_func = require'luasnip.extras.filetype_functions'.from_pos_or_filetype,
@@ -437,15 +479,61 @@
               enable = true,
               additional_vim_regex_highlighting = false,
             },
+           indent = {
+              enable = true,
+            },
+            playground = {
+              enable = true,
+            },
+            matchup = {
+              enable = true,
+            },
           }
         '';
       }
       nvim-ts-context-commentstring
+      playground
       {
         plugin = nvim-treesitter-context;
         type = "lua";
         config = ''
           require'treesitter-context'.setup{}
+        '';
+      }
+      pkgs.vimExtraPlugins.vim-matchup # docs suggest it should be loaded before sensible for vim, but doesn't matter for neovim? so it's here, since the only config'd bit is treesitter
+      {
+        plugin = splitjoin-vim;
+        type = "lua";
+        config = ''
+          -- disable the default splitjoin mappings, it's used as fallback for treesj below
+          vim.g.splitjoin_split_mapping = ""
+          vim.g.splitjoin_join_mapping = ""
+        '';
+      }
+      {
+        plugin = treesj;
+        type = "lua";
+        config = ''
+          require'treesj'.setup{
+            use_default_keymaps = false,
+          }
+
+          -- https://github.com/Wansmer/treesj/discussions/19
+          local langs = require'treesj.langs'['presets']
+
+          vim.api.nvim_create_autocmd({ 'FileType' }, {
+            pattern = '*',
+            callback = function()
+              local opts = { buffer = true }
+              if langs[vim.bo.filetype] then
+                vim.keymap.set('n', 'gS', '<Cmd>TSJSplit<CR>', opts)
+                vim.keymap.set('n', 'gJ', '<Cmd>TSJJoin<CR>', opts)
+              else
+                vim.keymap.set('n', 'gS', '<Cmd>SplitjoinSplit<CR>', opts)
+                vim.keymap.set('n', 'gJ', '<Cmd>SplitjoinJoin<CR>', opts)
+              end
+            end,
+          })
         '';
       }
       {
