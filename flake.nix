@@ -177,8 +177,36 @@
                 (inputs.nixos-vscode-server + "/modules/vscode-server/default.nix")
               ];
             }))
-          ["amaterasu" "okami" "star"] #(nixpkgs.lib.attrNames treated.hosts)
+          [
+            "amaterasu"
+            /*
+            "okami"
+            */
+            "star"
+          ] #(nixpkgs.lib.attrNames treated.hosts)
         );
+
+      deploy = with inputs.deploy-rs.lib.x86_64-linux; {
+        sshOpts = ["-p" "62954"];
+        nodes = {
+          amaterasu = {
+            hostname = "amaterasu.wg.foxgirl.tech";
+            profiles.system = {
+              user = "root";
+              path = activate.nixos self.nixosConfigurations.amaterasu;
+            };
+          };
+          star = {
+            hostname = "star.wg.foxgirl.tech";
+            profiles.system = {
+              user = "root";
+              path = activate.nixos self.nixosConfigurations.star;
+            };
+          };
+        };
+      };
+
+      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
     }
     // utils.lib.eachDefaultSystem (system: let
       overlays = import nixfiles.overlays {

@@ -20,6 +20,7 @@ with pkgs.lib; let
       hosts)));
 in
   pkgs.mkShell {
+    name = "nf-shell";
     buildInputs =
       [
         pkgs.nix-prefetch-github
@@ -28,6 +29,7 @@ in
         pkgs.alejandra # code formatter
         pkgs.statix # anti-pattern finder
         pkgs.nil # language server
+        pkgs.deploy-rs.deploy-rs # new deploys?
       ]
       ++ scripts;
     shellHook = ''
@@ -35,8 +37,5 @@ in
       export HOME_UID=$(id -u)
       export HOME_USER=$(id -un)
       export NIX_PATH="$NIX_PATH:home=${toString ./.}"
-      # Starship uses to determine nix shell name
-      # unfortunately, looks like this doesn't get reset by either type of nix shell while in a nix-shell direnv
-      export name=nf-shell
     '';
   }
