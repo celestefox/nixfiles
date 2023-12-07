@@ -198,9 +198,9 @@
 
                 -- Rust specific
                 -- Hover actions
-                vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, bufopts)
+                vim.keymap.set("n", "<C-space>", require'rust-tools'.hover_actions.hover_actions, bufopts)
                 -- Code action groups
-                vim.keymap.set("n", "<space>cg", rt.code_action_group.code_action_group, bufopts)
+                vim.keymap.set("n", "<space>cg", require'rust-tools'.code_action_group.code_action_group, bufopts)
               end,
             },
           }
