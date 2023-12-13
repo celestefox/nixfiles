@@ -39,6 +39,7 @@
       osd-bar = false;
       border = false;
       volume = 60;
+      ytdl-raw-options = "mark-watched=,cookies-from-browser=firefox";
     };
     scriptOpts = {
       ytdl_hook = {
