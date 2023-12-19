@@ -27,6 +27,7 @@ in {
       bottles # alternative wineprefix manager/incl own deps instead of winetricks
       winetricks # fancy wine stuff
       protontricks # winetricks for proton
+      protonup-qt # installs proton-ge, luxtorpedia, wine-ge
       #minecraft # the normal launcher, ehh
       #polymc # multimc fork
       prismlauncher # PolyMC fork after takeover
@@ -37,6 +38,7 @@ in {
       yuzu
       ryujinx # switch emulators
       #factorio # this works if you manually add to the store, at least, but
+      ship-of-harkinian # wao
     ])
   ];
 
@@ -80,14 +82,23 @@ in {
         StartupWMClass = "Ryujinx";
       };
     };
-    "stardew.smapi" = let
-    in {
+    "stardew.smapi" = {
       name = "Stardew Valley (SMAPI)";
       genericName = "1.5.6/3.18.4";
       exec = ''kitty -d ${config.home.homeDirectory}/games/stardew/game bash -c "steam-run gamemoderun ${pkgs.rlwrap}/bin/rlwrap -a -r ./StardewModdingAPI ; read -r -p \"Press enter to exit.\""'';
       #path = config.home.homeDirectory + "/games/stardew/game";
       icon = mkIf (builtins.pathExists ./stardew.png) ./stardew.png; # https://www.deviantart.com/syhmac/art/Stardew-Valley-Honeycomb-Rainmeter-Icon-859476552
       # TODO: not actually included in repo, download yourself or
+      categories = ["Game"];
+    };
+    "soh" = {
+      name = "Ship of Harkinian";
+      exec = "soh";
+      settings.Path = config.home.homeDirectory + "/games/soh";
+      icon = pkgs.fetchurl {
+        url = "https://github.com/HarbourMasters/Shipwright/raw/9b947615bcf39e8546699edeafe77ebb39426caa/soh/macosx/sohIcon.png";
+        hash = "sha256-M//KmohmKXALzpLzNNPUYNpI9BshlIVMAoDeo/ZFGFA=";
+      };
       categories = ["Game"];
     };
   };
