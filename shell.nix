@@ -8,6 +8,7 @@ with pkgs.lib; let
       "localhost-rebuild" = ''
         nixos-rebuild --flake "${toString ./.}" --use-remote-sudo --verbose "$@"
       ''; # [[ $? -eq 0 && $1 == "switch" ]] && journalctl -o cat --no-pager "_SYSTEMD_INVOCATION_ID=$(systemctl show --value -p InvocationID home-manager-$(id -un).service)"
+      "lasthomelog" = ''journalctl -o cat --no-pager "_SYSTEMD_INVOCATION_ID=$(systemctl show --value -p InvocationID home-manager-$(id -un).service)"'';
       "nixfiles-repl" = ''exec nix repl "${toString ./.}/repl.nix"'';
       "previewage" = ''tail +2 "''${1:--}" | head -n -1 | base64 -d'';
     }
