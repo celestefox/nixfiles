@@ -152,7 +152,9 @@ with lib; {
     };
   };
   programs.nix-index.enable = true;
+
   programs.direnv.enable = true;
+  programs.direnv.nix-direnv.enable = true;
 
   # Dircolors
   programs.dircolors.enable = true;
