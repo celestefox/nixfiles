@@ -26,6 +26,7 @@
       "F" = "script-binding quality_menu/video_formats_toggle";
       "Alt+f" = "script-binding quality_menu/audio_formats_toggle";
       "space" = "cycle pause; script-binding uosc/flash-pause-indicator";
+      "mbtn_right" = "cycle pause; script-binding uosc/flash-pause-indicator";
       "m" = "no-osd cycle mute; script-binding uosc/flash-volume";
       "9" = "no-osd add volume -2; script-binding uosc/flash-volume";
       "0" = "no-osd add volume 2; script-binding uosc/flash-volume";
@@ -35,11 +36,13 @@
       "shift+left" = "seek -30; script-binding uosc/flash-timeline";
     };
     config = {
+      border = false;
+      sub-auto = "fuzzy";
       osc = false; # uosc
       osd-bar = false;
-      border = false;
+      #slang = "eng,en,en-en,en-nP7-2PuUl7o,en-en-nP7-2PuUl7o";
       volume = 60;
-      ytdl-raw-options = "mark-watched=,cookies-from-browser=firefox";
+      ytdl-raw-options = ''mark-watched=,cookies-from-browser=firefox,sub-lang="en.*",write-sub=,write-auto-sub='';
     };
     scriptOpts = {
       ytdl_hook = {
@@ -48,6 +51,37 @@
       };
       uosc = {
         pause_indicator = "manual";
+      };
+    };
+    profiles = {
+      "foxgirl.ytsubs" = {
+        /*
+        It seems like the "right" way to add on multiple options, and maybe
+        even look into restoring, would be through multiple "append"s (or
+        "remove"s for restoring). That's... not really something expressible in
+        the current home-manager module, I'd have to append text to the mpv
+        conf myself? However, I'm certainly already forcibly setting
+        `ytdl-raw-options`, I have the value right there, so... I can just
+        build it here, I guess?
+
+        https://github.com/mpv-player/mpv/issues/11675 suggests yt-dlp's
+        `sub-lang` option is a regex, but I don't want their actual suggested
+        regex as it isn't right for all videos - i have at least one where the
+        only english (auto) caption is only en, and investigating the video in
+        the issue, their en-en, even if it has the right contents, is the one
+        from the autocaptions list, too, not the actual original caption, which
+        is `en-nP7-2PuUl7o`. So, tell yt-dlp to only get anything starting with
+        en, maybe slang can order tracks usefully?
+
+        I think that, while the options say "write", since `mpv` passes `-J`,
+        it only also prints out the right urls as part of the, i think, JSON
+        data? See https://github.com/mpv-player/mpv/blob/master/player/lua/ytdl_hook.lua#L724
+        , `json.requested_subtitles`.
+
+        I'm still not totally sure... this might be something I want as default settings,
+        actually/eventually? :thinking:
+        */
+        # ytdl-raw-options = base_ytdl_opts + '',sub-lang="en.*",write-sub=,write-auto-sub='';
       };
     };
   };
