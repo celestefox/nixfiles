@@ -27,6 +27,14 @@ stdenv.mkDerivation rec {
       --replace '/home/william/scripts/ff2mpv' "$out/bin/ff2mpv.py"
   '';
 
+  /*
+  An explanation of the changes here (makeBinaryWrapper also added above):
+  mpv started to crash from ff2mpv, which i found out seemed to maybe be
+  because of library versions, and I could see that it was being launched
+  with a LD_LIBRARY_PATH, apparently from firefox. ff2mpv itself is fine and
+  does not crash, but it is the place where the variable should probably be
+  dropped, and this is a nix-specific fix needed here.
+  */
   installPhase = ''
     mkdir -p $out/bin $out/lib/mozilla/native-messaging-hosts
     cp ff2mpv.py $out/bin
