@@ -164,7 +164,7 @@ with lib; {
     enable = true;
     ipv4 = true;
     ipv6 = true;
-    nssmdns = true;
+    nssmdns4 = true;
     publish = {
       enable = true;
       domain = true;
@@ -346,7 +346,15 @@ with lib; {
     };
   };
   virtualisation.docker = {
-    enable = true;
+    # if you're gonna be a pain... the error seems to be this but i think i might try a Different container something instead too
+    /*
+    failed to start daemon: error initializing graphdriver: prior storage driver
+    devicemapper is deprecated and will be removed in a future release; update
+    the the daemon configuration and explicitly choose this storage driver to
+    continue using it; visit https://docs.docker.com/go/storage-driver/ for more
+    information
+    */
+    #enable = true;
   };
 
   # Steam controller support

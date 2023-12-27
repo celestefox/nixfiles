@@ -9,6 +9,11 @@
       #pkgs.xdg-desktop-portal-gtk
       pkgs.xdg-desktop-portal-kde
     ];
+    config = {
+      common = {
+        default = "kde";
+      };
+    };
     # the setting this is all for, allows for a way to open a browser from steam-run
     xdgOpenUsePortal = true;
   };
