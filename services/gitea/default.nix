@@ -41,7 +41,7 @@ with lib; {
       };
       ui = {
         THEMES = "gitea,arc-green,plex,aquamarine,dark,dracula,hotline,organizr,space-gray,hotpink,onedark,overseerr,nord";
-        DEFAULT_THEME = "overseerr";
+        DEFAULT_THEME = "arc-green"; # unfortunately, various issues, especially on diffs
       };
     };
   };
