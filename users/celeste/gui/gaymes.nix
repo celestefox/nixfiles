@@ -7,6 +7,15 @@
 with lib; let
   myWine = pkgs.wineWowPackages.full;
   mySteam = pkgs.steam.override {extraPkgs = pkgs': [pkgs'.openssl_1_1];};
+  myRetro = pkgs.retroarch.override {
+    cores = with pkgs.libretro; [
+      bsnes
+      bsnes-hd
+      bsnes-mercury
+      mgba
+      mupen64plus
+    ];
+  };
   #myBottles = pkgs.bottles.override { wineWowPackages = { minimal = myWine; }; };
   # didn't even get this to work
   #factorio_token = builtins.readFile ./FACTORIO_TOKEN;
@@ -20,6 +29,7 @@ in {
     (with pkgs; [
       mySteam # steam the platform
       mySteam.run # (steam-run, good for foreign game binaries of all kinds)
+      myRetro
       #lutris # some game manager i guess prolly
       eidolon
       wyvern # GOG games downloader/installer handler
@@ -39,6 +49,7 @@ in {
       ryujinx # switch emulators
       #factorio # this works if you manually add to the store, at least, but
       ship-of-harkinian # wao
+      ares
     ])
   ];
 
@@ -57,6 +68,9 @@ in {
       };
       java = {
         exec_name = false;
+        procmem = true;
+        ram = true;
+        swap = true;
       };
       Ryujinx = {
         exec_name = false;
