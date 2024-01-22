@@ -41,8 +41,30 @@
       osc = false; # uosc
       osd-bar = false;
       #slang = "eng,en,en-en,en-nP7-2PuUl7o,en-en-nP7-2PuUl7o";
-      volume = 60;
-      ytdl-raw-options = ''mark-watched=,cookies-from-browser=firefox,sub-lang="en.*",write-sub=,write-auto-sub='';
+      volume = 70;
+      # best video no larger than 1080p on smallest edge or smallest res - they should still get returned as low prio and picked up by quality-menu still tho hopefully?
+      # mark as watched for youtube
+      # extract cookies from firefox, mainly for mark-watched
+      # pass subs to mpv that match regex "en.*", currently see ramble from earlier pass profile foxgirl.ytsubs below before I moved it all here instead
+      # write subs, does not actually write to disk as mpv is getting the urls instead and handles them
+      # and also the auto subs, as many youtube videos lack subs. note I do not automatically load subs in mpv with a slang setting.
+      ytdl-raw-options = ''format-sort="res:1080",mark-watched=,cookies-from-browser=firefox,sub-lang="en.*",write-sub=,write-auto-sub='';
+      # quality experiments
+      # mainly based on https://wiki.archlinux.org/title/Mpv#High_quality_configurations
+      vo = "gpu-next";
+      profile = "gpu-hq";
+      # the ewa_lanczossharp recommended combined w/ gpu-next warns to move to this scale-blur value instead
+      scale = "ewa_lanczos";
+      scale-blur = 0.981251;
+      # the message is not actually changed to cscale in text, but applies here too
+      cscale = "ewa_lanczos";
+      cscale-blur = 0.981251;
+      # this is the fancy video sync stuff now:
+      video-sync = "display-resample";
+      # try to interpolate, needs video-sync=display-*
+      interpolation = true;
+      # "smoothmotion"
+      tscale = "oversample";
     };
     scriptOpts = {
       ytdl_hook = {
