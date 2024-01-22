@@ -362,7 +362,7 @@
                   cmp.select_next_item()
                 -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
                 -- they way you will only jump inside the snippet region
-                elseif luasnip.expand_or_jumpable() then
+                elseif luasnip.expand_or_locally_jumpable() then
                   luasnip.expand_or_jump()
                 elseif has_words_before() then
                   cmp.complete()
@@ -376,6 +376,13 @@
                 elseif luasnip.jumpable(-1) then
                   luasnip.jump(-1)
                 else
+                  fallback()
+                end
+              end, { "i", "s" }),
+              ['<C-e>'] = cmp.mapping(function(fallback)
+                if luasnip.choice_active() then
+                  luasnip.change_choice(1)
+                elseif not cmp.abort() then
                   fallback()
                 end
               end, { "i", "s" }),
@@ -471,10 +478,6 @@
           require'nvim-treesitter.configs'.setup{
             -- Don't auto install on NixOS
             auto_install = false,
-            context_commentstring = {
-              enable = true,
-              enable_autocmd = false,
-            },
             highlight = {
               enable = true,
               additional_vim_regex_highlighting = false,
@@ -491,7 +494,15 @@
           }
         '';
       }
-      nvim-ts-context-commentstring
+      {
+        plugin = nvim-ts-context-commentstring;
+        type = "lua";
+        config = ''
+          require'ts_context_commentstring'.setup{
+            enable_autocmd = false,
+          }
+        '';
+      }
       playground
       {
         plugin = nvim-treesitter-context;
@@ -564,8 +575,17 @@
         plugin = pkgs.vimExtraPlugins.starry-nvim;
         type = "lua";
         config = ''
-          vim.g.starry_italic_comments = true
-          vim.g.starry_disable_background = true -- transparency support
+          require'starry'.setup{
+            italics = {
+              comments = true,
+            },
+            disable = {
+              background = true,
+            },
+            style = {
+              name = 'moonlight', -- hmm...
+            },
+          }
           vim.cmd.colorscheme 'moonlight'
         '';
       }
