@@ -62,7 +62,7 @@
     #fenix.inputs.nixpkgs.follows = "nixpkgs";
     # arcnmx/nixfiles
     # todo: figure out what to do about base16 removal;;
-    arcexprs.url = "github:arcnmx/nixexprs/56b851d3bad6571d1c4033e73fa8869eb403e989";
+    arcexprs.url = "github:arcnmx/nixexprs";
     arcexprs.flake = false;
     # devenv
     #devenv.url = "github:cachix/devenv/latest";
