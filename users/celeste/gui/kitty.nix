@@ -99,8 +99,8 @@ in {
       };
     };
 
-    # ibus for kitty? prolly good for others? TODO: revisit this, I don't actually run ibus in practice
-    home.sessionVariables."GLFW_IM_MODULE" = "ibus";
+    # ibus for kitty? prolly good for others? TODO: new im to replace ibus?
+    #home.sessionVariables."GLFW_IM_MODULE" = "ibus";
 
     # the pseudo-session-module's config bit:
 

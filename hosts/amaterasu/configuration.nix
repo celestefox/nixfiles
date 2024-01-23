@@ -44,13 +44,6 @@ with lib; {
     #consoleFont = "Lat2-Terminus16";
     #consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
-
-    # think this borkedish w/ home-manager?
-    # TODO: replace w/ different input method, in home manager? :/
-    inputMethod = {
-      enabled = "ibus";
-      ibus.engines = with pkgs.ibus-engines; [anthy mozc m17n table table-others uniemoji];
-    };
   };
 
   # Set your time zone.
