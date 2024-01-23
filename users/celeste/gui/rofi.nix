@@ -1,10 +1,14 @@
-{ config, pkgs, lib, ... }: with lib; {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+with lib; {
   ## Rofi
   programs.rofi = {
     enable = true;
-    font = "Fira Code Regular 12";
     terminal = "${pkgs.kitty}/bin/kitty";
-    theme = ./simple-tokyonight.rasi;
     plugins = with pkgs; [
       rofi-calc
       rofi-emoji
@@ -25,9 +29,9 @@
   home.packages = [
     (pkgs.writeShellApplication {
       name = "pmenu";
-      runtimeInputs = [ config.programs.rofi.finalPackage pkgs.rofi-power-menu ];
+      runtimeInputs = [config.programs.rofi.finalPackage pkgs.rofi-power-menu];
       text = ''
-      rofi -show power -modi "power:rofi-power-menu"
+        rofi -show power -modi "power:rofi-power-menu"
       '';
     })
   ];

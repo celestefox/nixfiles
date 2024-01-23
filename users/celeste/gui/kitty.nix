@@ -56,23 +56,21 @@ in {
   config = {
     programs.kitty = {
       enable = true;
-      font = {
+      # The names kitty sees for fonts are not always quite fontconfig names, see `kitty +list-fonts`
+      font = lib.mkForce {
         name = "FiraCode Nerd Font Mono Ret";
         size = 10;
       };
-      theme = "Rosé Pine Moon";
+      #theme = "Rosé Pine Moon";
       settings = {
         scrollback_lines = 10000;
         enable_audio_bell = false;
-        background_opacity = "0.9";
+        #background_opacity = "0.9";
         dynamic_background_opacity = true;
         allow_remote_control = true;
         update_check_interval = 0;
         editor = "nvim";
       };
-      #keybindings = let nav = mew; in {
-      #  "ctrl+j" = ""
-      #};
       keybindings = {
         "ctrl+shift+p>n" = "kitten hints --type linenum --linenum-action=tab nvim +{line} {path}";
         "ctrl+shift+p>e" = ''kitten hints --type path --program "launch --type=tab nvim"'';

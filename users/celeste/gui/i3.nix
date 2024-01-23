@@ -64,11 +64,6 @@ in {
       workspaceAutoBackAndForth = true;
       # no bars mew
       bars = lib.mkForce [];
-      # But some i3 stuff still uses these font settings...
-      fonts = {
-        names = ["FiraCode Nerd Font"];
-        size = 12.0;
-      };
       # keybindings
       keybindings = lib.mkOptionDefault {
         # Running
