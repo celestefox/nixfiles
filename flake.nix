@@ -61,7 +61,6 @@
     #fenix.url = "github:nix-community/fenix";
     #fenix.inputs.nixpkgs.follows = "nixpkgs";
     # arcnmx/nixfiles
-    # todo: figure out what to do about base16 removal;;
     arcexprs.url = "github:arcnmx/nixexprs";
     arcexprs.flake = false;
     # devenv
@@ -69,6 +68,13 @@
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    stylix = {
+      url = "github:danth/stylix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-compat.follows = "flake-compat";
+      };
     };
   };
 
@@ -176,6 +182,8 @@
                 inputs.impermanence.nixosModules.impermanence
                 # VSCode remote fixer
                 (inputs.nixos-vscode-server + "/modules/vscode-server/default.nix")
+                # stylix
+                inputs.stylix.nixosModules.stylix
               ];
             }))
           [
