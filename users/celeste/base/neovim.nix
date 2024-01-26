@@ -575,6 +575,7 @@
         plugin = pkgs.vimExtraPlugins.starry-nvim;
         type = "lua";
         config = ''
+          vim.opt.termguicolors = true
           require'starry'.setup{
             italics = {
               comments = true,
@@ -593,7 +594,6 @@
         plugin = aurora;
         type = "lua";
         config = ''
-          vim.opt.termguicolors = true
           vim.g.aurora_italic = 1
           vim.g.aurora_transparent = 1
           -- vim.cmd.colorscheme 'aurora'
