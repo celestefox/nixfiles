@@ -377,7 +377,7 @@ with lib; {
     # control = "sufficient"; # default
   };
 
-  home-manager.users.celeste = {imports = [users.celeste.hm users.celeste.gui];};
+  home-manager.users.celeste = {imports = [users.celeste.hm users.celeste.gui users.celeste.localmail];};
 
   users.mutableUsers = false;
   users.users = {
