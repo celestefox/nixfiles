@@ -1,4 +1,8 @@
-{ lib, pkgs, ... }: with lib; {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   # Fish pls
   users.defaultUserShell = pkgs.fish;
   programs.fish = {
@@ -6,9 +10,12 @@
   };
 
   # Dun want the default shell aliases...
-  environment.shellAliases = mkForce {
+  environment.shellAliases = lib.mkForce {
     l = null;
     ls = null;
     ll = null;
   };
+
+  # kitten everywhere
+  environment.systemPackages = lib.singleton pkgs.kitty.kitten;
 }
