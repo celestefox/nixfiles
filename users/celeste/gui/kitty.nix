@@ -58,23 +58,31 @@ in {
       enable = true;
       # The names kitty sees for fonts are not always quite fontconfig names, see `kitty +list-fonts`
       font = lib.mkForce {
-        name = "FiraCode Nerd Font Mono Ret";
+        name = "Fira Code Retina";
         size = 10;
       };
       #theme = "Rosé Pine Moon";
       settings = {
-        scrollback_lines = 10000;
+        scrollback_lines = 100000;
         enable_audio_bell = false;
         #background_opacity = "0.9";
         dynamic_background_opacity = true;
         allow_remote_control = true;
         update_check_interval = 0;
         editor = "nvim";
+        tab_bar_style = "powerline";
+        tab_powerline_style = "slanted";
       };
       keybindings = {
         "ctrl+shift+p>n" = "kitten hints --type linenum --linenum-action=tab nvim +{line} {path}";
         "ctrl+shift+p>e" = ''kitten hints --type path --program "launch --type=tab nvim"'';
+        "ctrl+alt+enter" = ''launch --cwd=current'';
       };
+      extraConfig = ''
+        modify_font underline_position 2
+        # originally for v2.3.3, updated to v3.1.1 by celeste
+        symbol_map U+23FB-U+23FE,U+2665,U+26A1,U+2B58,U+E000-U+E00A,U+E0A0-U+E0A3,U+E0B0-U+E0D4,U+E200-U+E2A9,U+E300-U+E3E3,U+E5FA-U+E6AA,U+E700-U+E7C5,U+EA60-U+EBEB,U+F000-U+F2E0,U+F300-U+F32F,U+F400-U+F4A9,U+F0001-U+F1AF0 Symbols Nerd Font Mono
+      '';
       sessions = {
         status = {
           text = ''
