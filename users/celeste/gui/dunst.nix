@@ -8,10 +8,11 @@
     enable = true;
     settings = {
       global = {
-        dmenu = "${config.programs.rofi.finalPackage}/bin/rofi -dmenu -p dunst";
         browser = "${pkgs.xdg-utils}/bin/xdg-open";
+        dmenu = "${config.programs.rofi.finalPackage}/bin/rofi -dmenu -p dunst";
         enable_posix_regex = true;
         follow = "mouse";
+        idle_threshold = "5m";
       };
       spotify = {
         appname = "Spotify";
