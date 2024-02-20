@@ -28,6 +28,7 @@
     #ricty
 
     # Warning: big!
-    google-fonts
+    # TODO: disabled to see if it helps emoji work
+    #google-fonts
   ];
 }
