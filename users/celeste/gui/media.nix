@@ -41,7 +41,8 @@
       osc = false; # uosc
       osd-bar = false;
       #slang = "eng,en,en-en,en-nP7-2PuUl7o,en-en-nP7-2PuUl7o";
-      volume = 70;
+      #volume = 70;
+      volume-max = 200;
       # best video no larger than 1080p on smallest edge or smallest res - they should still get returned as low prio and picked up by quality-menu still tho hopefully?
       # mark as watched for youtube
       # extract cookies from firefox, mainly for mark-watched
