@@ -1,7 +1,7 @@
-{ config, lib, ... }: with lib; {
-  # Firewall
-  networking.firewall.allowedTCPPorts = [ 53 ];
-  networking.firewall.allowedUDPPorts = [ 53 ];
+{pkgs, ...}: {
+  # Firewall - this looks scary; access is limited by listen addresses instead!
+  networking.firewall.allowedTCPPorts = [53];
+  networking.firewall.allowedUDPPorts = [53];
   # Use it properly locally...
   networking.resolvconf.useLocalResolver = false;
   networking.resolvconf.extraConfig = ''
@@ -9,6 +9,8 @@
   '';
   services.kresd = {
     enable = true;
+    # brings cqueues for watching files, amongst other things
+    package = pkgs.knot-resolver.override {extraFeatures = true;};
     # Listening
     listenPlain = [
       "10.255.255.10:53"
@@ -58,13 +60,39 @@
       --- Graft it
       policy.add(policy.suffix(policy.FLAGS({'NO_CACHE', 'NO_EDNS'}), extraTrees))
       policy.add(policy.suffix(policy.ANSWER({
-          [kres.type.A] = { rdata=kres.str2ip('10.255.255.10'), ttl = 300 },
-          [kres.type.AAAA] = { rdata=kres.str2ip('2a01:4f9:c010:2cf9:f::10'), ttl=300 }
+        [kres.type.A] = { rdata=kres.str2ip('10.255.255.10'), ttl = 300 },
+        [kres.type.AAAA] = { rdata=kres.str2ip('2a01:4f9:c010:2cf9:f::10'), ttl=300 }
       }), extraTrees))
 
       -- Blacklist TLDs
-      policy.add(policy.suffix(policy.DENY_MSG('This network blocks certain gTLDs to prevent name confusion'), policy.todnames({'exe.', 'zip.', 'mov.'})))
+      policy.add(policy.suffix(policy.DENY_MSG('foxgirl.tech blocks certain gTLDs to prevent name confusion'), policy.todnames({'exe.', 'zip.', 'mov.'})))
+
+      -- General filtering, todo: probably bootstraps badly
+      policy.add(policy.rpz(policy.DENY_MSG('domain blocked by foxgirl.tech'),
+        '/var/lib/knot-resolver/rpz/hblock.rpz',
+        true
+      ))
     '';
+  };
+
+  systemd.services."knot-resolver-hblock" = {
+    description = "fetch and process host files for knot";
+    script = builtins.readFile ./knot-resolver-hostfetch.bash;
+    path = with pkgs; [coreutils hblock];
+    serviceConfig = {
+      Type = "oneshot";
+      User = "knot-resolver";
+      #RuntimeDirectory = "knot-resolver-hblock";
+      StateDirectory = "knot-resolver/rpz";
+    };
+  };
+
+  systemd.timers."knot-resolver-hblock" = {
+    wantedBy = ["timers.target"];
+    timerConfig = {
+      OnCalendar = "daily";
+      Persistent = true;
+    };
   };
   # TODO: adblocking, i was gonna do it separate but nah
 }
