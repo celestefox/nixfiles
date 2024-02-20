@@ -1,5 +1,4 @@
-{lib, ...}:
-with lib; let
+{...}: let
   personalHost = {
     port = 62954;
     forwardAgent = true;
@@ -18,7 +17,7 @@ in {
     compression = true;
     includes = ["config_local"];
     matchBlocks = {
-      # TODO: still needed for deploys, see about actually using deploy-rs soon?
+      "amaterasu.wg.foxgirl.tech" = personalHost;
       "star" = personalHost // {hostname = "star.wg.foxgirl.tech";};
       "star.foxgirl.tech" = personalHost;
       "star.wg.foxgirl.tech" = personalHost;
