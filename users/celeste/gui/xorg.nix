@@ -9,7 +9,7 @@
   home.keyboard = {
     layout = "us,us";
     variant = ",dvp";
-    options = ["grp:alt_space_toggle" "grp_led:caps" "caps:none" "ctrl:nocaps" "lv3:switch" "compose:sclk"];
+    options = ["grp:alt_space_toggle" "grp_led:caps" "caps:none" "ctrl:nocaps" "lv3:switch"];
   };
   # xcape
   services.xcape = {
