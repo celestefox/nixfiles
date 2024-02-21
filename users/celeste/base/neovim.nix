@@ -103,6 +103,9 @@
               indent = {
                 highlight = rainbowhl,
               },
+              scope = {
+                char = '▌',
+              },
             }
           '';
       }
