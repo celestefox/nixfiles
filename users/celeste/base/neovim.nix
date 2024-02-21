@@ -569,7 +569,6 @@
           }
         '';
       }
-      playground
       {
         plugin = nvim-treesitter-context;
         type = "lua";
