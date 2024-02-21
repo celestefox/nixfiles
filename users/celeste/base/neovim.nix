@@ -619,31 +619,50 @@
       {
         plugin = ex.nvim-autopairs;
         type = "lua";
-        config = ''
-          local npairs = require'nvim-autopairs'
-          local cmp_ap = require'nvim-autopairs.completion.cmp'
-          local ts_utils = require'nvim-treesitter.ts_utils'
-          local Rule = require'nvim-autopairs.rule'
-          local np_conds = require'nvim-autopairs.conds'
-          local ts_conds = require'nvim-autopairs.ts-conds'
+        config =
+          /*
+          lua
+          */
+          ''
+            local npairs = require'nvim-autopairs'
+            local cmp_ap = require'nvim-autopairs.completion.cmp'
+            local ts_utils = require'nvim-treesitter.ts_utils'
+            local Rule = require'nvim-autopairs.rule'
+            local np_conds = require'nvim-autopairs.conds'
+            local ts_conds = require'nvim-autopairs.ts-conds'
 
-          npairs.setup{
-            check_ts = true,
-          }
+            npairs.setup{
+              check_ts = true,
+            }
 
-          cmp.event:on(
-            "confirm_done",
-            cmp_ap.on_confirm_done()
-          )
+            cmp.event:on(
+              "confirm_done",
+              cmp_ap.on_confirm_done()
+            )
 
-          -- nix indented strings
-          npairs.add_rules{
-            Rule("'''","'''",{"nix"})
-              :with_pair(ts_conds.is_not_ts_node{'string','comment'}),
-          }
+            -- nix indented strings
+            -- conditions explained:
+            -- context: don't run in injections, which includes comments
+            -- not ts node: prevents it in string contents (comment as redundancy too)
+            -- not after/before text: mainly for edge cases around these strings:
+            -- if you're in one and type 2x' context is back to nix and not string node
+            -- so a third, which you probably want to type because it escapes an actual 2x'
+            -- triggers the rule, leaving you with another 2, or 5 in a row. this might
+            -- be overkill on the rules, but it seems to work well for now
+            -- is annoying to try to talk about this in a context where the escaping you are
+            -- talking about is active, so you gotta do things like 3x', >.<
+            npairs.add_rules{
+              Rule("'''","'''",{"nix"})
+                :with_pair(ts_conds.is_not_in_context())
+                :with_pair(ts_conds.is_not_ts_node{'string_fragment','comment'})
+                :with_pair(np_conds.not_after_text"'''")
+                :with_pair(np_conds.not_before_text"'''"),
+            }
 
-          npairs.get_rules"'"[1].not_filetypes = {'rust','nix'}
-        '';
+            -- and disable the single ' rule for nix (it is already not rust by default because
+            -- there's a rust specific single quote rule, so that stays in too)
+            npairs.get_rules"'"[1].not_filetypes = {'rust','nix'}
+          '';
       }
       # Pretty quickfix
       {
