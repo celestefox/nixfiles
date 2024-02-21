@@ -345,12 +345,6 @@
                 vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
                 vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
                 vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
-
-                -- Rust specific
-                -- Hover actions
-                vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, bufopts)
-                -- Code action groups
-                vim.keymap.set("n", "<space>cg", rt.code_action_group.code_action_group, bufopts)
               end,
               root_dir = lsp.util.root_pattern("package.json"), -- don't match tsconfig because deno
               single_file_support = false, -- TODO: same, but testing needed still
