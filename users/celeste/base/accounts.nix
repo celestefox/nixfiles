@@ -1,9 +1,14 @@
-{osConfig, ...}: {
+{
+  osConfig,
+  config,
+  lib,
+  ...
+}: {
   accounts.email = {
     accounts = {
       "celeste" = {
         address = "celeste@foxgirl.tech";
-        passwordCommand = "cat ${osConfig.age.secrets.email_catfg.path}";
+        passwordCommand = lib.mkIf config.celeste.localmail "cat ${osConfig.age.secrets.email_catfg.path}";
         primary = true;
         flavor = "fastmail.com";
         realName = "Celeste";

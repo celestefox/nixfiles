@@ -2,16 +2,9 @@
   config,
   lib,
   pkgs,
-  root,
   ...
 }:
 with lib; {
-  age.secrets.gitea-smtp = {
-    file = root + "/secrets/gitea-smtp.age";
-    owner = "gitea";
-    group = "gitea";
-  };
-
   services.postgresql = {
     enable = true;
   };
@@ -24,7 +17,6 @@ with lib; {
       name = "gitea";
       user = "gitea";
     };
-    mailerPasswordFile = config.age.secrets.gitea-smtp.path;
     settings = {
       service = {
         DISABLE_REGISTRATION = true;
@@ -39,10 +31,18 @@ with lib; {
         SSH_DOMAIN = "star.foxgirl.tech";
         SSH_PORT = 62954;
       };
+      mailer = lib.mkIf (config.services.mail.sendmailSetuidWrapper != null) {
+        ENABLED = true;
+        FROM = "foxgirl git <gitea@git.foxgirl.tech>";
+        PROTOCOL = "sendmail";
+        SENDMAIL_PATH = config.security.wrapperDir + "/" + config.services.mail.sendmailSetuidWrapper.program;
+        SENDMAIL_ARGS = "--";
+      };
       ui = {
         THEMES = "gitea,arc-green,plex,aquamarine,dark,dracula,hotline,organizr,space-gray,hotpink,onedark,overseerr,nord";
         DEFAULT_THEME = "arc-green"; # unfortunately, various issues, especially on diffs
       };
+      # log.LEVEL = "Trace";
     };
   };
 

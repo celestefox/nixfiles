@@ -1,7 +1,8 @@
 {
   config,
-  pkgs,
   lib,
+  pkgs,
+  root,
   ...
 }: {
   users.users.celeste = {
@@ -27,4 +28,11 @@
 
   # impermanence
   programs.fuse.userAllowOther = true;
+
+  # localmail
+  age.secrets.email_catfg = lib.mkIf config.home-manager.users.celeste.celeste.localmail {
+    file = root + "/secrets/email_catfg.age";
+    group = "wheel";
+    mode = "0440";
+  };
 }
