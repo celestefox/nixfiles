@@ -1,11 +1,8 @@
 {
   config,
-  lib,
-  pkgs,
   root,
   ...
-}:
-with lib; {
+}: {
   # Secret for key
   age.secrets.star_wgnet_privkey = {
     file = root + "/secrets/star_wgnet_privkey.age";
@@ -66,8 +63,9 @@ with lib; {
   # security concern without adequate firewall!
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = true;
+    "net.ipv4.conf.all.forwarding" = true; # has no effect any way in practice because the line above overrides (afaict); but nixpkgs sets false and I wanted it cleaner
     "net.ipv6.conf.default.forwarding" = true;
-    "net.ipv6.conf.all.fowarding" = true;
+    "net.ipv6.conf.all.forwarding" = true;
   };
 
   # firewall rules
