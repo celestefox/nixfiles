@@ -30,6 +30,7 @@
         include = "yes";
         mark_old = "no";
         wait_key = "no";
+        reflow_wrap = "72";
       };
     };
   };
