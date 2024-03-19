@@ -142,6 +142,17 @@ with lib; {
         disabled = true;
         symbol = "  ";
       };
+      character = {
+        # Interestingly, the original character chosen doesn't seem to be in unpatched Fira Code by my testing
+        # It's instead taken from the Fira Code Nerd Font currently, but I think that might be fontconfig order at that point, currently?
+        # Not sure why the patched version gained it.
+        success_symbol = "[❱](bold green) ";
+        error_symbol = "[❱](bold red) ";
+        vimcmd_symbol = "[❰](bold green) ";
+        vimcmd_replace_one_symbol = "[❰](bold purple) ";
+        vimcmd_replace_symbol = "[❰](bold purple) ";
+        vimcmd_visual_symbol = "[❰](bold yellow) ";
+      };
       shell = {
         disabled = false;
         # don't display anything for fish, only other shells
