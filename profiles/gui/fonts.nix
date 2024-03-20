@@ -6,15 +6,15 @@
     noto-fonts-emoji
     noto-fonts-extra
     liberation_ttf
+    fira
     fira-code
-    fira-code-symbols
     proggyfonts
     cm_unicode
     corefonts
     hack-font
     hasklig
     meslo-lg
-    nerdfonts
+    (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
     source-code-pro
     source-han-code-jp
     unifont

@@ -32,7 +32,8 @@ with lib; {
         foreground = "\${colors.fg}";
         #radius.bottom = "3";
         font = [
-          "FiraCode Nerd Font:style=Regular:size=8;2"
+          "Fira Code:style=Regular:size=8;2"
+          "Symbols Nerd Font:style=Regular:size=8;2"
           "EB Garamond:style=Regular"
         ];
         #override-redirect = true;

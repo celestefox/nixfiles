@@ -822,7 +822,7 @@
     extraConfig = ''
       if exists("g:neovide")
         " Running in neovide
-        set guifont=VictorMono\ Nerd\ Font,Fira\ Code\ Nerd\ Font,Fira\ Code:h10
+        set guifont=Victor\ Mono,Symbols\ Nerd\ Font,Noto\ Color\ Emoji:h10
         let g:neovide_transparency = 0.8
         let g:neovide_remember_window_size = v:true
         let g:neovide_cursor_vfx_mode = "pixiedust"
