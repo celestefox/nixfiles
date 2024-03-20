@@ -13,6 +13,7 @@ with lib; {
     services.site
     services.wgnet_hub # previously services.wg
     services.knot-resolver
+    services.keycloak
     services.gitea
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
