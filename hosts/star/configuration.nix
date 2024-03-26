@@ -15,6 +15,7 @@ with lib; {
     services.knot-resolver
     services.keycloak
     services.gitea
+    services.hedgedoc
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
 

@@ -11,6 +11,7 @@ in {
   "gandi_key.age".publicKeys = all;
   "cf_lego.age".publicKeys = all;
   "keycloak_db_pw.age".publicKeys = users ++ [star];
+  "hedgedoc_secret.age".publicKeys = users ++ [star];
   "iperf_auth.age".publicKeys = all;
   "star_wgnet_privkey.age".publicKeys = all;
   "vaultwarden-env.age".publicKeys = all;
