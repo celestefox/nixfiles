@@ -77,6 +77,7 @@ in {
             deny all;
           '';
         };
+      "= /" = {return = "302 https://auth.foxgirl.tech/realms/foxgirl/account";};
       "/js/" = keycloakProxy;
       "/realms/" = keycloakProxy;
       "/resources/" = keycloakProxy;
