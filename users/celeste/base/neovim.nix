@@ -573,7 +573,13 @@
           require'treesitter-context'.setup{}
         '';
       }
-      pkgs.vimExtraPlugins.vim-matchup # docs suggest it should be loaded before sensible for vim, but doesn't matter for neovim? so it's here, since the only config'd bit is treesitter
+      {
+        plugin = ex.vim-matchup; # docs suggest it should be loaded before sensible for vim, but doesn't matter for neovim? so it's here, since the only config'd bit is treesitter
+        type = "lua";
+        config = ''
+          vim.g.matchup_matchparen_offscreen = {method = 'popup'}
+        '';
+      }
       {
         plugin = splitjoin-vim;
         type = "lua";
@@ -649,8 +655,8 @@
               Rule("'''","'''",{"nix"})
                 :with_pair(ts_conds.is_not_in_context())
                 :with_pair(ts_conds.is_not_ts_node{'string_fragment','comment'})
-                :with_pair(np_conds.not_after_text"'''")
-                :with_pair(np_conds.not_before_text"'''"),
+                :with_pair(np_conds.not_after_text"'''"),
+                --:with_pair(np_conds.not_before_text"'''")
             }
 
             -- and disable the single ' rule for nix (it is already not rust by default because
@@ -779,7 +785,7 @@
         plugin = hologram-nvim;
         type = "lua";
         config = ''
-          require'hologram'.setup{}
+          -- require'hologram'.setup{}
         '';
       }
       # Themes
@@ -793,10 +799,10 @@
               comments = true,
             },
             disable = {
-              background = true,
+              background = vim.g.neovide != true,
             },
             style = {
-              name = 'moonlight', -- hmm...
+              -- name = 'moonlight', -- hmm...
             },
           }
           vim.cmd.colorscheme 'moonlight'
