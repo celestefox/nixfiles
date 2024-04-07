@@ -22,6 +22,9 @@ in {
       email = false; # "email" sign in
       allowAnonymous = false;
       allowAnonymousEdits = true; # allows for selecting "freely" permission for anon edits even w/ ^
+      linkifyHeaderStyle = "gfm";
+      allowFreeURL = true;
+      requireFreeURLAuthentication = true; # probably not needed since allowAnonymous false, but better to be sure
       oauth2 = {
         baseURL = "https://auth.foxgirl.tech";
         userProfileURL = "https://auth.foxgirl.tech/realms/foxgirl/protocol/openid-connect/userinfo";
