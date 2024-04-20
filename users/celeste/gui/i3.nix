@@ -179,4 +179,5 @@ in {
       for_window [class="StardewModdingAPI"] fullscreen enable
     '';
   };
+  home.packages = with pkgs; [i3-swallow];
 }

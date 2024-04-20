@@ -27,5 +27,7 @@
   # adtl x11 related packages
   home.packages = with pkgs; [
     xorg.xev
+    xclip
+    xsel
   ];
 }
