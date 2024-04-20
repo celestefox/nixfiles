@@ -1,6 +1,9 @@
-{ config, lib, pkgs, inputs, ... }:
-
 {
+  config,
+  lib,
+  inputs,
+  ...
+}: {
   # from kat
   nix = {
     nixPath = [
@@ -8,16 +11,12 @@
       "home-manager=${inputs.home-manager}"
       #"nur=${inputs.nur}"
       "arc=${inputs.arcexprs}"
-      #"ci=${inputs.ci}"
-      "kw-nixfiles=${inputs.kw-nixfiles}"
     ];
     registry = {
       nixpkgs.flake = inputs.nixpkgs;
       home-manager.flake = inputs.home-manager;
       #nur.flake = inputs.nur;
       arc.flake = inputs.arcexprs;
-      #ci.flake = inputs.ci;
-      #kw-nixfiles = inputs.kw-nixfiles; #oops not a flake, but still want it in
     };
     settings = {
       experimental-features = lib.optional (lib.versionAtLeast config.nix.package.version "2.4") "nix-command flakes";
@@ -37,7 +36,7 @@
         "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
       ];
       auto-optimise-store = true;
-      trusted-users = [ "root" "@wheel" ];
+      trusted-users = ["root" "@wheel"];
     };
     gc = {
       automatic = lib.mkDefault true;

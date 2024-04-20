@@ -10,7 +10,9 @@
   services.kresd = {
     enable = true;
     # brings cqueues for watching files, amongst other things
-    package = pkgs.knot-resolver.override {extraFeatures = true;};
+    # TODO: this almost works again, this blocks deployment of star though still because
+    # the hblock rpz is watched, that's the `true`
+    #package = pkgs.knot-resolver.override {extraFeatures = true;};
     # Listening
     listenPlain = [
       "10.255.255.10:53"

@@ -799,7 +799,7 @@
               comments = true,
             },
             disable = {
-              background = vim.g.neovide != true,
+              background = vim.g.neovide ~= true,
             },
             style = {
               -- name = 'moonlight', -- hmm...

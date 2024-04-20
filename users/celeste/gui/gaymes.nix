@@ -45,7 +45,7 @@ in {
       #ccemux # computercraft emulator
       #runelite # OSRS client, ehh
       dolphin-emu # gamecube/wii emulator
-      yuzu
+      #yuzu # is gone
       ryujinx # switch emulators
       #factorio # this works if you manually add to the store, at least, but
       ship-of-harkinian # wao

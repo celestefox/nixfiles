@@ -83,7 +83,7 @@
     utils,
     ...
   }: let
-    mkTree = (import (inputs.kw-nixfiles + "/mkTree.nix")) {inherit (nixpkgs) lib;};
+    mkTree = inputs.tree.tree;
     tree = mkTree {
       inherit inputs;
       folder = ./.;

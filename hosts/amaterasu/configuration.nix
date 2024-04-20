@@ -78,8 +78,8 @@ with lib; {
     ACTION=="add|change", KERNEL=="sd[a-z]*[0-9]*|mmcblk[0-9]*p[0-9]*|nvme[0-9]*n[0-9]*p[0-9]*", ENV{ID_FS_TYPE}=="zfs_member", ATTR{../queue/scheduler}="none"
   ''; # zfs already has its own scheduler. without this my(@Artturin) computer froze for a second when i nix build something.
   nix.settings.max-jobs = lib.mkDefault 12;
-  powerManagement.cpuFreqGovernor = "ondemand";
-  boot.initrd.kernelModules = ["amd_pstate"];
+  powerManagement.cpuFreqGovernor = "schedutil";
+  # boot.initrd.kernelModules = ["amd_pstate"];
 
   # TODO: consider using this? Need to revisit wireless situation, maybe even WG too, tho...
   #networking.useNetworkd = true; # Experimental
@@ -248,53 +248,19 @@ with lib; {
     # JACK
     jack.enable = true;
 
-    # Example session manager (default for now...)
-    #media-session.enable = true;
-    # Bluetooth improvements
-    /*
-    media-session.config.bluez-monitor.rules = [
-    {
-      # Matches all cards
-      matches = [{ "device.name" = "~bluez_card.*"; }];
-      actions = {
-        "update-props" = {
-          "bluez5.auto-connect" = [ "hfp_hf" "hsp_hs" "a2dp_sink" ];
-          # mSBC is not expected to work on all combos
-          #"bluez5.msbc-support" = true;
-          # SBC-XQ is not expected to work on all headset + adapter combinations.
-          "bluez5.sbc-xq-support" = true;
-        };
-      };
-    }
-    {
-      matches = [
-        # Matches all sources
-        { "node.name" = "~bluez_input.*"; }
-        # Matches all outputs
-        { "node.name" = "~bluez_output.*"; }
+    wireplumber = {
+      configPackages = [
+        (pkgs.writeTextDir "share/wireplumber/bluetooth.lua.d/51-bluez-config.lua" ''
+           bluez_monitor.properties = {
+           	["bluez5.enable-sbc-xq"] = true,
+            ["bluez5.enable-msbc"] = true,
+            ["bluez5.enable-hw-volume"] = true,
+            ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag a2dp_sink ]"
+          }
+        '')
       ];
-      actions = {
-        "update-props" = {
-          "node.pause-on-idle" = false;
-        };
-        "node.pause-on-idle" = false;
-      };
-    }
-    ];
-    */
+    };
   };
-
-  # Extra bluetooth config, for wireplumber now
-  # I don't actually know if this will have the desired effect, it's from the wiki
-  # But the mediasession version is bluez_card? I'll actually test eventually, but bluetooth is hard already
-  environment.etc."wireplumber/bluetooth.lua.d/51-bluez-config.lua".text = ''
-     bluez_monitor.properties = {
-     	["bluez5.enable-sbc-xq"] = true,
-      ["bluez5.enable-msbc"] = true,
-      ["bluez5.enable-hw-volume"] = true,
-      ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag a2dp_sink ]"
-    }
-  '';
 
   # The rest of bluetooth
   hardware.bluetooth = {
