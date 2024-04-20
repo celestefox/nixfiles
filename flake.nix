@@ -52,9 +52,8 @@
         flake-utils.follows = "utils";
       };
     };
-    # kw-nixfiles
-    kw-nixfiles.url = "github:kittywitch/nixfiles";
-    kw-nixfiles.flake = false; # cheating cuz I just want /tree.nix for now
+    # tree
+    tree.url = "github:kittywitch/tree";
     # impermanence
     impermanence.url = "github:nix-community/impermanence";
     # fenix
